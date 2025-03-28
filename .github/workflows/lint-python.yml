@@ -1,6 +1,5 @@
 name: "lint-python"
 on:
-	workflow_dispatch:
 	pull_request:
 	push:
 		branches:
