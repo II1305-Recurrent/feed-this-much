@@ -27,6 +27,38 @@
   }
 }
 
+.header {
+  padding: 40px 0;
+  background-color: transparent;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #D77A61;
+}
+
+.description {
+  padding: 40px 0;
+  background-color: transparent;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #D77A61;
+}
+
+.catImage {
+  border-radius: 8px;
+  max-width: 100%;
+  display: block;
+  margin: 20px auto;
+}
+
+.logo {
+  border-radius: 8px;
+  max-width: 100%;
+  display: block;
+  margin: 20px auto;
+}
+
 .main {
   display: flex;
   flex-direction: column;
@@ -93,9 +125,9 @@ a.secondary {
 }
 
 .footer {
-  grid-row-start: 3;
+  grid-row-start: 1;
   display: flex;
-  gap: 24px;
+  gap: 100px;
 }
 
 .footer a {
