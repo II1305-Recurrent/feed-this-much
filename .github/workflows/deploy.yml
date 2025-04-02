@@ -37,4 +37,4 @@ jobs:
 
       - name: Docker compose start
         run: |
-          docker compose start
+          docker compose up -d
