@@ -52,6 +52,7 @@ jobs:
       - name: Docker compose stop
         run: |
           docker compose stop -t 10
+          docker compose rm -f
       
       - name: Docker backend deploy
         run: |
