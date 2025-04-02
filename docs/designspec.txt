@@ -1,0 +1,56 @@
+Design Spec References from Figma
+
+Fonts:
+Roboto
+and built-in shadcn fonts
+
+Colours:
+Background = Ivory White FEF2DC
+Most Text & Icons = Brown 51291E
+Contrast Colour = Slate Blue 4F759B
+Darker Shade (buttons and headings etc) = Terracotta D77A61
+Main Shade (logo, headings) = Pink FA9791
+
+Icons:
+https://lucide.dev/guide/packages/lucide-react-native
+
+Components Used:
+
+Button:
+shadcn standard button with colours changed to our theme and a few sizes created
+https://ui.shadcn.com/docs/components/button
+
+Forms:
+Use the form component and modified input components
+https://ui.shadcn.com/docs/components/form
+https://ui.shadcn.com/docs/components/input
+
+Dropdown Menu:
+Used dropdown-menu for the hamburger menu dropdowns
+https://ui.shadcn.com/docs/components/dropdown-menu
+
+Accordion:
+Used for logged in home page content
+https://ui.shadcn.com/docs/components/accordion
+
+Checkbox:
+https://ui.shadcn.com/docs/components/checkbox
+
+Radio Buttons:
+Use this kind for the forms as only one option can be selected at a time
+https://ui.shadcn.com/docs/components/radio-group
+
+Scroll Area:
+https://ui.shadcn.com/docs/components/scroll-area
+
+Avatar:
+Used for the avatar "button" at the top of the page
+https://ui.shadcn.com/docs/components/avatar
+
+Dialog:
+Use this for info pop-ups etc
+https://ui.shadcn.com/docs/components/dialog
+
+Tab:
+Might be useful for the login vs sign-up options but not decided
+https://ui.shadcn.com/docs/components/tabs
