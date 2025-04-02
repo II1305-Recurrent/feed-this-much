@@ -1,7 +1,7 @@
-name: "deploy"
+name: "build and deploy"
 on:
   workflow_run:
-    workflows: ["build"]
+    workflows: ["test"]
     types:
       - completed
   pull_request:
@@ -10,6 +10,38 @@ on:
       - main
 
 jobs:
+  build-frontend:
+    runs-on: [self-hosted, linux, ARM64] 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Docker cleanup
+        run: |
+          if [[ -n $(docker images -q frontend:build-latest) ]]; then
+            docker rmi frontend:build-latest
+          fi
+
+      - name: Build frontend
+        run: |
+          docker build -t frontend:build-latest -f Dockerfile.frontend .
+
+  build-backend:
+    runs-on: [self-hosted, linux, ARM64] 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Docker cleanup
+        run: |
+          if [[ -n $(docker images -q backend:build-latest) ]]; then
+            docker rmi backend:build-latest
+          fi
+
+      - name: Build backend
+        run: |
+          docker build -t backend:build-latest -f Dockerfile.backend .
+
   deploy:
     runs-on: [self-hosted, linux, ARM64] 
     steps:
