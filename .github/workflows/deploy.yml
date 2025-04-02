@@ -1,0 +1,33 @@
+name: "deploy"
+on:
+  workflow_run:
+    workflows: ["build"]
+    types:
+      - completed
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, linux, ARM64] 
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Docker compose stop
+        run: |
+          docker compose stop
+      
+      - name: Docker backend deploy
+        run: |
+          docker rmi backend:latest
+          docker tag backend:build-latest backend:latest
+
+      - name: Docker frontend deploy
+        run: |
+          docker rmi frontend:latest
+          docker tag frontend:build-latest frontend:latest
+
+      - name: Docker compose start
+        run: |
+          docker compose start
