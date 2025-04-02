@@ -6,9 +6,13 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "django>=5.1.7",
+    "django-filter>=25.1",
+    "djangorestframework>=3.16.0",
     "gevent>=24.11.1",
     "gunicorn>=23.0.0",
+    "markdown>=3.7",
     "npm>=0.1.1",
     "npx>=0.1.6",
+    "pip>=25.0.1",
     "ruff>=0.11.2",
 ]

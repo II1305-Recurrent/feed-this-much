@@ -22,7 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+if not os.getenv('DJANGO_DEBUG'):
+	DEBUG = False
+else:
+	DEBUG = True
+
 
 if DEBUG:
 	ALLOWED_HOSTS = []
@@ -30,7 +34,7 @@ if DEBUG:
 	SECRET_KEY = 'django-insecure-&no-h*qc%06j)=_m0t=m(gwqa*iy5tyv$8q-xu7*xl%2&)hdhm'
 else:
 	ALLOWED_HOSTS = [
-		"https://api.obcsw.com"
+		"https://api.feedthismuch.com"
 	]
 	# SECURITY WARNING: keep the secret key used in production secret!
 	SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
@@ -45,8 +49,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 	'rest_framework',
-	'feed_this_much_app',
+	#'feed_this_much_app',
 ]
+
+# config for DRF
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
