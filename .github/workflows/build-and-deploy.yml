@@ -24,7 +24,7 @@ jobs:
 
       - name: Build frontend
         run: |
-          docker build -t frontend:build-latest -f Dockerfile.frontend .
+          docker build --no-cache -t frontend:build-latest -f Dockerfile.frontend .
 
   build-backend:
     runs-on: [self-hosted, linux, ARM64] 
@@ -40,7 +40,7 @@ jobs:
 
       - name: Build backend
         run: |
-          docker build -t backend:build-latest -f Dockerfile.backend .
+          docker build --no-cache -t backend:build-latest -f Dockerfile.backend .
 
   deploy:
     needs: [build-frontend, build-backend]
