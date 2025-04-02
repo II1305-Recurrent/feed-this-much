@@ -30,4 +30,4 @@ jobs:
     
       - name: Lint JS
         run: |
-          uvx npm run lint --prefix frontend/feed-this-much-client
+          npm run lint --prefix frontend/feed-this-much-client
