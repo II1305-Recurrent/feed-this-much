@@ -12,6 +12,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install uv
+        run: |
+          if ! command -v uv 2>&1 >/dev/null; then
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+          fi
       - name: Use venv
         run: |
           if [ ! -d ".venv" ]; then
