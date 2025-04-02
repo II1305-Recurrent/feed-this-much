@@ -43,6 +43,7 @@ jobs:
           docker build -t backend:build-latest -f Dockerfile.backend .
 
   deploy:
+    needs: [build-frontend, build-backend]
     runs-on: [self-hosted, linux, ARM64] 
     steps:
       - name: Checkout
