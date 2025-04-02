@@ -1,5 +1,6 @@
 #!/bin/bash
 
+python manage.py clearsessions
 python manage.py makemigrations
 python manage.py migrate
 
