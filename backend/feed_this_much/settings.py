@@ -22,7 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+if not os.getenv('DJANGO_DEBUG'):
+	DEBUG = False
+else:
+	DEBUG = True
+
 
 if DEBUG:
 	ALLOWED_HOSTS = []
