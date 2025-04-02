@@ -21,7 +21,9 @@ jobs:
 
       - name: Docker cleanup
         run: |
-          docker rmi frontend:build-latest
+          if [[ -n $(docker images -q frontend:build-latest) ]]; then
+            docker rmi frontend:build-latest
+          fi
 
       - name: Build frontend
         run: |
@@ -36,7 +38,9 @@ jobs:
 
       - name: Docker cleanup
         run: |
-          docker rmi backend:build-latest
+          if [[ -n $(docker images -q backend:build-latest) ]]; then
+            docker rmi backend:build-latest
+          fi
 
       - name: Build backend
         run: |
