@@ -2,6 +2,7 @@ import Image from "next/image"; // ← THIS LINE IS CRUCIAL
 import cat2 from "../../../../docs/assets/img/cat02siamese_dab.png";
 import logo from "../../../../docs/assets/img/logo_feedthismuch.png";
 import styles from "./page.module.css";
+import { Button } from "@/components/ui/button"
 
 export default function Home() {
   return (
@@ -31,6 +32,8 @@ export default function Home() {
           height={500} 
           className={styles.logo}
         />
+
+        <Button>Button</Button>
 
       </div>
 
