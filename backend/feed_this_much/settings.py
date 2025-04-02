@@ -30,7 +30,7 @@ if DEBUG:
 	SECRET_KEY = 'django-insecure-&no-h*qc%06j)=_m0t=m(gwqa*iy5tyv$8q-xu7*xl%2&)hdhm'
 else:
 	ALLOWED_HOSTS = [
-		"https://api.obcsw.com"
+		"https://api.feedthismuch.com"
 	]
 	# SECURITY WARNING: keep the secret key used in production secret!
 	SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
