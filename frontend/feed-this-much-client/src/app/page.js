@@ -5,21 +5,22 @@ import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <header className={styles.header}>
-        <h1>Welcome!</h1>
-      </header>
+    <div>
+      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+      Welcome!
+      </h1>
 
-      <div className={styles.description}>
-        <p>Feed this much is a web app dedicated to helping you feed your cats and dogs the right amount to keep them healthy and happy.
-            All you have to do is enter information about your pet and the food you want to give them, and we will apply the science to create a custom feeding plan just for them.
-            To get started, press the button below.</p>
+      <div>
+        <p className="leading-7 [&:not(:first-child)]:mt-6"><b>Feed this much</b> is a web app dedicated to helping you feed your cats and dogs the right amount to keep them healthy and happy.
+            </p>
+        <p className="leading-7 [&:not(:first-child)]:mt-6"> All you have to do is enter information about your pet and the food you want to give them, and we will apply the science to create a custom feeding plan just for them.</p>
+        <p className="leading-7 [&:not(:first-child)]:mt-6"> To get started, press the button below. </p>
 
         <Image 
           src={cat2}
           alt="Siamese cat dabbing" 
-          width={400} 
-          height={400} 
+          width={432} 
+          height={540} 
           className={styles.catImage}
         />
 
