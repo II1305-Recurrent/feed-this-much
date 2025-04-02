@@ -1,0 +1,74 @@
+name: "build and deploy"
+on:
+  workflow_run:
+    workflows: ["test"]
+    types:
+      - completed
+  push:
+    branches:
+      - main
+
+jobs:
+  build-frontend:
+    runs-on: [self-hosted, linux, ARM64] 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Docker cleanup
+        run: |
+          if [[ -n $(docker images -q frontend:build-latest) ]]; then
+            docker rmi frontend:build-latest
+          fi
+
+      - name: Build frontend
+        run: |
+          docker build --no-cache -t frontend:build-latest -f Dockerfile.frontend .
+
+  build-backend:
+    runs-on: [self-hosted, linux, ARM64] 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Docker cleanup
+        run: |
+          if [[ -n $(docker images -q backend:build-latest) ]]; then
+            docker rmi backend:build-latest
+          fi
+
+      - name: Build backend
+        run: |
+          docker build --no-cache -t backend:build-latest -f Dockerfile.backend .
+
+  deploy:
+    needs: [build-frontend, build-backend]
+    runs-on: [self-hosted, linux, ARM64] 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Docker compose stop
+        run: |
+          docker compose stop -t 10
+          docker compose rm -f
+      
+      - name: Docker backend deploy
+        run: |
+          if [[ -n $(docker images -q backend:latest) ]]; then
+            docker container prune -f
+            docker rmi backend:latest
+          fi
+          docker tag backend:build-latest backend:latest
+
+      - name: Docker frontend deploy
+        run: |
+          if [[ -n $(docker images -q frontend:latest) ]]; then
+            docker container prune -f
+            docker rmi frontend:latest
+          fi
+          docker tag frontend:build-latest frontend:latest
+
+      - name: Docker compose start
+        run: |
+          docker compose up -d
