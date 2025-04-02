@@ -7,21 +7,19 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   build-frontend:
     runs-on: [self-hosted, linux, ARM64] 
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Docker cleanup
         run: |
-          docker rmi frontend:build-latest
+          if [[ -n $(docker images -q frontend:build-latest) ]]; then
+            docker rmi frontend:build-latest
+          fi
 
       - name: Build frontend
         run: |
@@ -36,7 +34,9 @@ jobs:
 
       - name: Docker cleanup
         run: |
-          docker rmi backend:build-latest
+          if [[ -n $(docker images -q backend:build-latest) ]]; then
+            docker rmi backend:build-latest
+          fi
 
       - name: Build backend
         run: |
