@@ -4,7 +4,9 @@ on:
     workflows: ["build"]
     types:
       - completed
-    branches: [main]
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
