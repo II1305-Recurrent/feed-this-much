@@ -17,11 +17,12 @@ jobs:
       
       - name: Docker compose stop
         run: |
-          docker compose stop
+          docker compose stop -t 10
       
       - name: Docker backend deploy
         run: |
           if [[ -n $(docker images -q backend:latest) ]]; then
+            docker container prune -f
             docker rmi backend:latest
           fi
           docker tag backend:build-latest backend:latest
@@ -29,6 +30,7 @@ jobs:
       - name: Docker frontend deploy
         run: |
           if [[ -n $(docker images -q frontend:latest) ]]; then
+            docker container prune -f
             docker rmi frontend:latest
           fi
           docker tag frontend:build-latest frontend:latest
