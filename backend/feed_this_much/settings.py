@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+	'pets_info',
 	'rest_framework',
 	'drf_spectacular'
 ]

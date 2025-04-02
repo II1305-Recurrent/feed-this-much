@@ -20,7 +20,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 from rest_framework import routers
 
 from feed_this_much.basic import views
-from .views import save_pet, get_pets
+from pets_info.views import save_pet, get_pets
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
