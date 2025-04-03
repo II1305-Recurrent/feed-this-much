@@ -4,7 +4,7 @@ import logo from "@/../../../docs/assets/img/logo_feedthismuch.png";
 import styles from "./page.module.css";
 import { Button } from "@/components/ui/button";
 
-export default function Home() {
+export default function NotSignedIn() {
   return (
     <div style={{padding: "5%"}}>
       <Image 
