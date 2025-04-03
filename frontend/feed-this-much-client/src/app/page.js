@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import {useState} from "react";
 
 export default function NotSignedIn() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   isLoggedIn ? redirect("/home") : {}
   return (
     <div style={{padding: "5%"}}>
