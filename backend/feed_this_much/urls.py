@@ -15,14 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import include, path
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
-
-from feed_this_much.basic import views
+from django.urls import path
+from drf_spectacular.views import SpectacularRedocView
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    #path('', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
