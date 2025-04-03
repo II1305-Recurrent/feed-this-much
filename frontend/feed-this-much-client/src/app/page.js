@@ -2,6 +2,7 @@
 
 import Image from "next/image"; 
 import {redirect} from "next/navigation";
+import cat2 from "@/../../../docs/assets/img/cat02siamese_dab.png";
 import styles from "./page.module.css";
 import { Button } from "@/components/ui/button";
 import {useState} from "react";
@@ -23,7 +24,7 @@ export default function NotSignedIn() {
       </h1>
 
       <div>
-        <p className="text-xs leading-5 text-[var(--custom-orange)] [&:not(:first-child)]:mt-4"><b>Feed this much </b> 
+        <p className="text-l leading-5 text-[var(--custom-orange)] [&:not(:first-child)]:mt-4"><b>Feed this much </b> 
          is a web app dedicated to helping you feed your cats and dogs the right amount to keep them healthy and happy. <br />
         All you have to do is enter information about your pet and the food you want to give them, and we will apply the science to create a custom feeding plan just for them.<br />
         To get started, press the button below. </p>

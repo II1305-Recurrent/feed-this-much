@@ -1,5 +1,23 @@
+import Image from "next/image"; 
+import logo from "@/../../../docs/assets/img/logo_feedthismuch.png";
+import styles from "./page.module.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
+
+<header className="flex items-center justify-between p-4">
+  <div className="flex items-center gap-2">
+    <Image 
+      src={logo}
+      alt="Feed This Much logo"
+      width={180}
+      height={100}
+      className={styles.logo}
+    />
+  </div>
+</header>
+
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,7 +38,20 @@ export default function RootLayout({ children }) {
     return(
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
-          {children}
+        <header className="flex items-center justify-between p-4">
+          <div className="flex items-center gap-2">
+            <Image
+              src={logo}
+              alt="Feed This Much logo"
+              width={180}
+              height={100}
+              className={styles.logo}
+            />
+          </div>
+          
+        </header>
+
+        {children}
         </body>
       </html>
     )
