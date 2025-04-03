@@ -15,10 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import include, path
-from rest_framework import routers
+from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
-
+from rest_framework import routers
 
 from feed_this_much.basic import views
 
@@ -34,7 +33,7 @@ urlpatterns = [
     path('api/register/', views.user_registration, name='user-register'), # enabling user registration, try curl -v http://127.0.0.1:8000/api/register/ -H "Content-Type: application/json" -d '{"username": "[username that you pick]", "password": "qwerty123"}'
     path('api/login/', views.user_login, name='user-login'),
     path('api/logout/', views.user_logout, name='user-logout'),
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('docs/', SpectacularRedocView.as_view(url_name='schema'), name='docs'),
 ]
