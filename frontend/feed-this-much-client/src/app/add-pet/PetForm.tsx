@@ -26,6 +26,7 @@ function PetForm() {
       resolver: zodResolver(addPetSchema),
       defaultValues: {
         petname: "",
+        dateOfBirth: "",
       },
     })
    
@@ -46,10 +47,26 @@ function PetForm() {
                 <FormItem className={undefined}>
                   <FormLabel className={undefined}>Pet Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" {...field} />
+                    <Input placeholder="Enter your pet's name" {...field} />
                   </FormControl>
                   <FormDescription className={undefined}>
                     This is your pet's display name.
+                  </FormDescription>
+                  <FormMessage className={undefined} />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="dateOfBirth"
+              render={({ field }) => (
+                <FormItem className={undefined}>
+                  <FormLabel className={undefined}>Enter your pet's date of birth</FormLabel>
+                  <FormControl>
+                    <Input placeholder="YYYY-MM-DD" {...field} />
+                  </FormControl>
+                  <FormDescription className={undefined}>
+                  This can be approximate if you aren’t sure, especially if they are an adult.
                   </FormDescription>
                   <FormMessage className={undefined} />
                 </FormItem>
