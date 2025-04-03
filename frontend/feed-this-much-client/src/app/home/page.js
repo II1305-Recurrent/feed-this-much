@@ -1,5 +1,4 @@
 import Image from "next/image"; 
-import logo from "@/../../../docs/assets/img/logo_feedthismuch.png";
 import styles from "@/app/page.module.css";
 import {
     Accordion,
@@ -16,7 +15,7 @@ export default function Home(){
     return(
         <div style={{padding: "5%"}}>
             <Image 
-                src={logo}
+                src={`logo_feedthismuch.png`}
                 alt="" 
                 width={180} 
                 height={100.5} 
