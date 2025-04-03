@@ -106,7 +106,7 @@ function ActivityFormDog() {
             </FormItem>
           )}
           />
-          <Button type="submit" className={undefined} variant={undefined} size={undefined}>Save</Button>
+          <Button type="submit" className={undefined} variant={undefined} size={undefined}>Submit Activity Level</Button>
         </form>
         </Form>
       )

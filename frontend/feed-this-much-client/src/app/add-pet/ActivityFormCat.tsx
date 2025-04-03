@@ -66,7 +66,7 @@ function ActivityFormCat() {
                       <RadioGroupItem value="1" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      Severely Underweight - 1
+                    low activity - indoor cat, mostly inactive
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -74,7 +74,7 @@ function ActivityFormCat() {
                       <RadioGroupItem value="2" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      Underweight - 2
+                    moderate activity - indoor cat, but with frequent play time, walks on leash, or a highly active breed
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -82,7 +82,7 @@ function ActivityFormCat() {
                       <RadioGroupItem value="3" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      Ideal - 3
+                    high activity - outdoor cat, or extremely active indoor cat
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -90,7 +90,7 @@ function ActivityFormCat() {
                       <RadioGroupItem value="4" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      Overweight - 4
+                    growing kitten - under 1 year old
                     </FormLabel>
                   </FormItem>
                 </RadioGroup>
@@ -99,7 +99,7 @@ function ActivityFormCat() {
             </FormItem>
           )}
           />
-          <Button type="submit" className={undefined} variant={undefined} size={undefined}>Save</Button>
+          <Button type="submit" className={undefined} variant={undefined} size={undefined}>Submit Activity Level</Button>
         </form>
         </Form>
       )
