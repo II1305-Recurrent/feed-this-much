@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 import {
   Form,
@@ -27,7 +28,8 @@ function PetForm() {
       defaultValues: {
         petname: "",
         dateOfBirth: "",
-        currentWeight: 2,
+        currentWeight: 0,
+        species: undefined,
       },
     })
    
@@ -89,6 +91,40 @@ function PetForm() {
                 </FormItem>
               )}
             />
+            <FormField
+            control={form.control}
+            name="species"
+            render={({ field }) => (
+            <FormItem className="space-y-3">
+              <FormLabel className={undefined}>Is your pet a...</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex flex-col space-y-1"
+                >
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="cat" className={undefined} />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      cat
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="dog" className={undefined} />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      dog
+                    </FormLabel>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+              <FormMessage className={undefined} />
+            </FormItem>
+          )}
+          />
             <Button type="submit" className={undefined} variant={undefined} size={undefined}>Submit</Button>
           </form>
         </Form>
