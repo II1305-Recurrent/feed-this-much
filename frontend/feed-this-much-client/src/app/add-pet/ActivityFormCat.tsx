@@ -6,6 +6,8 @@ import { z } from "zod"
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
+import { Button } from "@/components/ui/button"
+
 import {
   Form,
   FormControl,
@@ -33,7 +35,7 @@ function ActivityFormCat() {
     const form = useForm<z.infer<typeof activitySchema>>({
       resolver: zodResolver(activitySchema),
       defaultValues: {
-        activityLevel: "3" as unknown as number,
+        activityLevel: undefined,
       },
     })
    
@@ -91,20 +93,13 @@ function ActivityFormCat() {
                       Overweight - 4
                     </FormLabel>
                   </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="5" className={undefined} />
-                    </FormControl>
-                    <FormLabel className="font-normal">
-                      Severely Obese - 5
-                    </FormLabel>
-                  </FormItem>
                 </RadioGroup>
               </FormControl>
               <FormMessage className={undefined} />
             </FormItem>
           )}
           />
+          <Button type="submit" className={undefined} variant={undefined} size={undefined}>Save</Button>
         </form>
         </Form>
       )

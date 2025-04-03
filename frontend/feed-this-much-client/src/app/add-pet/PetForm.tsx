@@ -252,6 +252,7 @@ function PetForm() {
             </FormItem>
           )}
           />
+          <Button type="submit" className={undefined} variant={undefined} size={undefined}>Submit</Button>
           </form>
         </Form>
       )

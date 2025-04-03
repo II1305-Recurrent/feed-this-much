@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Button } from "@/components/ui/button"
 
 import {
   Form,
@@ -33,7 +34,7 @@ function ActivityFormDog() {
     const form = useForm<z.infer<typeof activitySchema>>({
       resolver: zodResolver(activitySchema),
       defaultValues: {
-        activityLevel: "3" as unknown as number,
+        activityLevel: undefined,
       },
     })
    
@@ -64,7 +65,7 @@ function ActivityFormDog() {
                       <RadioGroupItem value="1" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      Severely Underweight - 1
+                    low - less than 1 hour per day, walking on a leash
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -72,7 +73,7 @@ function ActivityFormDog() {
                       <RadioGroupItem value="2" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      Underweight - 2
+                    moderate low-impact - 1-3 hours per day, walking
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -80,7 +81,7 @@ function ActivityFormDog() {
                       <RadioGroupItem value="3" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      Ideal - 3
+                    moderate high-impact - 1-3 hours per day, running or agility training
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -88,7 +89,7 @@ function ActivityFormDog() {
                       <RadioGroupItem value="4" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      Overweight - 4
+                    high - 3-6 hours per day, working dog such as hunting or herding
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -96,7 +97,7 @@ function ActivityFormDog() {
                       <RadioGroupItem value="5" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      Severely Obese - 5
+                    very high - over 6 hours per day or activity in very cold weather, such as sled racing
                     </FormLabel>
                   </FormItem>
                 </RadioGroup>
@@ -105,6 +106,7 @@ function ActivityFormDog() {
             </FormItem>
           )}
           />
+          <Button type="submit" className={undefined} variant={undefined} size={undefined}>Save</Button>
         </form>
         </Form>
       )
