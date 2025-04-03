@@ -14,6 +14,9 @@ export const addPetSchema = z.object({
     species: z.enum(["cat", "dog"], {
       required_error: "You need to select either a dog or a cat.",
     }),
+    neutered: z.enum(["yes", "no"], {
+      required_error: "You need to select either yes or no.",
+    }),
 })
 
 export type addPetSchemaType = typeof addPetSchema._type

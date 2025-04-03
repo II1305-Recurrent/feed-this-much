@@ -30,6 +30,7 @@ function PetForm() {
         dateOfBirth: "",
         currentWeight: 0,
         species: undefined,
+        neutered: undefined,
       },
     })
    
@@ -59,6 +60,40 @@ function PetForm() {
                 </FormItem>
               )}
             />
+            <FormField
+            control={form.control}
+            name="species"
+            render={({ field }) => (
+            <FormItem className="space-y-3">
+              <FormLabel className={undefined}>Is your pet a...</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex flex-col space-y-1"
+                >
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="cat" className={undefined} />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      cat
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="dog" className={undefined} />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      dog
+                    </FormLabel>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+              <FormMessage className={undefined} />
+            </FormItem>
+          )}
+          />
             <FormField
               control={form.control}
               name="dateOfBirth"
@@ -93,10 +128,10 @@ function PetForm() {
             />
             <FormField
             control={form.control}
-            name="species"
+            name="neutered"
             render={({ field }) => (
             <FormItem className="space-y-3">
-              <FormLabel className={undefined}>Is your pet a...</FormLabel>
+              <FormLabel className={undefined}>Is your pet spayed/neutered?</FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
@@ -105,18 +140,18 @@ function PetForm() {
                 >
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="cat" className={undefined} />
+                      <RadioGroupItem value="yes" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      cat
+                      Yes
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="dog" className={undefined} />
+                      <RadioGroupItem value="no" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      dog
+                      No
                     </FormLabel>
                   </FormItem>
                 </RadioGroup>
