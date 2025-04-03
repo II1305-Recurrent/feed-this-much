@@ -1,4 +1,4 @@
-name: "lint"
+name: "lint and test"
 on:
   pull_request:
   push:
@@ -31,3 +31,28 @@ jobs:
       - name: Lint JS
         run: |
           npm run lint --prefix frontend/feed-this-much-client
+
+  backend-unit-tests:
+    needs: [lint]
+    runs-on: [self-hosted, linux, ARM64] 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        run: |
+          if ! command -v uv 2>&1 >/dev/null; then
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+          fi
+
+      - name: Use venv
+        run: |
+          if [ ! -d ".venv" ]; then
+            uv venv
+          fi
+          source .venv/bin/activate
+      
+      - name: Run tests
+        run: |
+          cd backend
+          uv run python manage.py test
