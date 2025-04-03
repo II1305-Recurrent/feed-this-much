@@ -1,15 +1,12 @@
-"use client"
-
 import Image from "next/image"; 
-import {redirect} from "next/navigation";
 import cat2 from "@/../../../docs/assets/img/cat02siamese_dab.png";
 import styles from "./page.module.css";
 import { Button } from "@/components/ui/button";
-import {useState} from "react";
 
 export default function NotSignedIn() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   isLoggedIn ? redirect("/home") : {}
+export default function Home() {
   return (
     <div style={{padding: "5%"}}>
       <Image 
@@ -39,9 +36,9 @@ export default function NotSignedIn() {
       </div>
 
       <div className="flex justify-center mt-6">
-        <Button onClick={() => redirect("/sign-in")} className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto">
+        <Button className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto">
           Get Started
-        </Button>
+          </Button>
       </div>
     </div>
   );

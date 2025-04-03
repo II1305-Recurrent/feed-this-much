@@ -145,7 +145,73 @@ a {
 }
 
 
+  .navbar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 16px;
+   
+  }
+  
+  .menu-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .hamburger-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .hamburger {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; 
+    font-size: 20px;
+    border: 2px solid var(--custom-brown);
+    background: none;
+    color: var(--custom-brown);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0; 
+    margin-bottom: 24px;
+  }
 
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--custom-beige);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 8px;
+    padding: 12px 0;
+    min-width: 160px;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+  }
+  
+  .dropdown a {
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 14px;
+    color: var(--custom-brown);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .dropdown a:hover {
+    background-color: #f3e1c7;
+  }
+  
 
 
 
