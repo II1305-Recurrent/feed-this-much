@@ -23,7 +23,7 @@ export default function Home(){
                 className={styles.logo}
                 />
             <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
-            Hi! You're now logged in.
+            Hi! You are now logged in.
             </h1>
             <Accordion type="single" collapsible className="w-full !pt-8">
                 <AccordionItem value="item-1">
