@@ -16,5 +16,6 @@ dependencies = [
     "npx>=0.1.6",
     "pip>=25.0.1",
     "psycopg>=3.2.6",
+    "psycopg2>=2.9.10",
     "ruff>=0.11.2",
 ]
