@@ -18,7 +18,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        filter = ['username', 'email', 'password']
+        fields = ['username', 'email', 'password']
     
     # Create our user based on Meta filters and model
     def create(self, validated_data): 
