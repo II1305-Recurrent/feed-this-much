@@ -1,0 +1,32 @@
+#!/bin/bash
+
+
+# Get list of staged files
+STAGED_FILES=$(git diff --cached --name-only)
+
+# Check if any files in the backend folder are staged
+echo "$STAGED_FILES" | grep -q '^backend/'
+if [ $? -eq 0 ]; then
+  echo "Running uvx ruff check on backend..."
+  uvx ruff check .
+  # If the ruff check fails, abort the commit
+  if [ $? -ne 0 ]; then
+    echo "uvx ruff check failed. Aborting commit."
+    exit 1
+  fi
+fi
+
+# Check if any files in the frontend/feed-this-much-client folder are staged
+echo "$STAGED_FILES" | grep -q '^frontend/feed-this-much-client/'
+if [ $? -eq 0 ]; then
+  echo "Running npm lint for frontend/feed-this-much-client..."
+  npm run lint --prefix frontend/feed-this-much-client
+  # If lint fails, abort the commit
+  if [ $? -ne 0 ]; then
+    echo "npm lint failed. Aborting commit."
+    exit 1
+  fi
+fi
+
+exit 0
+
