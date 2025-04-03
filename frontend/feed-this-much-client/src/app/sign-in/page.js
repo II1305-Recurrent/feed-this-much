@@ -22,13 +22,6 @@ import {
 export default function Home() {
   return (
     <div style={{padding: "5%"}}>
-      <Image 
-          src={logo}
-          alt="" 
-          width={180} 
-          height={100.5} 
-          className={styles.logo}
-        />
       <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
       Sign in
       </h1>
@@ -46,21 +39,21 @@ export default function Home() {
         <TabsTrigger value="sign-up">Sign-up</TabsTrigger>
       </TabsList>
       <TabsContent value="sign-in">
-        <Card>
-            <CardContent className="space-y-2">
-                <div className="space-y-1">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="Enter your email address" />
+        <Card className="bg-transparent shadow-none border-none">
+            <CardContent className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
+                <Label htmlFor="sign-in-email">Email</Label>
+                <Input className="bg-white text-black" id="sign-in-email" type="email" placeholder="Enter your email address"/>
                 </div>
-                <div className="space-y-1">
-                <Label htmlFor="password">Password</Label>
+                <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
+                <Label htmlFor="password"> Password</Label>
                 <Input id="password" type="password" placeholder="Enter your password" />
                 </div>
                 <div className="text-left mt-1">
                 <button className="text-sm text-blue-600 hover:underline">
                     Forgot password?
                 </button>
-    </div>
+                </div>
             </CardContent>
         <CardFooter>
                 <div className="flex justify-center w-full mt-6">
@@ -71,27 +64,26 @@ export default function Home() {
         </CardFooter>
         </Card>
       </TabsContent>
-      <TabsContent value="password">
-        <Card>
-          <CardHeader>
-            <CardTitle>Password</CardTitle>
-            <CardDescription>
-              Change your password here. After saving, you'll be logged out.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="current">Current password</Label>
-              <Input id="current" type="password" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="new">New password</Label>
-              <Input id="new" type="password" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button>Save password</Button>
-          </CardFooter>
+      <TabsContent value="sign-up">
+        <Card className="bg-transparent shadow-none border-none">
+        <CardContent className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
+                <Label htmlFor="name">Name</Label>
+                <Input id="name" type="name" placeholder="Enter what you want us to call you" />
+                </div>
+                <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" placeholder="Enter your email address" />
+                </div>
+                <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
+                <Label htmlFor="password">Password</Label>
+                <Input id="password" type="password" placeholder="Enter your password" />
+                </div>
+                <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
+                <Label htmlFor="repeat_password">Repeat Password</Label>
+                <Input id="repeat_password" type="password" placeholder="Re-enter your password" />
+                </div>
+            </CardContent>
         </Card>
       </TabsContent>
     </Tabs>
