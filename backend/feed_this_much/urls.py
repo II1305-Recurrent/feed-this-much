@@ -20,7 +20,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 from rest_framework import routers
 
 from feed_this_much.basic import views
-from pets_info.views import save_pet, get_pets
+from feed_this_much.pets_info.views import save_pet, get_pets
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -33,7 +33,6 @@ urlpatterns = [
     path('api/register/', views.user_registration, name='user-register'),
     path('api/login/', views.user_login, name='user-login'),
     path('api/logout/', views.user_logout, name='user-logout'),
-    path('api-auth/', include('rest_framework.urls')),  #enabelig login/logout
     path('save-pet/', save_pet, name='save_pet'),
     path('get-pets/', get_pets, name='get_pets'),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
