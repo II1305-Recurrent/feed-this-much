@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 	'rest_framework',
-	#'feed_this_much_app',
+	'feed_this_much_app',
 ]
 
 # config for DRF
