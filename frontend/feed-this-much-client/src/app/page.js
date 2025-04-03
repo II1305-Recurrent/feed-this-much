@@ -1,10 +1,16 @@
+"use client"
+
 import Image from "next/image"; 
+import {redirect} from "next/navigation";
 import cat2 from "@/../../../docs/assets/img/cat02siamese_dab.png";
 import logo from "@/../../../docs/assets/img/logo_feedthismuch.png";
 import styles from "./page.module.css";
 import { Button } from "@/components/ui/button";
+import {useState} from "react";
 
 export default function NotSignedIn() {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  isLoggedIn ? redirect("/home") : {}
   return (
     <div style={{padding: "5%"}}>
       <Image 
@@ -34,9 +40,9 @@ export default function NotSignedIn() {
       </div>
 
       <div className="flex justify-center mt-6">
-        <Button className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto">
+        <Button onClick={() => redirect("/sign-in")} className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto">
           Get Started
-          </Button>
+        </Button>
       </div>
     </div>
   );
