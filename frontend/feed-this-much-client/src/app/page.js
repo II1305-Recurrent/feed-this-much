@@ -7,12 +7,12 @@ import { Button } from "@/components/ui/button";
 import {useState} from "react";
 
 export default function NotSignedIn() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   isLoggedIn ? redirect("/home") : {}
   return (
     <div style={{padding: "5%"}}>
       <Image 
-          src={`/logo_feedthismuch.png`}
+          src="/logo_feedthismuch.png"
           alt="" 
           width={180} 
           height={100.5} 
@@ -29,7 +29,7 @@ export default function NotSignedIn() {
         To get started, press the button below. </p>
 
         <Image 
-          src={`cat02siamese_dab.png`}
+          src="/cat02siamese_dab.png"
           alt="Siamese cat dabbing" 
           width={216} 
           height={270} 
