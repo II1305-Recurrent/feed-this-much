@@ -21,6 +21,7 @@ export const addPetSchema = z.object({
       required_error: "Selecting a unit is required"
     }),
     bodyConditionScore: z.coerce.number().int(),
+    activityLevel: z.coerce.number().int(),
 })
 
 export type addPetSchemaType = typeof addPetSchema._type
