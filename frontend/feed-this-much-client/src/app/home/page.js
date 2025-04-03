@@ -15,7 +15,7 @@ export default function Home(){
     return(
         <div style={{padding: "5%"}}>
             <Image 
-                src={`logo_feedthismuch.png`}
+                src="/logo_feedthismuch.png"
                 alt="" 
                 width={180} 
                 height={100.5} 
