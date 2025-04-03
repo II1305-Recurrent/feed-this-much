@@ -26,7 +26,13 @@ Set the following env var by running `export DJANGO_DEBUG=True`.
 Navigate to `backend` folder and run `python manage.py runserver`
 
 ### How to run backend unit tests locally
-Navigate to `backend` directory and run `python manage.py test`
+Navigate to `backend` directory and run `uv run python manage.py test`
+
+### How to run python linter (ruff) locally
+Run the command `uv run ruff check .` in the root folder
 
 ## How to run NextJS (ReactJS) development server locally
 Navigate to `frontend/feed-this-much-client` folder and run `npm run dev`
+
+### How to run javascript linter locally
+Navigate to `frontend/feed-this-much-client` folder and run `npm run lint`
