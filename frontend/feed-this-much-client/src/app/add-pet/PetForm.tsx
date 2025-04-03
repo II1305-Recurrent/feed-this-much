@@ -27,7 +27,7 @@ function PetForm() {
       defaultValues: {
         petname: "",
         dateOfBirth: "",
-        currentWeight: 0,
+        currentWeight: 2,
       },
     })
    
