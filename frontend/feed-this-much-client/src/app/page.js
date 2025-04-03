@@ -2,8 +2,6 @@
 
 import Image from "next/image"; 
 import {redirect} from "next/navigation";
-import cat2 from "@/../../../docs/assets/img/cat02siamese_dab.png";
-import logo from "@/../../../docs/assets/img/logo_feedthismuch.png";
 import styles from "./page.module.css";
 import { Button } from "@/components/ui/button";
 import {useState} from "react";
@@ -14,7 +12,7 @@ export default function NotSignedIn() {
   return (
     <div style={{padding: "5%"}}>
       <Image 
-          src={logo}
+          src={`/logo_feedthismuch.png`}
           alt="" 
           width={180} 
           height={100.5} 
@@ -31,7 +29,7 @@ export default function NotSignedIn() {
         To get started, press the button below. </p>
 
         <Image 
-          src={cat2}
+          src={`cat02siamese_dab.png`}
           alt="Siamese cat dabbing" 
           width={216} 
           height={270} 

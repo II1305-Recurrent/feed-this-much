@@ -1,5 +1,4 @@
 import Image from "next/image"; 
-import logo from "@/../../../docs/assets/img/logo_feedthismuch.png";
 import styles from "@/app/page.module.css";
 import { Button } from "@/components/ui/button";
 import {
