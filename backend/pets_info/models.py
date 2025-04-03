@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 class Pet(models.Model):
@@ -6,6 +7,7 @@ class Pet(models.Model):
         ('lb', 'Pounds'),
     ]
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='pets')
     name = models.CharField(max_length=255)
     species = models.CharField(max_length=100)
     dob = models.DateField()  
