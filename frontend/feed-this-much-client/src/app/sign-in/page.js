@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"; 
 import logo from "@/../../../docs/assets/img/logo_feedthismuch.png";
 import styles from "@/app/page.module.css";
@@ -18,6 +20,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import {redirect} from "next/navigation";
 
 export default function Sign_in_page() {
   return (
@@ -57,7 +60,7 @@ export default function Sign_in_page() {
             </CardContent>
         <CardFooter>
                 <div className="flex justify-center w-full mt-6">
-                <Button className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs">
+                <Button onClick={() => redirect("/home")}className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs">
                     Sign-in 
                 </Button>
                 </div>
