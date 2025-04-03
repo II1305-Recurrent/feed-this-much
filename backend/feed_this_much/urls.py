@@ -31,7 +31,8 @@ router.register(r'groups', views.GroupViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),  #enabling login/logout
-    path('api/register/', views.user_registration, name='register'), # enabling user registration, try curl -v http://127.0.0.1:8000/api/register/ -H "Content-Type: application/json" -d '{"username": "[username that you pick]", "password": "qwerty123"}'
+    path('api/register/', views.user_registration, name='user-register'), # enabling user registration, try curl -v http://127.0.0.1:8000/api/register/ -H "Content-Type: application/json" -d '{"username": "[username that you pick]", "password": "qwerty123"}'
+    path('api/login/', views.user_login, name='user-login'),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
