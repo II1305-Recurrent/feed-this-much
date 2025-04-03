@@ -9,6 +9,7 @@ export const addPetSchema = z.object({
       required_error: "Weight is required",
       invalid_type_error: "Weight must be a number",
     })
+    .max(343, "Weight must be no more than 343 lbs. If your animal weighs more than this, call the Guinness World Records!")
     .positive("Weight must be greater than 0")
 })
 
