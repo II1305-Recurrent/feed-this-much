@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True
+DEBUG = False
 
 if os.getenv('DJANGO_DEBUG'):
 	DEBUG = True
@@ -162,12 +162,7 @@ SPECTACULAR_SETTINGS = {
     # OTHER SETTINGS
 }
 
-
-USE_X_FORWARDED_HOST = True
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-SECURE_SSL_REDIRECT = True
-
-if DEBUG:
-	USE_X_FORWARDED_HOST = False
-	SECURE_PROXY_SSL_HEADER = ()
-	SECURE_SSL_REDIRECT = False
+if not DEBUG:
+	USE_X_FORWARDED_HOST = True
+	SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+	SECURE_SSL_REDIRECT = True
