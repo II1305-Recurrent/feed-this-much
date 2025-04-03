@@ -1,6 +1,6 @@
 "use client"
 
-import { useForm } from "react-hook-form"
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 
@@ -160,7 +160,7 @@ function PetForm() {
             </FormItem>
           )}
         />
-            <FormField
+        <FormField
             control={form.control}
             name="neutered"
             render={({ field }) => (
@@ -252,7 +252,7 @@ function PetForm() {
             </FormItem>
           )}
           />
-            <Button type="submit" className={undefined} variant={undefined} size={undefined}>Submit</Button>
+          <Button type="submit" className={undefined} variant={undefined} size={undefined}>Submit</Button>
           </form>
         </Form>
       )
