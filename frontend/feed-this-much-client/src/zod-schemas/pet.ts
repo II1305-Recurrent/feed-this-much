@@ -17,6 +17,10 @@ export const addPetSchema = z.object({
     neutered: z.enum(["yes", "no"], {
       required_error: "You need to select either yes or no.",
     }),
+    isKg: z.enum(["Kgs", "lbs"], {
+      required_error: "Selecting a unit is required"
+    }),
+    bodyConditionScore: z.coerce.number().int(),
 })
 
 export type addPetSchemaType = typeof addPetSchema._type

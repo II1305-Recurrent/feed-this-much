@@ -17,6 +17,14 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
+
 import { Input } from "@/components/ui/input"
 
 import { addPetSchema, type addPetSchemaType } from "@/zod-schemas/pet"
@@ -28,9 +36,11 @@ function PetForm() {
       defaultValues: {
         petname: "",
         dateOfBirth: "",
-        currentWeight: 0,
+        currentWeight: "" as unknown as number,
         species: undefined,
         neutered: undefined,
+        isKg: undefined,
+        bodyConditionScore: "3" as unknown as number,
       },
     })
    
@@ -128,6 +138,30 @@ function PetForm() {
             />
             <FormField
             control={form.control}
+            name="isKg"
+            render={({ field }) => (
+            <FormItem className={undefined}>
+              {/* <FormLabel className={undefined}>Select Unit</FormLabel> */}
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger className={undefined} >
+                    <SelectValue placeholder="Select Unit" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent className={undefined} >
+                  <SelectItem className={undefined} value="Kgs">Kgs</SelectItem>
+                  <SelectItem className={undefined} value="lbs">lbs</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription className={undefined}>
+                Select the unit you used for your pet's weight.
+              </FormDescription>
+              <FormMessage className={undefined} />
+            </FormItem>
+          )}
+        />
+            <FormField
+            control={form.control}
             name="neutered"
             render={({ field }) => (
             <FormItem className="space-y-3">
@@ -152,6 +186,64 @@ function PetForm() {
                     </FormControl>
                     <FormLabel className="font-normal">
                       No
+                    </FormLabel>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+              <FormMessage className={undefined} />
+            </FormItem>
+          )}
+          />
+          <FormField
+            control={form.control}
+            name="bodyConditionScore"
+            render={({ field }) => (
+            <FormItem className="space-y-3">
+              <FormLabel className={undefined}>Select a Body Condition Score</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex flex-col space-y-1"
+                >
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="1" className={undefined} />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      Severely Underweight - 1
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="2" className={undefined} />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      Underweight - 2
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="3" className={undefined} />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      Ideal - 3
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="4" className={undefined} />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      Overweight - 4
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="5" className={undefined} />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      Severely Obese - 5
                     </FormLabel>
                   </FormItem>
                 </RadioGroup>
