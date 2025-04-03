@@ -27,6 +27,7 @@ function PetForm() {
       defaultValues: {
         petname: "",
         dateOfBirth: "",
+        currentWeight: 0,
       },
     })
    
@@ -66,8 +67,24 @@ function PetForm() {
                     <Input placeholder="YYYY-MM-DD" {...field} />
                   </FormControl>
                   <FormDescription className={undefined}>
-                  This can be approximate if you aren’t sure, especially if they are an adult.
+                  This can be approximate if you aren't sure, especially if they are an adult.
                   </FormDescription>
+                  <FormMessage className={undefined} />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="currentWeight"
+              render={({ field }) => (
+                <FormItem className={undefined}>
+                  <FormLabel className={undefined}>Enter your pet's current weight</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter number here" {...field} />
+                  </FormControl>
+                  <FormDescription className={undefined}>
+                    Click here for tips on how to weigh your pet.
+                    </FormDescription>
                   <FormMessage className={undefined} />
                 </FormItem>
               )}
