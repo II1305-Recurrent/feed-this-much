@@ -11,6 +11,13 @@ export const addPetSchema = z.object({
     })
     .max(343, "Weight must be no more than 343 lbs. If your animal weighs more than this, call the Guinness World Records!")
     .positive("Weight must be greater than 0"),
+    expectedWeight: z.coerce
+    .number({
+      required_error: "Expected weight is required",
+      invalid_type_error: "Expected weight must be a number",
+    })
+    .max(343, "Expected weight must be no more than 343 lbs. If your animal weighs more than this, call the Guinness World Records!")
+    .positive("Expected weight must be greater than 0"),
     species: z.enum(["cat", "dog"], {
       required_error: "You need to select either a dog or a cat.",
     }),

@@ -37,6 +37,7 @@ function DogForm() {
         petname: "",
         dateOfBirth: "",
         currentWeight: "" as unknown as number,
+        expectedWeight: "" as unknown as number,
         species: undefined,
         neutered: undefined,
         isKg: undefined,
@@ -98,6 +99,22 @@ function DogForm() {
                   </FormControl>
                   <FormDescription className={undefined}>
                     Click here for tips on how to weigh your pet.
+                    </FormDescription>
+                  <FormMessage className={undefined} />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="expectedWeight"
+              render={({ field }) => (
+                <FormItem className={undefined}>
+                  <FormLabel className={undefined}>If your dog is under 1 year old, enter their expected adult weight</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter number here" {...field} />
+                  </FormControl>
+                  <FormDescription className={undefined}>
+                    Note - set as required for all for now, please enter any number for adult!
                     </FormDescription>
                   <FormMessage className={undefined} />
                 </FormItem>
