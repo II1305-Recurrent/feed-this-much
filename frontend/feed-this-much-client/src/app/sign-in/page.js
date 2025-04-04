@@ -1,5 +1,6 @@
+"use client"
+
 import Image from "next/image"; 
-import logo from "@/../../../docs/assets/img/logo_feedthismuch.png";
 import styles from "@/app/page.module.css";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,17 +19,11 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import {redirect} from "next/navigation";
 
-export default function Home() {
+export default function Sign_in_page() {
   return (
     <div style={{padding: "5%"}}>
-      <Image 
-          src={logo}
-          alt="" 
-          width={180} 
-          height={100.5} 
-          className={styles.logo}
-        />
       <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
       Sign in
       </h1>

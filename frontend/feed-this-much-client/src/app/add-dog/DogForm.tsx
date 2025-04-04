@@ -65,7 +65,7 @@ function DogForm() {
                     <Input placeholder="Enter your pet's name" {...field} />
                   </FormControl>
                   <FormDescription className={undefined}>
-                    This is your pet&aposs display name.
+                    This is your pet&apos;s display name.
                   </FormDescription>
                   <FormMessage className={undefined} />
                 </FormItem>
@@ -76,12 +76,12 @@ function DogForm() {
               name="dateOfBirth"
               render={({ field }) => (
                 <FormItem className={undefined}>
-                  <FormLabel className={undefined}>Enter your pet&aposs date of birth</FormLabel>
+                  <FormLabel className={undefined}>Enter your pet&apos;s date of birth</FormLabel>
                   <FormControl>
                     <Input placeholder="YYYY-MM-DD" {...field} />
                   </FormControl>
                   <FormDescription className={undefined}>
-                  This can be approximate if you aren&apost sure, especially if they are an adult.
+                  This can be approximate if you aren&apos;t sure, especially if they are an adult.
                   </FormDescription>
                   <FormMessage className={undefined} />
                 </FormItem>
@@ -92,7 +92,7 @@ function DogForm() {
               name="currentWeight"
               render={({ field }) => (
                 <FormItem className={undefined}>
-                  <FormLabel className={undefined}>Enter your pet&aposs current weight</FormLabel>
+                  <FormLabel className={undefined}>Enter your pet&apos;s current weight</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter number here" {...field} />
                   </FormControl>
@@ -121,7 +121,7 @@ function DogForm() {
                 </SelectContent>
               </Select>
               <FormDescription className={undefined}>
-                Select the unit you used for your pet&aposs weight.
+                Select the unit you used for your pet&apos;s weight.
               </FormDescription>
               <FormMessage className={undefined} />
             </FormItem>
