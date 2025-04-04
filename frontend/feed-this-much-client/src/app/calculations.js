@@ -3,6 +3,7 @@
 //-DailyEnergy: kJ
 
 //cats
+
 const neuteredOrIndoor = false
 const catAgeMonths = undefined
 let catEnergyBase
@@ -25,5 +26,14 @@ if (catAgeMonths < 12) {
 const catDailyEnergy = catEnergyBase * catWeight**0.67 * lifeStageFactor
 
 //dogs
-const dogEnergyBase = activityBase * dogLifeStageFactor
-const dogDailyEnergy = energyBase * bodyWeight**0.75
+
+if (dogAgeMonths > 12) {
+    const dogLifeStageFactor = [1.3, 1, 0.87]
+    const dogActivityBase = [398, 460, 523, 680, 4395]
+    const dogEnergyBase = dogActivityBase * dogLifeStageFactor
+    const dogDailyEnergy = dogEnergyBase * dogWeight**0.75
+} else if (dogAgeMonths > 2) {
+    const dogDailyEnergy = 1063 * ((dogWeight**1.75)/expectedDogWeight)
+} else {
+    const dogDailyEnergy = 1050 * dogWeight
+}
