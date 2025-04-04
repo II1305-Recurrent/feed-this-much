@@ -8,5 +8,6 @@ export default function petPage() {
         <h1>Add Pet</h1>
         <Button onClick={() => redirect("/add-cat")}>Cat</Button>
         <Button onClick={() => redirect("/add-dog")}>Dog</Button>
+        <Button variant="destructive" onClick={() => redirect("/home")}>Back</Button>
     </div>
 }
