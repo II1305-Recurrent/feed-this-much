@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"; 
 import styles from "@/app/page.module.css";
 import {
@@ -7,6 +9,8 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button";
+
+import {redirect} from "next/navigation"
 
 export default function Home(){
     const pets = [{id:1, title: "Mac"}]; //will need to be fetched from API
@@ -33,7 +37,7 @@ export default function Home(){
                                 <p className="text-md text-[var(--custom-brown)]" key={item.id}>{item.title}</p>)
                             }
                             <div className="inline-flex items-center gap-2">
-                                <Button>+</Button>
+                                <Button onClick={() => redirect("/add-pet")}>+</Button>
                                 <p className="text-[var(--custom-brown)]">Add pet</p>
                             </div>
                         </div>

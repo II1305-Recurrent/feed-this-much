@@ -54,3 +54,7 @@ https://ui.shadcn.com/docs/components/dialog
 Tab:
 Might be useful for the login vs sign-up options but not decided
 https://ui.shadcn.com/docs/components/tabs
+
+Select:
+https://ui.shadcn.com/docs/components/select#form
+
