@@ -9,7 +9,7 @@ function calculateCatFeeding(ageMonths, neuteredOrIndoor, weight) { //neuteredOr
         catEnergyBase  = 314
         if (ageMonths < 4) {
             catLifeStageFactor = 2.5
-        } else if (catAgeMonths < 9) {
+        } else if (ageMonths < 9) {
             catLifeStageFactor = 2
         } else {
             catLifeStageFactor = 1.5
@@ -22,7 +22,7 @@ function calculateCatFeeding(ageMonths, neuteredOrIndoor, weight) { //neuteredOr
 }
 
 //dogs
-function calculateDogFeeding(ageMonths, activityLevel) {
+function calculateDogFeeding(ageMonths, activityLevel, weight, expectedWeight) {
     if (ageMonths > 12) {
         let dogLifeStageFactor
         if (ageMonths < 36) {
@@ -34,10 +34,10 @@ function calculateDogFeeding(ageMonths, activityLevel) {
         }
         const dogActivityBase = [398, 460, 523, 680, 4395]
         const dogEnergyBase = dogActivityBase[activityLevel] * dogLifeStageFactor
-        return dogEnergyBase * dogWeight**0.75
+        return dogEnergyBase * weight**0.75
     } else if (ageMonths > 2) {
-        return 1063 * ((dogWeight**1.75)/expectedDogWeight)
+        return 1063 * ((weight**1.75)/expectedWeight)
     } else {
-        return 1050 * dogWeight
+        return 1050 * weight
     }
 }
