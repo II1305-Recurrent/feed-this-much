@@ -27,7 +27,7 @@ export default function NotSignedIn() {
         To get started, press the button below. </p>
 
         <Image 
-          src={cat2}
+          src="/cat02siamese_dab.png"
           alt="Siamese cat dabbing" 
           width={216} 
           height={270} 
