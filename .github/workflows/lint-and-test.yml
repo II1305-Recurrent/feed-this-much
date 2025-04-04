@@ -26,10 +26,12 @@ jobs:
 
       - name: Lint Python
         run: |
+          uv sync
           uvx ruff check .
     
       - name: Lint JS
         run: |
+          npm ci --prefix frontend/feed-this-much-client
           npm run lint --prefix frontend/feed-this-much-client
 
   backend-unit-tests:
