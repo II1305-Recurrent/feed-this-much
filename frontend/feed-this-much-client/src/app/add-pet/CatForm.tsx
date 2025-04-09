@@ -49,6 +49,25 @@ function CatForm() {
     function onSubmit(values: z.infer<typeof addPetSchema>) {
       // Do something with the form values.
       // ✅ This will be type-safe and validated.
+      fetch('http://localhost:8000/api/save-pet/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to submit');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Pet saved successfully:', data);
+        })
+        .catch(error => {
+          console.error('Error saving pet:', error);
+        });
       console.log(values)
     }
 
