@@ -18,13 +18,7 @@ export default function Home(){
     const plans = [{id:1, title: "Plan 1 for Mac"}];
     return(
         <div style={{padding: "5%"}}>
-            <Image 
-                src="/logo_feedthismuch.png"
-                alt="" 
-                width={180} 
-                height={100.5} 
-                className={styles.logo}
-                />
+            
             <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
             Hi! You are now logged in.
             </h1>
