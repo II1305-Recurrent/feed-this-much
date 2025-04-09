@@ -105,13 +105,13 @@ export default function Header() {
               <DropdownMenuGroup>
                 <DropdownMenuItem onClick={handleAccountClick}>
                   <User />
-                  <Link href="/">
+                  <Link href="/account">
                   Account
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleAccountClick}>
                   <Settings />
-                  <Link href="/">
+                  <Link href="/settings">
                   Settings
                   </Link>
                 </DropdownMenuItem>
