@@ -106,7 +106,7 @@ export default function Sign_in_page() {
     
     <div className="flex justify-center min-h-screen">
     <Tabs defaultValue="sign-in" className="w-[400px]">
-      <TabsList className="grid w-full grid-cols-2">
+      <TabsList className="grid w-full grid-cols-2 bg-[var(--custom-pink)]">
         <TabsTrigger value="sign-in">Sign-in</TabsTrigger>
         <TabsTrigger value="sign-up">Sign-up</TabsTrigger>
       </TabsList>
