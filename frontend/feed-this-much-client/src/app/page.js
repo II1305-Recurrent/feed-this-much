@@ -1,4 +1,5 @@
 "use client"
+import {redirect} from "next/navigation";
 import Image from "next/image";
 import styles from "./page.module.css";
 import { Button } from "@/components/ui/button";
@@ -29,7 +30,7 @@ export default function NotSignedIn() {
       </div>
 
       <div className="flex justify-center mt-6">
-        <Button className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto">
+        <Button onClick={() => redirect("/sign-in")} className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto">
           Get Started
           </Button>
       </div>
