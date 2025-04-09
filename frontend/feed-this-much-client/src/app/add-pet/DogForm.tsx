@@ -141,7 +141,7 @@ function DogForm() {
                 >
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="yes" className={undefined} />
+                      <RadioGroupItem value={true} className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
                       Yes
@@ -149,7 +149,7 @@ function DogForm() {
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="no" className={undefined} />
+                      <RadioGroupItem value={false} className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
                       No

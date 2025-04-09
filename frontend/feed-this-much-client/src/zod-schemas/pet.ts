@@ -14,10 +14,11 @@ export const addPetSchema = z.object({
     species: z.enum(["cat", "dog"], {
       required_error: "You need to select either a dog or a cat.",
     }),
-    neutered: z.enum(["yes", "no"], {
-      required_error: "You need to select either yes or no.",
+    neutered: z.boolean({
+      required_error: "An answer is required",
+      invalid_type_error: "Neutered must be a boolean",
     }),
-    isKg: z.enum(["Kgs", "lbs"], {
+    weight_unit: z.enum(["kg", "lb"], {
       required_error: "Selecting a unit is required"
     }),
     bodyConditionScore: z.coerce.number().int(),
