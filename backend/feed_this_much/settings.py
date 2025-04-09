@@ -29,7 +29,7 @@ if os.getenv('DJANGO_DEBUG'):
 	DEBUG = True
 
 if DEBUG:
-	ALLOWED_HOSTS = []
+	ALLOWED_HOSTS = ['172.30.243.173']
 	# SECURITY WARNING: keep the secret key used in production secret!
 	SECRET_KEY = 'django-insecure-&no-h*qc%06j)=_m0t=m(gwqa*iy5tyv$8q-xu7*xl%2&)hdhm'
 else:
