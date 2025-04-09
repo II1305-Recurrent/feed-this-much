@@ -43,17 +43,39 @@ export default function Sign_in_page() {
       if (response.ok) {
         const result = await response.json();
         console.log('User registered successfully:', result);
-        // Optionally handle success (e.g., redirect or show success message)
       } else {
         const error = await response.json();
         console.error('Error:', error);
-        // Optionally handle error (e.g., show error message)
       }
     } catch (err) {
       console.error('Request failed', err);
-      // Handle request failure (e.g., network error)
     }
-  };
+  }
+
+  async function login() {
+    const data = { username, password };
+
+    try {
+      const response = await fetch('/api/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(JSON.stringify(data))
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('User logged in successfully:', result);
+      } else {
+        const error = await response.json();
+        console.error('Error:', error);
+      }
+    } catch (err) {
+      console.error('Request failed', err);
+    }
+  }
 
   return (
     <div style={{padding: "5%"}}>
@@ -92,7 +114,7 @@ export default function Sign_in_page() {
             </CardContent>
         <CardFooter>
                 <div className="flex justify-center w-full mt-6">
-                <Button onClick={register}className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs">
+                <Button onClick={login}className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs">
                     Sign-in 
                 </Button>
                 </div>
