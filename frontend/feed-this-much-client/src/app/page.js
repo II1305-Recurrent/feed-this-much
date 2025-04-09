@@ -1,9 +1,9 @@
 "use client"
 import {redirect} from "next/navigation";
-import Image from "next/image";
+import Image from "next/image"; 
 import styles from "./page.module.css";
 import { Button } from "@/components/ui/button";
-import { useState }  from "react"; 
+import { useState } from "react";
 
 export default function NotSignedIn() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -32,7 +32,12 @@ export default function NotSignedIn() {
       <div className="flex justify-center mt-6">
         <Button onClick={() => redirect("/sign-in")} className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto">
           Get Started
-          </Button>
+        </Button>
+        
+        
+        <Button onClick={() => redirect("/calc-new-plan")} className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto">
+
+        </Button>
       </div>
     </div>
   );
