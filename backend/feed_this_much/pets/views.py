@@ -8,14 +8,11 @@ from .serializers import PetSerializer
 @api_view(['POST'])
 @permission_classes([IsAuthenticated]) # User auth
 def save_pet(request):
-    data = request.data
-    data['user'] = request.user.id  # Add the user ID to the data
-
-    serializer = PetSerializer(data=data)
+    serializer = PetSerializer(data=request.data)
     
     if serializer.is_valid():
         serializer.save(user=request.user)  # Save with userID
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
@@ -25,7 +22,7 @@ def get_pets(request):
     if not pets.exists():
         return Response(
             {"message": "No pets yet!"},
-            status=status.HTTP_200_OK #
+            status=status.HTTP_200_OK # 200 OK even if no pets exist
         )
     serializer = PetSerializer(pets, many=True)  
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_200_OK)
