@@ -47,40 +47,43 @@ import Link from 'next/link'
 export default function Header() {
   const [open, setOpen] = useState(false);
 
+  const handleClick = () => {
+    setOpen(false)
+  }
+
   return (
     <header className="navbar">
       <div className="menu-wrapper" style={{ padding: "5%" }}>
         <div className="hamburger-container">
-          <DropdownMenu>
+          <DropdownMenu open = {open} onOpenChange = {setOpen}>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="hamburger">☰</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent alignOffset={8} align="start" className="w-30 bg-[var(--custom-beige)] ">
 
               <DropdownMenuGroup>
-                <DropdownMenuItem onClick={() => redirect("/")}>
+                <DropdownMenuItem onClick={handleClick}>
                   <Home />
-                  <span>Home</span>
+                  <Link href="/">
+                  Home
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => redirect("/aboutus")}>
+                <DropdownMenuItem onClick={handleClick}>
                   <Info />
-                  <span>About us</span>
+                  <Link href="/about">
+                  About us
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => redirect("/contactus")}>
+                <DropdownMenuItem onClick={handleClick}>
                   <Mail />
-                  <span>Contact us</span>
+                  <Link href="/contact">
+                  Contact us
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
 
             </DropdownMenuContent>
           </DropdownMenu>
-          {open && (
-            <div className="dropdown">
-              <Link href="/"><span></span> Home</Link>
-              <Link href="/about"><span></span> About us</Link>
-              <Link href="/contact"><span></span> Contact us</Link>
-            </div>
-          )}
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
