@@ -23,6 +23,8 @@ import {
 import {redirect} from "next/navigation";
 
 export default function Sign_in_page() {
+  const base_url = 'https://api.feedthismuch.com'
+  //const base_url = 'http://localhost:8000' //for testing purposes
   const [first_name, setFirst_name] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -31,7 +33,7 @@ export default function Sign_in_page() {
     const data = { username, email, password, first_name };
 
     try {
-      const response = await fetch('/api/register/', {
+      const response = await fetch(base_url.concat('/api/register/'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +58,7 @@ export default function Sign_in_page() {
     const data = { username, password };
 
     try {
-      const response = await fetch('/api/login/', {
+      const response = await fetch(base_url.concat('/api/login/'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

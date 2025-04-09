@@ -77,7 +77,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "https://feedthismuch.com",
 ]
 
 ROOT_URLCONF = 'feed_this_much.urls'
@@ -121,6 +121,9 @@ if DEBUG:
 			'NAME': BASE_DIR / 'db.sqlite3',
 		}
 	}
+	CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    ]
 
 
 # Password validation
