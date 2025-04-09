@@ -38,7 +38,7 @@ import {
 
 import { useState } from "react";
 import Image from "next/image";
-
+import Link from 'next/link'
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -72,9 +72,9 @@ export default function Header() {
           </DropdownMenu>
           {open && (
             <div className="dropdown">
-              <a href="/"><span></span> Home</a>
-              <a href="/about"><span></span> About us</a>
-              <a href="/contact"><span></span> Contact us</a>
+              <Link href="/"><span></span> Home</Link>
+              <Link href="/about"><span></span> About us</Link>
+              <Link href="/contact"><span></span> Contact us</Link>
             </div>
           )}
 
