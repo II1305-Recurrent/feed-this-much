@@ -79,7 +79,7 @@ export default function Home(){
                                 <p className="text-md text-[var(--custom-brown)]" key={item.id}>{item.title}</p>)
                             }
                             <div className="inline-flex items-center gap-2 !p-[2px]">
-                                <Button variant="plus">
+                                <Button variant="plus" onClick={() => redirect("/calc-new-plan")}>
                                     <Image src="/plus-sign-circle-icon.png"
                                         alt="" 
                                         width={20} 
