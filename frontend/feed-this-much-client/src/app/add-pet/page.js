@@ -4,9 +4,7 @@ import {redirect} from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CatForm from "./CatForm"
-import { Dog } from "lucide-react"
 import DogForm from "./DogForm"
-import back from "@/../../../docs/assets/img/back-arrow.png"
 import styles from "@/app/page.module.css";
 import Image from "next/image";
 
@@ -30,7 +28,7 @@ export default function petPage() {
                 </TabsContent>
             </Tabs>
         <Button variant="destructive" onClick={() => redirect("/home")}>
-            <Image src={back}
+            <Image src="/back-arrow.png"
                 alt="" 
                 width={20} 
                 height={20} 

@@ -12,8 +12,6 @@ import { Button } from "@/components/ui/button";
 
 import {redirect} from "next/navigation"
 
-import plus from "@/../../../docs/assets/img/plus-sign-circle-icon.png"
-
 export default function Home(){
     const pets = [{id:1, title: "Mac"}]; //will need to be fetched from API
     const foods = [{id:1, title: "Fancy Chow"}];
@@ -40,7 +38,7 @@ export default function Home(){
                             }
                             <div className="inline-flex items-center gap-2 !p-[2px]">
                                 <Button variant="plus" onClick={() => redirect("/add-pet")}>
-                                    <Image src={plus}
+                                    <Image src="/plus-sign-circle-icon.png"
                                         alt="" 
                                         width={20} 
                                         height={20} 
@@ -60,8 +58,8 @@ export default function Home(){
                                 <p className="text-md text-[var(--custom-brown)]" key={item.id}>{item.title}</p>)
                             }
                             <div className="inline-flex items-center gap-2 !p-[2px]">
-                                <Button variant="plus">
-                                    <Image src={plus}
+                                <Button variant="plus" onClick={() => redirect("/add-food")}>
+                                    <Image src="/plus-sign-circle-icon.png"
                                         alt="" 
                                         width={20} 
                                         height={20} 
@@ -82,7 +80,7 @@ export default function Home(){
                             }
                             <div className="inline-flex items-center gap-2 !p-[2px]">
                                 <Button variant="plus">
-                                    <Image src={plus}
+                                    <Image src="/plus-sign-circle-icon.png"
                                         alt="" 
                                         width={20} 
                                         height={20} 

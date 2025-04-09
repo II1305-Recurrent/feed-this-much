@@ -37,7 +37,7 @@ function CatForm() {
         petname: "",
         dateOfBirth: "",
         currentWeight: "" as unknown as number,
-        species: undefined,
+        species: "cat",
         neutered: undefined,
         isKg: undefined,
         bodyConditionScore: "3" as unknown as number,
