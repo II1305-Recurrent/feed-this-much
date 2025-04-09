@@ -22,5 +22,10 @@ def save_pet(request):
 @permission_classes([IsAuthenticated])
 def get_pets(request):
     pets = Pet.objects.filter(user=request.user) # Filter by userID
+    if not pets.exists():
+        return Response(
+            {"message": "No pets yet!"},
+            status=status.HTTP_200_OK
+        )
     serializer = PetSerializer(pets, many=True)  
     return Response(serializer.data, status=status.HTTP_200_OK)
