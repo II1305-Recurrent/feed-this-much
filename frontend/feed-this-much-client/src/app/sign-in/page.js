@@ -27,20 +27,19 @@ export default function Sign_in_page() {
       <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
       Sign in
       </h1>
-
-    <div>
-        <p className="text-xs leading-5 text-[var(--custom-orange)] [&:not(:first-child)]:mt-4"> 
-        Welcome back! Sign in to view your pet details.
-        </p> 
-    </div>
     
-    <div>
+    <div className="flex justify-center min-h-screen">
     <Tabs defaultValue="sign-in" className="w-[400px]">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="sign-in">Sign-in</TabsTrigger>
         <TabsTrigger value="sign-up">Sign-up</TabsTrigger>
       </TabsList>
       <TabsContent value="sign-in">
+        <div>
+          <p className="text-xs leading-5 text-[var(--custom-orange)] [&:not(:first-child)]:mt-4"> 
+          Welcome back! Sign in to view your pet details.
+          </p> 
+        </div>
         <Card className="bg-transparent shadow-none border-none">
             <CardContent className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
@@ -67,6 +66,11 @@ export default function Sign_in_page() {
         </Card>
       </TabsContent>
       <TabsContent value="sign-up">
+        <div>
+          <p className="text-xs leading-5 text-[var(--custom-orange)] [&:not(:first-child)]:mt-4"> 
+          Hi! Please create an account to get started.
+          </p> 
+        </div>
         <Card className="bg-transparent shadow-none border-none">
         <CardContent className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2 text-[var(--custom-brown)]">

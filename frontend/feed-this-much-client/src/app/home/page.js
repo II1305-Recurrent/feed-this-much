@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 
 import {redirect} from "next/navigation"
 
+import plus from "@/../../../docs/assets/img/plus-sign-circle-icon.png"
+
 export default function Home(){
     const pets = [{id:1, title: "Mac"}]; //will need to be fetched from API
     const foods = [{id:1, title: "Fancy Chow"}];
@@ -36,9 +38,16 @@ export default function Home(){
                             {pets.map((item) => 
                                 <p className="text-md text-[var(--custom-brown)]" key={item.id}>{item.title}</p>)
                             }
-                            <div className="inline-flex items-center gap-2">
-                                <Button onClick={() => redirect("/add-pet")}>+</Button>
-                                <p className="text-[var(--custom-brown)]">Add pet</p>
+                            <div className="inline-flex items-center gap-2 !p-[2px]">
+                                <Button variant="plus" onClick={() => redirect("/add-pet")}>
+                                    <Image src={plus}
+                                        alt="" 
+                                        width={20} 
+                                        height={20} 
+                                        className={styles.logo}>
+                                    </Image>
+                                    <p className="text-[var(--custom-brown)] !pr-2">Add pet</p>
+                                </Button>
                             </div>
                         </div>
                     </AccordionContent>
@@ -50,9 +59,16 @@ export default function Home(){
                             {foods.map((item) => 
                                 <p className="text-md text-[var(--custom-brown)]" key={item.id}>{item.title}</p>)
                             }
-                            <div className="inline-flex items-center gap-2">
-                                <Button>+</Button>
-                                <p className="text-[var(--custom-brown)]">Add food</p>
+                            <div className="inline-flex items-center gap-2 !p-[2px]">
+                                <Button variant="plus">
+                                    <Image src={plus}
+                                        alt="" 
+                                        width={20} 
+                                        height={20} 
+                                        className={styles.logo}>
+                                    </Image>
+                                    <p className="text-[var(--custom-brown)] !pr-2">Add food</p>
+                                </Button>
                             </div>
                         </div>
                     </AccordionContent>
@@ -64,9 +80,16 @@ export default function Home(){
                             {plans.map((item) =>
                                 <p className="text-md text-[var(--custom-brown)]" key={item.id}>{item.title}</p>)
                             }
-                            <div className="inline-flex items-center gap-2">
-                                <Button>+</Button>
-                                <p className="text-[var(--custom-brown)]">Calculate new plan</p>
+                            <div className="inline-flex items-center gap-2 !p-[2px]">
+                                <Button variant="plus">
+                                    <Image src={plus}
+                                        alt="" 
+                                        width={20} 
+                                        height={20} 
+                                        className={styles.logo}>
+                                    </Image>
+                                    <p className="text-[var(--custom-brown)] !pr-2">Calculate new plan</p>
+                                </Button>
                             </div>
                         </div>
                     </AccordionContent>
