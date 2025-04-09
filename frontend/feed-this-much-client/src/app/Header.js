@@ -19,6 +19,8 @@ import {
   Users,
 } from "lucide-react"
 
+import {redirect} from "next/navigation"
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import { Button } from "@/components/ui/button"
@@ -56,15 +58,15 @@ export default function Header() {
             <DropdownMenuContent alignOffset={8} align="start" className="w-30 bg-[var(--custom-beige)] ">
 
               <DropdownMenuGroup>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => redirect("/")}>
                   <Home />
                   <span>Home</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => redirect("/aboutus")}>
                   <Info />
                   <span>About us</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => redirect("/contactus")}>
                   <Mail />
                   <span>Contact us</span>
                 </DropdownMenuItem>
