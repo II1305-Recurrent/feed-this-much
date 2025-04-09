@@ -17,7 +17,7 @@ export default function foodPage() {
         <div className="flex justify-center min-h-screen">
         <FoodForm />
         <Button variant="destructive" onClick={() => redirect("/home")}>
-            <Image src={back}
+            <Image src="/back-arrow.png"
                 alt="" 
                 width={20} 
                 height={20} 
