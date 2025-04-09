@@ -25,7 +25,7 @@ def get_pets(request):
     if not pets.exists():
         return Response(
             {"message": "No pets yet!"},
-            status=status.HTTP_200_OK
+            status=status.HTTP_200_OK #
         )
     serializer = PetSerializer(pets, many=True)  
     return Response(serializer.data, status=status.HTTP_200_OK)
