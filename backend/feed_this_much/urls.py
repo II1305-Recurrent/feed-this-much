@@ -16,11 +16,14 @@ Including another URLconf
 """
 
 from django.urls import path, include
+from django.contrib import admin
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from rest_framework import routers
 
 from feed_this_much.basic import views
 from feed_this_much.pets.views import save_pet, get_pets
+from feed_this_much.food.views import get_foods, save_food
+
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -30,6 +33,7 @@ router.register(r'groups', views.GroupViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('', include(router.urls)),
+    path('admin/', admin.site.urls),
     path('api/register/', views.user_registration, name='user-register'),
     path('api/login/', views.user_login, name='user-login'),
     path('api/logout/', views.user_logout, name='user-logout'),
@@ -38,4 +42,6 @@ urlpatterns = [
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('docs/', SpectacularRedocView.as_view(url_name='schema'), name='docs'),
+    path('api/get-foods/', get_foods, name='get_foods'),
+    path('api/save-food/', save_food, name='save_food')
 ]

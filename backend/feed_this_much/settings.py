@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'feed_this_much.pets',
+	'feed_this_much.food',
     'corsheaders',
     'drf_spectacular'
 ]
@@ -66,6 +67,7 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+	'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -104,7 +106,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'feed_this_much.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 DATABASES = {
@@ -117,6 +118,7 @@ DATABASES = {
 		'PASSWORD': os.getenv('POSTGRES_PASSWORD')
 	}
 }
+
 
 if DEBUG:
 	DATABASES = {
