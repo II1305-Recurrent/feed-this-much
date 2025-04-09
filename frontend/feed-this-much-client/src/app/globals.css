@@ -149,21 +149,26 @@ a {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    padding: 16px;
+    
+    width: 100%;
    
   }
   
   .menu-wrapper {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    width: 100%;
   }
   
   .hamburger-container {
     position: relative;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;   
+
   }
   
   .hamburger {
@@ -175,11 +180,32 @@ a {
     background: none;
     color: var(--custom-brown);
     cursor: pointer;
-    display: flex;
     align-items: center;
     justify-content: center;
     padding: 0; 
     margin-bottom: 24px;
+    margin-left: 0;       
+    margin-right: auto;
+    align-self: flex-start;
+  }
+
+  .profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; 
+    font-size: 20px;
+    border: 2px solid var(--custom-brown);
+    background: none;
+    color: var(--custom-brown);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: 0; 
+    margin-bottom: 24px;
+    margin-right: 0;
+    margin-left: auto;
+    align-self: flex-end;
+    
   }
 
   .dropdown {

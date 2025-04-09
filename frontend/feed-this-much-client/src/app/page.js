@@ -1,21 +1,14 @@
-import Image from "next/image"; 
-import cat2 from "@/../../../docs/assets/img/cat02siamese_dab.png";
+"use client"
+import Image from "next/image";
 import styles from "./page.module.css";
 import { Button } from "@/components/ui/button";
+import { useState }  from "react"; 
 
 export default function NotSignedIn() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   isLoggedIn ? redirect("/home") : {}
-export default function Home() {
   return (
     <div style={{padding: "5%"}}>
-      <Image 
-          src="/logo_feedthismuch.png"
-          alt="" 
-          width={180} 
-          height={100.5} 
-          className={styles.logo}
-        />
       <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
       Welcome!
       </h1>
