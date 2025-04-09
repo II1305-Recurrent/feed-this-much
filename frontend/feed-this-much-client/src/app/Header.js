@@ -19,6 +19,8 @@ import {
   Users,
 } from "lucide-react"
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -52,7 +54,7 @@ export default function Header() {
               <Button variant="outline" className="hamburger">☰</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent alignOffset={8} align="start" className="w-30 bg-[var(--custom-beige)] ">
-      
+
               <DropdownMenuGroup>
                 <DropdownMenuItem>
                   <Home />
@@ -67,7 +69,7 @@ export default function Header() {
                   <span>Contact us</span>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
-              
+
             </DropdownMenuContent>
           </DropdownMenu>
           {open && (
@@ -78,12 +80,17 @@ export default function Header() {
             </div>
           )}
 
-<DropdownMenu>
+          <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="profile">☰</Button>
+              <Button variant="outline" className="profile">
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent alignOffset={8} align="end" className="w-30 bg-[var(--custom-beige)]">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel> 
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuItem>
@@ -100,7 +107,7 @@ export default function Header() {
                   <span>Log out</span>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
-              
+
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
