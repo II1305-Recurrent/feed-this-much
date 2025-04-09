@@ -1,95 +1,47 @@
-import Image from "next/image";
+"use client"
+
+import Image from "next/image"; 
+import {redirect} from "next/navigation";
 import styles from "./page.module.css";
+import { Button } from "@/components/ui/button";
+import {useState} from "react";
 
-export default function Home() {
+export default function NotSignedIn() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  isLoggedIn ? redirect("/home") : {}
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
+    <div style={{padding: "5%"}}>
+      <Image 
+          src="/logo_feedthismuch.png"
+          alt="" 
+          width={180} 
+          height={100.5} 
           className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
         />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+      <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
+      Welcome!
+      </h1>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      <div>
+        <p className="text-xs leading-5 text-[var(--custom-orange)] [&:not(:first-child)]:mt-4"><b>Feed this much </b> 
+         is a web app dedicated to helping you feed your cats and dogs the right amount to keep them healthy and happy. <br />
+        All you have to do is enter information about your pet and the food you want to give them, and we will apply the science to create a custom feeding plan just for them.<br />
+        To get started, press the button below. </p>
+
+        <Image 
+          src="/cat02siamese_dab.png"
+          alt="Siamese cat dabbing" 
+          width={216} 
+          height={270} 
+          className={styles.catImage}
+        />
+      </div>
+
+      <div className="flex justify-center mt-6">
+        <Button onClick={() => redirect("/sign-in")} className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto">
+          Get Started
+        </Button>
+      </div>
     </div>
   );
 }
