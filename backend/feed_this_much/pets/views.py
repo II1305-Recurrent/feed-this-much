@@ -24,5 +24,4 @@ def get_pets(request):
             {"message": "No pets yet!"},
             status=status.HTTP_200_OK # 200 OK even if no pets exist
         )
-    serializer = PetSerializer(pets, many=True)  
     return Response(status=status.HTTP_200_OK)
