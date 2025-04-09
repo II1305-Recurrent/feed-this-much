@@ -4,7 +4,6 @@ import {redirect} from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CatForm from "./CatForm"
-import { Dog } from "lucide-react"
 import DogForm from "./DogForm"
 import styles from "@/app/page.module.css";
 import Image from "next/image";
