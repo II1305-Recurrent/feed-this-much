@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 	'rest_framework',
-	'feed_this_much.pets_info',
+	'feed_this_much.pets',
 	'drf_spectacular'
 ]
 
