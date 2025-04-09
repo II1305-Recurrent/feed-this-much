@@ -106,7 +106,7 @@ WSGI_APPLICATION = 'feed_this_much.wsgi.application'
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql',
-		'HOST': 'localhost',
+		'HOST': '0.0.0.0',
 		'PORT': '5432',
 		'NAME': os.getenv('POSTGRES_DB'),
 		'USER': os.getenv('POSTGRES_USER'),
