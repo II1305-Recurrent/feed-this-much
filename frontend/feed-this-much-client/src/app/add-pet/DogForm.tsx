@@ -37,7 +37,7 @@ function DogForm() {
         petname: "",
         dateOfBirth: "",
         currentWeight: "" as unknown as number,
-        species: undefined,
+        species: "dog",
         neutered: undefined,
         isKg: undefined,
         bodyConditionScore: "3" as unknown as number,
