@@ -29,7 +29,7 @@ import { Input } from "@/components/ui/input"
 
 import { addPetSchema, type addPetSchemaType } from "@/zod-schemas/pet"
 
-function CatForm() {
+function DogForm() {
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPetSchema>>({
       resolver: zodResolver(addPetSchema),
@@ -62,7 +62,7 @@ function CatForm() {
                 <FormItem className={undefined}>
                   <FormLabel className={undefined}>Pet Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your pet's name" {...field} />
+                    <Input placeholder="Enter your dog's name" {...field} />
                   </FormControl>
                   <FormDescription className={undefined}>
                     This is your pet&apos;s display name.
@@ -236,7 +236,7 @@ function CatForm() {
                       <RadioGroupItem value="1" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                    low activity - indoor cat, mostly inactive
+                    low - less than 1 hour per day, walking on a leash
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -244,7 +244,7 @@ function CatForm() {
                       <RadioGroupItem value="2" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                    moderate activity - indoor cat, but with frequent play time, walks on leash, or a highly active breed
+                    moderate low-impact - 1-3 hours per day, walking
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -252,7 +252,7 @@ function CatForm() {
                       <RadioGroupItem value="3" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                    high activity - outdoor cat, or extremely active indoor cat
+                    moderate high-impact - 1-3 hours per day, running or agility training
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -260,7 +260,15 @@ function CatForm() {
                       <RadioGroupItem value="4" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                    growing kitten - under 1 year old
+                    high - 3-6 hours per day, working dog such as hunting or herding
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="5" className={undefined} />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                    very high - over 6 hours per day or activity in very cold weather, such as sled racing
                     </FormLabel>
                   </FormItem>
                 </RadioGroup>
@@ -275,4 +283,4 @@ function CatForm() {
       )
 }
 
-export default CatForm;
+export default DogForm;
