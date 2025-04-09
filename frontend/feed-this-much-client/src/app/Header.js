@@ -46,10 +46,15 @@ import Link from 'next/link'
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-
   const handleClick = () => {
     setOpen(false)
   }
+
+  const [accountOpen, setAccountOpen] = useState(false);
+  const handleAccountClick = () => {
+    setAccountOpen(false)
+  }
+
 
   return (
     <header className="navbar">
@@ -85,7 +90,7 @@ export default function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <DropdownMenu>
+          <DropdownMenu accountOpen = {open} onOpenChange = {setAccountOpen}>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="profile">
                 <Avatar>
@@ -98,18 +103,24 @@ export default function Header() {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleAccountClick}>
                   <User />
-                  <span>Account</span>
+                  <Link href="/">
+                  Account
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleAccountClick}>
                   <Settings />
-                  <span>Setting</span>
+                  <Link href="/">
+                  Settings
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleAccountClick}>
                   <LogOut />
-                  <span>Log out</span>
+                  <Link href="/">
+                  Log out
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
 
