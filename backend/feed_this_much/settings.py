@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 	'rest_framework',
 	'feed_this_much.pets',
-	'drf_spectacular'
+	'drf_spectacular',
+	'corsheaders',
 ]
 
 # config for DRF
@@ -72,6 +73,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'corsheaders.middleware.CorsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://feedthismuch.com",
 ]
 
 ROOT_URLCONF = 'feed_this_much.urls'
@@ -115,6 +121,9 @@ if DEBUG:
 			'NAME': BASE_DIR / 'db.sqlite3',
 		}
 	}
+	CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    ]
 
 
 # Password validation
