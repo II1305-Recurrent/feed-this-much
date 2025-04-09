@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from 'react';
 import Image from "next/image"; 
 import styles from "@/app/page.module.css";
 import { Button } from "@/components/ui/button";
@@ -23,8 +22,11 @@ import {
 import {redirect} from "next/navigation";
 
 export default function Sign_in_page() {
-  const base_url = 'https://api.feedthismuch.com'
-  //const base_url = 'http://localhost:8000' //for testing purposes
+  const debug = true //for testing purposes
+  let base_url = 'https://api.feedthismuch.com'
+  if (debug) {
+    base_url = 'http://localhost:8000' 
+  }
 
   let email = "";
   let password = "";
@@ -88,6 +90,7 @@ export default function Sign_in_page() {
       if (response.ok) {
         const result = await response.json();
         console.log('User logged in successfully:', result);
+        window.location.href = '/home';
       } else {
         const error = await response.json();
         console.error('Error:', error);
@@ -120,7 +123,7 @@ export default function Sign_in_page() {
             <CardContent className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
                 <Label htmlFor="sign-in-email">Email</Label>
-                <Input className="bg-white text-black" id="sign-in-email" type="email" placeholder="Enter your email address" onChange={(e) => setEmail(e.target.value)}/>
+                <Input className="bg-white text-black" id="sign-in-email" type="email" placeholder="Enter your email address" onChange={(e) => {setEmail(e.target.value); setUsername(e.target.value)}}/>
                 </div>
                 <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
                 <Label htmlFor="password"> Password</Label>
