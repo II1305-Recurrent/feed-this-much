@@ -38,6 +38,18 @@ export const addFoodSchema = z.object({
     weightUnit: z.enum(["Kgs", "grams", "lbs", "ounces"], {
         required_error: "Selecting a unit is required"
     }),
+    proteinPercent: z.coerce
+    .number({
+      invalid_type_error: "Percentage must be a number",
+    })
+    .max(100, "Percentage cannot be more than 100%")
+    .optional(),
+    fatPercent: z.coerce
+    .number({
+      invalid_type_error: "Percentage must be a number",
+    })
+    .max(100, "Percentage cannot be more than 100%")
+    .optional(),
 })
 
 export type addFoodSchemaType = typeof addFoodSchema._type

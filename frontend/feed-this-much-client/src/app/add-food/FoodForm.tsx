@@ -43,6 +43,8 @@ function FoodForm() {
         energyUnit: undefined,
         perWeightAmount: "" as unknown as number,
         weightUnit: undefined,
+        proteinPercent: "" as unknown as number,
+        fatPercent: "" as unknown as number,
       },
     })
    
@@ -113,7 +115,7 @@ function FoodForm() {
                       <RadioGroupItem value="scoop" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      Scoop (if you use a scoop or spoon to count servings)
+                      Scoop or Cup (if you use a scoop or cup etc to count servings)
                     </FormLabel>
                   </FormItem>
                 </RadioGroup>
@@ -246,6 +248,38 @@ function FoodForm() {
               <FormMessage className={undefined} />
             </FormItem>
             )}
+            />
+            <FormField
+              control={form.control}
+              name="proteinPercent"
+              render={({ field }) => (
+                <FormItem className={undefined}>
+                  <FormLabel className={undefined}>Protein (%)</FormLabel>
+                  <FormDescription className={undefined}>
+                    Enter the protein percentage.
+                    </FormDescription>
+                  <FormControl>
+                    <Input placeholder="Enter number here" {...field} />
+                  </FormControl>
+                  <FormMessage className={undefined} />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="fatPercent"
+              render={({ field }) => (
+                <FormItem className={undefined}>
+                  <FormLabel className={undefined}>Fat (%)</FormLabel>
+                  <FormDescription className={undefined}>
+                    Enter the fat percentage.
+                    </FormDescription>
+                  <FormControl>
+                    <Input placeholder="Enter number here" {...field} />
+                  </FormControl>
+                  <FormMessage className={undefined} />
+                </FormItem>
+              )}
             />
             <Button type="submit" className={undefined} variant={undefined} size={undefined}>Submit</Button>
           </form>
