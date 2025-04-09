@@ -22,7 +22,9 @@ export const addPetSchema = z.object({
       required_error: "Selecting a unit is required"
     }),
     bodyConditionScore: z.coerce.number().int(),
-    activityLevel: z.coerce.number().int(),
-})
+    activityLevel: z.enum(["catlow", "catmoderate", "cathigh", "catkitten", "doglow", "dogmoderatelow", "dogmoderatehigh", "doghigh", "dogveryhigh"], {
+      required_error: "You need to select an activity level.",
+    }),
+  })
 
 export type addPetSchemaType = typeof addPetSchema._type

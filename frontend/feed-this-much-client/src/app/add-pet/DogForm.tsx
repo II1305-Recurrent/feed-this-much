@@ -39,7 +39,7 @@ function DogForm() {
         currentWeight: "" as unknown as number,
         species: "dog",
         neutered: undefined,
-        isKg: undefined,
+        weight_unit: undefined,
         bodyConditionScore: "3" as unknown as number,
         activityLevel: undefined,
       },
@@ -105,7 +105,7 @@ function DogForm() {
             />
             <FormField
             control={form.control}
-            name="isKg"
+            name="weight_unit"
             render={({ field }) => (
             <FormItem className={undefined}>
               {/* <FormLabel className={undefined}>Select Unit</FormLabel> */}
@@ -116,8 +116,8 @@ function DogForm() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className={undefined} >
-                  <SelectItem className={undefined} value="Kgs">Kgs</SelectItem>
-                  <SelectItem className={undefined} value="lbs">lbs</SelectItem>
+                  <SelectItem className={undefined} value="kg">Kgs</SelectItem>
+                  <SelectItem className={undefined} value="lb">lbs</SelectItem>
                 </SelectContent>
               </Select>
               <FormDescription className={undefined}>
@@ -233,7 +233,7 @@ function DogForm() {
                 >
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="1" className={undefined} />
+                      <RadioGroupItem value="doglow" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
                     low - less than 1 hour per day, walking on a leash
@@ -241,7 +241,7 @@ function DogForm() {
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="2" className={undefined} />
+                      <RadioGroupItem value="dogmoderatelow" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
                     moderate low-impact - 1-3 hours per day, walking
@@ -249,7 +249,7 @@ function DogForm() {
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="3" className={undefined} />
+                      <RadioGroupItem value="dogmoderatehigh" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
                     moderate high-impact - 1-3 hours per day, running or agility training
@@ -257,7 +257,7 @@ function DogForm() {
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="4" className={undefined} />
+                      <RadioGroupItem value="doghigh" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
                     high - 3-6 hours per day, working dog such as hunting or herding
@@ -265,7 +265,7 @@ function DogForm() {
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="5" className={undefined} />
+                      <RadioGroupItem value="dogveryhigh" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
                     very high - over 6 hours per day or activity in very cold weather, such as sled racing
