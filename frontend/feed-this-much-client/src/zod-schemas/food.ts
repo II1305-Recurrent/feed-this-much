@@ -5,6 +5,9 @@ import { z } from "zod";
 export const addFoodSchema = z.object({
 
     foodname: z.string().min(2, "Food name must be at least 2 characters."),
+    foodType: z.enum(["wet", "dry"], {
+        required_error: "You need to select a food type.",
+      }),
     foodServingType: z.enum(["tin", "sachet", "carton", "scoop"], {
         required_error: "You need to select a serving type.",
       }),
