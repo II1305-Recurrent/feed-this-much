@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from 'react';
 import Image from "next/image"; 
 import styles from "@/app/page.module.css";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,38 @@ import {
 import {redirect} from "next/navigation";
 
 export default function Sign_in_page() {
+  const [first_name, setFirst_name] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  async function register() {
+    const data = { username, email, password, first_name };
+
+    try {
+      const response = await fetch('/api/register/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(JSON.stringify(data))
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('User registered successfully:', result);
+        // Optionally handle success (e.g., redirect or show success message)
+      } else {
+        const error = await response.json();
+        console.error('Error:', error);
+        // Optionally handle error (e.g., show error message)
+      }
+    } catch (err) {
+      console.error('Request failed', err);
+      // Handle request failure (e.g., network error)
+    }
+  };
+
   return (
     <div style={{padding: "5%"}}>
       <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
@@ -44,11 +77,11 @@ export default function Sign_in_page() {
             <CardContent className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
                 <Label htmlFor="sign-in-email">Email</Label>
-                <Input className="bg-white text-black" id="sign-in-email" type="email" placeholder="Enter your email address"/>
+                <Input className="bg-white text-black" id="sign-in-email" type="email" placeholder="Enter your email address" onChange={(e) => setEmail(e.target.value)}/>
                 </div>
                 <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
                 <Label htmlFor="password"> Password</Label>
-                <Input id="password" type="password" placeholder="Enter your password" />
+                <Input id="password" type="password" placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)}/>
                 </div>
                 <div className="text-left mt-1">
                 <button className="text-sm text-blue-600 hover:underline">
@@ -58,7 +91,7 @@ export default function Sign_in_page() {
             </CardContent>
         <CardFooter>
                 <div className="flex justify-center w-full mt-6">
-                <Button onClick={() => redirect("/home")}className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs">
+                <Button onClick={register}className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs">
                     Sign-in 
                 </Button>
                 </div>
@@ -75,21 +108,28 @@ export default function Sign_in_page() {
         <CardContent className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
                 <Label htmlFor="name">Name</Label>
-                <Input id="name" type="name" placeholder="Enter what you want us to call you" />
+                <Input id="name" type="name" placeholder="Enter what you want us to call you" onChange={(e) => setFirst_name(e.target.value)}/>
                 </div>
                 <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="Enter your email address" />
+                <Input id="email" type="email" placeholder="Enter your email address" onChange={(e) => {setEmail(e.target.value); setUsername(e.target.value)}}/>
                 </div>
                 <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
                 <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" placeholder="Enter your password" />
+                <Input id="password" type="password" placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)}/>
                 </div>
                 <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
                 <Label htmlFor="repeat_password">Repeat Password</Label>
                 <Input id="repeat_password" type="password" placeholder="Re-enter your password" />
                 </div>
             </CardContent>
+            <CardFooter>
+                <div className="flex justify-center w-full mt-6">
+                <Button onClick={register} className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs">
+                    Sign-up
+                </Button>
+                </div>
+        </CardFooter>
         </Card>
       </TabsContent>
     </Tabs>
