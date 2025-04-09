@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 	'rest_framework',
 	'feed_this_much.pets',
+	'feed_this_much.food',
 	'drf_spectacular',
 	'corsheaders',
 ]
@@ -66,6 +67,7 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+	'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -73,12 +75,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-	'corsheaders.middleware.CorsMiddleware',
 ]
 
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "https://feedthismuch.com",
 ]
+CSRF_TRUSTED_ORIGINS = [
+	"https://feedthismuch.com"
+]
+
 
 ROOT_URLCONF = 'feed_this_much.urls'
 
@@ -100,7 +106,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'feed_this_much.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 DATABASES = {
@@ -114,6 +119,7 @@ DATABASES = {
 	}
 }
 
+
 if DEBUG:
 	DATABASES = {
 		'default': {
@@ -122,7 +128,14 @@ if DEBUG:
 		}
 	}
 	CORS_ALLOWED_ORIGINS = [
+<<<<<<< HEAD
 		"http://localhost:3000",
+=======
+        "http://localhost:3000",
+    ]
+	CSRF_TRUSTED_ORIGINS = [
+	    "http://localhost:3000"
+>>>>>>> 59396b3 (connected the backend and frontend for the food form)
     ]
 
 
