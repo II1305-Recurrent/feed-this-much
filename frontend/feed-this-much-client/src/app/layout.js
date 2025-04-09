@@ -5,7 +5,7 @@ import styles from "./page.module.css";*/
 import Header from "./Header";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
+import { ModelProvider } from "./Model";
 
 
 const geistSans = Geist({
@@ -28,8 +28,10 @@ export const metadata = {
     return (
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
-          <Header />
-          <main>{children}</main>
+          <ModelProvider>
+            <Header />
+            <main>{children}</main>
+          </ModelProvider>
         </body>
       </html>
     );

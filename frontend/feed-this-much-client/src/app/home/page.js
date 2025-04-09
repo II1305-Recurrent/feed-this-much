@@ -11,11 +11,14 @@ import {
 import { Button } from "@/components/ui/button";
 
 import {redirect} from "next/navigation"
+import { useModel } from "../Model";
+
 
 export default function Home(){
     const pets = [{id:1, title: "Mac"}]; //will need to be fetched from API
     const foods = [{id:1, title: "Fancy Chow"}];
     const plans = [{id:1, title: "Plan 1 for Mac"}];
+    const { setIndex } = useModel();
     return(
         <div style={{padding: "5%"}}>
             <Image 
@@ -76,7 +79,9 @@ export default function Home(){
                     <AccordionContent>
                         <div>
                             {plans.map((item) =>
-                                <p className="text-md text-[var(--custom-brown)]" key={item.id}>{item.title}</p>)
+                                <Button key={item.id} variant="ghost" onClick={() => {setIndex(item.id); redirect("/plans")}} className="w-full justify-start">
+                                    <p className="text-md text-[var(--custom-brown)] float-left">{item.title}</p>
+                                </Button>)
                             }
                             <div className="inline-flex items-center gap-2 !p-[2px]">
                                 <Button variant="plus">
