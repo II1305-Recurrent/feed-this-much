@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from feed_this_much.pets.models import Pet
 #from feed_this_much.feeding.models import Food
-from backend.feed_this_much.feeding import calorie_calculator
+from feed_this_much.feeding import calorie_calculator
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
