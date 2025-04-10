@@ -6,7 +6,7 @@ from feed_this_much.pets.models import Pet
 #from feed_this_much.feeding.models import Food
 from feed_this_much.feeding import calorie_calculator
 
-@api_view(['GET'])
+@api_view(['GET', 'OPTIONS'])
 @permission_classes([IsAuthenticated])
 def generate_plan(request):
     error_message = ""

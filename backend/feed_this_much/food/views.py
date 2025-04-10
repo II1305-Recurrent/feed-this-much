@@ -5,8 +5,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .serializers import FoodSerializer 
 
-@api_view(['POST'])
-#@permission_classes([IsAuthenticated]) # User auth
+@api_view(['POST', 'OPTIONS'])
+@permission_classes([IsAuthenticated]) # User auth
 def save_food(request):
     serializer = FoodSerializer(data=request.data)
     
@@ -15,7 +15,7 @@ def save_food(request):
         return Response(status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
+@api_view(['GET', 'OPTIONS'])
 @permission_classes([IsAuthenticated])
 def get_foods(request):
     food = UserFood.objects.filter(user=request.user) # Filter by userID
