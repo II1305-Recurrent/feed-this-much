@@ -109,13 +109,13 @@ function FoodForm() {
       console.error('Request failed', err);
     }
 
-    console.log(values);
+
   }
 
 
 
   return (
-    <Form {...form}>
+    <Form {...form}
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
@@ -377,6 +377,7 @@ function FoodForm() {
       </form>
     </Form>
   )
+
 
 }
 
