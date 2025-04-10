@@ -37,7 +37,7 @@ function DogForm() {
         name: "",
         dob: "",
         current_weight: "" as unknown as number,
-        expected_weight: "1" as unknown as number,
+        expected_weight: "10" as unknown as number,
         species: "dog",
         neutered: undefined,
         weight_unit: undefined,
