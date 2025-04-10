@@ -28,8 +28,10 @@ import {
 import { Input } from "@/components/ui/input"
 
 import { addPetSchema, type addPetSchemaType } from "@/zod-schemas/pet"
+import { useRouter } from "next/navigation";
 
 function DogForm() {
+    const router = useRouter();
   // 1. Define your form.
   const form = useForm<z.infer<typeof addPetSchema>>({
     resolver: zodResolver(addPetSchema),
@@ -73,6 +75,7 @@ function DogForm() {
       .catch(error => {
         console.error('Error saving pet:', error);
       });
+    router.push('/home');
     console.log(values)
   }
 

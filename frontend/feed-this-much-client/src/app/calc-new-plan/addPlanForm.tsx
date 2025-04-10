@@ -29,8 +29,10 @@ import {
 import { Input } from "@/components/ui/input"
 
 import { addPlanSchema, type addPlanSchemaType } from "@/zod-schemas/addPlan"
+import { useRouter } from "next/navigation";
 
 function AddPlanForm() {
+    const router = useRouter();
     const pets = [{ id: 0, name: "Little bitch" }, { id: 1, name: "Poppy" }]
     const foods = [{ id: 0, name: "Fancy chow" }, { id: 1, name: "Foooood" }]
 
@@ -45,6 +47,7 @@ function AddPlanForm() {
     })
 
     function onSubmit(values: z.infer<typeof addPlanSchema>) {
+        router.push('/home');
         console.log(values)
     }
 
