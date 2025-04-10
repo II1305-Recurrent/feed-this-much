@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import styles from "@/app/page.module.css";
 import Image from "next/image";
 
-import FoodForm from "./FoodForm"
+import AddPlanForm from "./addPlanForm"
 
 export default function foodPage() {
     return (<div style={{ padding: "5%" }}>
@@ -24,7 +24,7 @@ export default function foodPage() {
             </Button>
         </div>
         <div className="flex justify-center min-h-screen">
-            <FoodForm />
+            <AddPlanForm />
         </div>
     </div>
     )
