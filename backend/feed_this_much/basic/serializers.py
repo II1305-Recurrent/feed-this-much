@@ -26,6 +26,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             username = validated_data['username'],
             email = validated_data.get('email', ''),
             password = validated_data['password'],
-            first_name = validated_data.get('first_name', validated_data['username'])
+            first_name = validated_data.get('first_name', validated_data['username']) ##WTF is this? 
         )
         return user

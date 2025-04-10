@@ -7,7 +7,7 @@ export default function Account() {
                 Account
             </h1>
             <p className="text-l leading-5 text-[var(--custom-orange)] [&:not(:first-child)]:mt-4">
-            Under construction.
+                Under construction.
             </p>
         </div>
     )
