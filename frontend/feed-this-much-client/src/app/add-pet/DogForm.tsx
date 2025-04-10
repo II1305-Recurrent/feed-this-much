@@ -18,112 +18,124 @@ import {
 } from "@/components/ui/form"
 
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-  } from "@/components/ui/select"
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 import { Input } from "@/components/ui/input"
 
 import { addPetSchema, type addPetSchemaType } from "@/zod-schemas/pet"
 
 function DogForm() {
-    // 1. Define your form.
-    const form = useForm<z.infer<typeof addPetSchema>>({
-      resolver: zodResolver(addPetSchema),
-      defaultValues: {
-        name: "",
-        dob: "",
-        current_weight: "" as unknown as number,
-        expected_weight: "10" as unknown as number,
-        species: "dog",
-        neutered: undefined,
-        weight_unit: undefined,
-        condition_score: "3" as unknown as number,
-        activity_level: undefined,
-      },
-    })
-   
-    // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof addPetSchema>) {
-      // Do something with the form values.
-      // ✅ This will be type-safe and validated.
-      console.log(values)
-    }
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof addPetSchema>>({
+    resolver: zodResolver(addPetSchema),
+    defaultValues: {
+      name: "",
+      dob: "",
+      current_weight: "" as unknown as number,
+      expected_weight: "1" as unknown as number,
+      species: "dog",
+      neutered: undefined,
+      weight_unit: undefined,
+      condition_score: "3" as unknown as number,
+      activity_level: undefined,
+    },
+  })
 
-    return (
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className={undefined}>
-                  <FormLabel className={undefined}>Dog Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your dog's name" {...field} />
-                  </FormControl>
-                  <FormDescription className={undefined}>
-                    This is your pet&apos;s display name.
-                  </FormDescription>
-                  <FormMessage className={undefined} />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="dob"
-              render={({ field }) => (
-                <FormItem className={undefined}>
-                  <FormLabel className={undefined}>Enter your dog&apos;s date of birth</FormLabel>
-                  <FormControl>
-                    <Input placeholder="YYYY-MM-DD" {...field} />
-                  </FormControl>
-                  <FormDescription className={undefined}>
-                  This can be approximate if you aren&apos;t sure, especially if they are an adult.
-                  </FormDescription>
-                  <FormMessage className={undefined} />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="current_weight"
-              render={({ field }) => (
-                <FormItem className={undefined}>
-                  <FormLabel className={undefined}>Enter your dog&apos;s current weight</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your dog's weight here" {...field} />
-                  </FormControl>
-                  <FormDescription className={undefined}>
-                    Click here for tips on how to weigh your pet.
-                    </FormDescription>
-                  <FormMessage className={undefined} />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="expected_weight"
-              render={({ field }) => (
-                <FormItem className={undefined}>
-                  <FormLabel className={undefined}>Enter your puppy&apos;s expected adult weight</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter puppy's expected adult weight here" {...field} />
-                  </FormControl>
-                  <FormDescription className={undefined}>
-                    Click here for tips on how to figure out this weight. You may need to adjust this value as your puppy grows and you have a better idea of how big or small they are. If they are over 1 year old, leave this as 1.
-                    </FormDescription>
-                  <FormMessage className={undefined} />
-                </FormItem>
-              )}
-            />
-            <FormField
-            control={form.control}
-            name="weight_unit"
-            render={({ field }) => (
+  const dob = form.watch("dob")
+  const showExpectedWeight = (() => {
+    if (!dob) return false
+    const dobDate = new Date(dob)
+    const now = new Date()
+    const diffInMs = now.getTime() - dobDate.getTime()
+    const days = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
+    return days >= 0 && days <= 365
+  })()
+
+  // 2. Define a submit handler.
+  function onSubmit(values: z.infer<typeof addPetSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values)
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem className={undefined}>
+              <FormLabel className={undefined}>Dog Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your dog's name" {...field} />
+              </FormControl>
+              <FormDescription className={undefined}>
+                This is your pet&apos;s display name.
+              </FormDescription>
+              <FormMessage className={undefined} />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="dob"
+          render={({ field }) => (
+            <FormItem className={undefined}>
+              <FormLabel className={undefined}>Enter your dog&apos;s date of birth</FormLabel>
+              <FormControl>
+                <Input placeholder="YYYY-MM-DD" {...field} />
+              </FormControl>
+              <FormDescription className={undefined}>
+                This can be approximate if you aren&apos;t sure, especially if they are an adult.
+              </FormDescription>
+              <FormMessage className={undefined} />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="current_weight"
+          render={({ field }) => (
+            <FormItem className={undefined}>
+              <FormLabel className={undefined}>Enter your dog&apos;s current weight</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your dog's weight here" {...field} />
+              </FormControl>
+              <FormDescription className={undefined}>
+                Click here for tips on how to weigh your pet.
+              </FormDescription>
+              <FormMessage className={undefined} />
+            </FormItem>
+          )}
+        />
+        {showExpectedWeight && (
+        <FormField
+          control={form.control}
+          name="expected_weight"
+          render={({ field }) => (
+            <FormItem className={undefined}>
+              <FormLabel className={undefined}>Enter your puppy&apos;s expected adult weight</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter puppy's expected adult weight here" {...field} />
+              </FormControl>
+              <FormDescription className={undefined}>
+                Click here for tips on how to figure out this weight. You may need to adjust this value as your puppy grows and you have a better idea of how big or small they are. If they are over 1 year old, leave this as 1.
+              </FormDescription>
+              <FormMessage className={undefined} />
+            </FormItem>
+          )}
+        />
+        )}
+        <FormField
+          control={form.control}
+          name="weight_unit"
+          render={({ field }) => (
             <FormItem className={undefined}>
               {/* <FormLabel className={undefined}>Select Unit</FormLabel> */}
               <Select onValueChange={field.onChange} defaultValue={field.value}>
@@ -145,9 +157,9 @@ function DogForm() {
           )}
         />
         <FormField
-            control={form.control}
-            name="neutered"
-            render={({ field }) => (
+          control={form.control}
+          name="neutered"
+          render={({ field }) => (
             <FormItem className="space-y-3">
               <FormLabel className={undefined}>Is your dog spayed/neutered?</FormLabel>
               <FormControl>
@@ -177,11 +189,11 @@ function DogForm() {
               <FormMessage className={undefined} />
             </FormItem>
           )}
-          />
-          <FormField
-            control={form.control}
-            name="condition_score"
-            render={({ field }) => (
+        />
+        <FormField
+          control={form.control}
+          name="condition_score"
+          render={({ field }) => (
             <FormItem className="space-y-3">
               <FormLabel className={undefined}>Select a Body Condition Score</FormLabel>
               <FormControl>
@@ -235,11 +247,11 @@ function DogForm() {
               <FormMessage className={undefined} />
             </FormItem>
           )}
-          />
-          <FormField
-            control={form.control}
-            name="activity_level"
-            render={({ field }) => (
+        />
+        <FormField
+          control={form.control}
+          name="activity_level"
+          render={({ field }) => (
             <FormItem className="space-y-3">
               <FormLabel className={undefined}>Select an activity level</FormLabel>
               <FormControl>
@@ -253,7 +265,7 @@ function DogForm() {
                       <RadioGroupItem value="doglow" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                    low - less than 1 hour per day, walking on a leash
+                      low - less than 1 hour per day, walking on a leash
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -261,7 +273,7 @@ function DogForm() {
                       <RadioGroupItem value="dogmoderatelow" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                    moderate low-impact - 1-3 hours per day, walking
+                      moderate low-impact - 1-3 hours per day, walking
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -269,7 +281,7 @@ function DogForm() {
                       <RadioGroupItem value="dogmoderatehigh" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                    moderate high-impact - 1-3 hours per day, running or agility training
+                      moderate high-impact - 1-3 hours per day, running or agility training
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -277,7 +289,7 @@ function DogForm() {
                       <RadioGroupItem value="doghigh" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                    high - 3-6 hours per day, working dog such as hunting or herding
+                      high - 3-6 hours per day, working dog such as hunting or herding
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -285,7 +297,7 @@ function DogForm() {
                       <RadioGroupItem value="dogveryhigh" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                    very high - over 6 hours per day or activity in very cold weather, such as sled racing
+                      very high - over 6 hours per day or activity in very cold weather, such as sled racing
                     </FormLabel>
                   </FormItem>
                 </RadioGroup>
@@ -293,11 +305,11 @@ function DogForm() {
               <FormMessage className={undefined} />
             </FormItem>
           )}
-          />
-          <Button type="submit" className={undefined} variant={undefined} size={undefined}>Submit</Button>
-          </form>
-        </Form>
-      )
+        />
+        <Button type="submit" className={undefined} variant={undefined} size={undefined}>Submit</Button>
+      </form>
+    </Form>
+  )
 }
 
 export default DogForm;
