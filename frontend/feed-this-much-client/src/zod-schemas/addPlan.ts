@@ -2,6 +2,7 @@
 import { z } from "zod";
 
 export const addPlanSchema = z.object({
+    title: z.string().min(1, "Please give this plan a name, it will be used to display your plans"),
     petname: z.string().min(1, "Please choose a pet"),
     // dateOfBirth: z.string().date("Please enter a date in the format YYYY-MM-DD"),
     // currentWeight: z.coerce
@@ -22,7 +23,10 @@ export const addPlanSchema = z.object({
     // }),
     // bodyConditionScore: z.coerce.number().int(),
     // activityLevel: z.coerce.number().int(),
-    foodname: z.string().min(1, "Please choose a food")
+    foodname: z.array(z.number(), {
+      required_error: "Please select at least one food",
+    })
+    .min(1, "Please select at least one food"),
 })
 
 export type addPlanSchemaType = typeof addPlanSchema._type
