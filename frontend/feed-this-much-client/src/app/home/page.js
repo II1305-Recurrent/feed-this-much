@@ -24,7 +24,7 @@ export default function Home() {
             <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
                 Hi! You are now logged in.
             </h1>
-            <Accordion type="single" collapsible className="w-full !pt-8">
+            <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1">
                     <AccordionTrigger className="text-lg text-[var(--custom-brown)]">Pets</AccordionTrigger>
                     <AccordionContent>
