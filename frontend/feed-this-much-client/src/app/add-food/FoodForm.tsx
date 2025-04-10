@@ -318,7 +318,7 @@ function FoodForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className={undefined} variant={undefined} size={undefined}>Submit</Button>
+                <Button type="submit" className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto !mt-2" variant={undefined} size={undefined}>Submit</Button>
             </form>
         </Form>
     )
