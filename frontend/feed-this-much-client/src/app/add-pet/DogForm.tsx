@@ -37,7 +37,7 @@ function DogForm() {
       name: "",
       dob: "",
       current_weight: "" as unknown as number,
-      expected_weight: "1" as unknown as number,
+      expected_weight: "" as unknown as number,
       species: "dog",
       neutered: undefined,
       weight_unit: undefined,
@@ -45,6 +45,17 @@ function DogForm() {
       activity_level: undefined,
     },
   })
+
+
+  const dob = form.watch("dob")
+  const showExpectedWeight = (() => {
+    if (!dob) return false
+    const dobDate = new Date(dob)
+    const now = new Date()
+    const diffInMs = now.getTime() - dobDate.getTime()
+    const days = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
+    return days >= 0 && days <= 365
+  })()
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof addPetSchema>) {
@@ -127,6 +138,7 @@ function DogForm() {
             </FormItem>
           )}
         />
+        {showExpectedWeight && (
         <FormField
           control={form.control}
           name="expected_weight"
@@ -143,6 +155,7 @@ function DogForm() {
             </FormItem>
           )}
         />
+        )}
         <FormField
           control={form.control}
           name="weight_unit"
