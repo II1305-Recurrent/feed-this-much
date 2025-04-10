@@ -27,12 +27,12 @@ import {
 
 import { Input } from "@/components/ui/input"
 
-import { addPetSchema, type addPetSchemaType } from "@/zod-schemas/pet"
+import { addCatSchema, type addCatSchemaType } from "@/zod-schemas/cat"
 
 function CatForm() {
     // 1. Define your form.
-    const form = useForm<z.infer<typeof addPetSchema>>({
-      resolver: zodResolver(addPetSchema),
+    const form = useForm<z.infer<typeof addCatSchema>>({
+      resolver: zodResolver(addCatSchema),
       defaultValues: {
         name: "",
         dob: "",
@@ -46,7 +46,7 @@ function CatForm() {
     })
    
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof addPetSchema>) {
+    function onSubmit(values: z.infer<typeof addCatSchema>) {
       // Do something with the form values.
       // ✅ This will be type-safe and validated.
       fetch('http://localhost:8000/api/save-pet/', {

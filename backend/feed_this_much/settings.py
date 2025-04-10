@@ -109,11 +109,11 @@ WSGI_APPLICATION = 'feed_this_much.wsgi.application'
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql',
-		'HOST': '0.0.0.0',
+		'HOST': os.getenv('POSTGRES_HOST', '127.0.0.1'),
 		'PORT': '5432',
 		'NAME': os.getenv('POSTGRES_DB'),
 		'USER': os.getenv('POSTGRES_USER'),
-		'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+		'PASSWORD': os.getenv('POSTGRES_PASSWORD')
 	}
 }
 
@@ -125,7 +125,7 @@ if DEBUG:
 		}
 	}
 	CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+		"http://localhost:3000",
     ]
 
 
