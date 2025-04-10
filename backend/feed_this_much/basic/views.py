@@ -24,7 +24,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-@api_view(['POST']) # make sure we only get POST request, user making request to change things.
+@api_view(['POST', 'OPTIONS']) # make sure we only get POST request, user making request to change things.
 def user_registration(request):
     serializer = UserRegistrationSerializer(data=request.data) # input registration data into serializer
     if serializer.is_valid():
@@ -32,7 +32,7 @@ def user_registration(request):
         return Response({"message": "User registered successfully!"}, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
+@api_view(['POST', 'OPTIONS'])
 def user_login(request):
     username = request.data.get("username")
     password = request.data.get("password")
@@ -44,7 +44,7 @@ def user_login(request):
         return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
     return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
+@api_view(['POST', 'OPTIONS'])
 def user_logout(request):
     # potentially, we can check status with if request.user.is_authenticated:
     logout(request)
