@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from feed_this_much.pets.models import Pet
 from .serializers import PetSerializer 
 
-@api_view(['POST'])
+@api_view(['POST', 'OPTIONS'])
 @permission_classes([AllowAny]) # User auth
 def save_pet(request):
     serializer = PetSerializer(data=request.data)
