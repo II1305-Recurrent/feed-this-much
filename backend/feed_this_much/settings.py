@@ -74,6 +74,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'corsheaders.middleware.CorsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://feedthismuch.com",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -104,7 +109,7 @@ WSGI_APPLICATION = 'feed_this_much.wsgi.application'
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql',
-		'HOST': 'localhost',
+		'HOST': '0.0.0.0',
 		'PORT': '5432',
 		'NAME': os.getenv('POSTGRES_DB'),
 		'USER': os.getenv('POSTGRES_USER'),
@@ -119,6 +124,9 @@ if DEBUG:
 			'NAME': BASE_DIR / 'db.sqlite3',
 		}
 	}
+	CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    ]
 
 
 # Password validation
