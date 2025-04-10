@@ -19,10 +19,12 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs"
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { use } from "react";
 
 export default function Sign_in_page() {
-    const debug = false //for testing purposes
+    const router = useRouter();
+    const debug = true //for testing purposes
     let base_url = 'https://api.feedthismuch.com'
     if (debug) {
         base_url = 'http://localhost:8000'
@@ -87,8 +89,10 @@ export default function Sign_in_page() {
             });
 
             if (response.ok) {
-                console.log('User logged in successfully:');
-                window.location.href = '/home';
+                const result = await response.json();
+                console.log('User logged in successfully:', result);
+                //window.location.href = '/home';
+                router.push('/home');
             } else {
                 const error = await response.json();
                 console.error('Error:', error);

@@ -29,7 +29,10 @@ import { Input } from "@/components/ui/input"
 
 import { addCatSchema, type addCatSchemaType } from "@/zod-schemas/cat"
 
+import { useRouter } from "next/navigation";
+
 function CatForm() {
+    const router = useRouter();
   // 1. Define your form.
   const form = useForm<z.infer<typeof addCatSchema>>({
     resolver: zodResolver(addCatSchema),
@@ -72,6 +75,7 @@ function CatForm() {
       .catch(error => {
         console.error('Error saving pet:', error);
       });
+    router.push('/home');
     console.log(values)
   }
 

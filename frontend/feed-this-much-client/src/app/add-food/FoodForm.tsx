@@ -28,9 +28,10 @@ import {
 import { Input } from "@/components/ui/input"
 
 import { addFoodSchema, type addFoodSchemaType } from "@/zod-schemas/food"
+import { useRouter } from "next/navigation";
 
 function FoodForm() {
-
+    const router = useRouter();
     // 1. Define your form.
     const form = useForm<z.infer<typeof addFoodSchema>>({
         resolver: zodResolver(addFoodSchema),
@@ -53,6 +54,7 @@ function FoodForm() {
     function onSubmit(values: z.infer<typeof addFoodSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
+        router.push('/home');
         console.log(values)
     }
 
