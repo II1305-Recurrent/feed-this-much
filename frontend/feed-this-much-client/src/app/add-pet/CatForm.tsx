@@ -34,14 +34,14 @@ function CatForm() {
     const form = useForm<z.infer<typeof addPetSchema>>({
       resolver: zodResolver(addPetSchema),
       defaultValues: {
-        petname: "",
-        dateOfBirth: "",
-        currentWeight: "" as unknown as number,
+        name: "",
+        dob: "",
+        current_weight: "" as unknown as number,
         species: "cat",
         neutered: undefined,
-        isKg: undefined,
-        bodyConditionScore: "3" as unknown as number,
-        activityLevel: undefined,
+        weight_unit: undefined,
+        condition_score: "3" as unknown as number,
+        activity_level: undefined,
       },
     })
    
@@ -57,10 +57,10 @@ function CatForm() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="petname"
+              name="name"
               render={({ field }) => (
                 <FormItem className={undefined}>
-                  <FormLabel className={undefined}>Pet Name</FormLabel>
+                  <FormLabel className={undefined}>Cat Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter your cat's name" {...field} />
                   </FormControl>
@@ -73,10 +73,10 @@ function CatForm() {
             />
             <FormField
               control={form.control}
-              name="dateOfBirth"
+              name="dob"
               render={({ field }) => (
                 <FormItem className={undefined}>
-                  <FormLabel className={undefined}>Enter your pet&apos;s date of birth</FormLabel>
+                  <FormLabel className={undefined}>Enter your cat&apos;s date of birth</FormLabel>
                   <FormControl>
                     <Input placeholder="YYYY-MM-DD" {...field} />
                   </FormControl>
@@ -89,12 +89,12 @@ function CatForm() {
             />
             <FormField
               control={form.control}
-              name="currentWeight"
+              name="current_weight"
               render={({ field }) => (
                 <FormItem className={undefined}>
-                  <FormLabel className={undefined}>Enter your pet&apos;s current weight</FormLabel>
+                  <FormLabel className={undefined}>Enter your cat&apos;s current weight</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter number here" {...field} />
+                    <Input placeholder="Enter your cat's weight here" {...field} />
                   </FormControl>
                   <FormDescription className={undefined}>
                     Click here for tips on how to weigh your pet.
@@ -105,7 +105,7 @@ function CatForm() {
             />
             <FormField
             control={form.control}
-            name="isKg"
+            name="weight_unit"
             render={({ field }) => (
             <FormItem className={undefined}>
               {/* <FormLabel className={undefined}>Select Unit</FormLabel> */}
@@ -116,12 +116,12 @@ function CatForm() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className={undefined} >
-                  <SelectItem className={undefined} value="Kgs">Kgs</SelectItem>
-                  <SelectItem className={undefined} value="lbs">lbs</SelectItem>
+                  <SelectItem className={undefined} value="kg">Kgs</SelectItem>
+                  <SelectItem className={undefined} value="lb">lbs</SelectItem>
                 </SelectContent>
               </Select>
               <FormDescription className={undefined}>
-                Select the unit you used for your pet&apos;s weight.
+                Select the unit you used for your cat&apos;s weight.
               </FormDescription>
               <FormMessage className={undefined} />
             </FormItem>
@@ -132,7 +132,7 @@ function CatForm() {
             name="neutered"
             render={({ field }) => (
             <FormItem className="space-y-3">
-              <FormLabel className={undefined}>Is your pet spayed/neutered?</FormLabel>
+              <FormLabel className={undefined}>Is your cat spayed/neutered?</FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
@@ -141,7 +141,7 @@ function CatForm() {
                 >
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="yes" className={undefined} />
+                      <RadioGroupItem value={true} className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
                       Yes
@@ -149,7 +149,7 @@ function CatForm() {
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="no" className={undefined} />
+                      <RadioGroupItem value={false} className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
                       No
@@ -163,7 +163,7 @@ function CatForm() {
           />
           <FormField
             control={form.control}
-            name="bodyConditionScore"
+            name="condition_score"
             render={({ field }) => (
             <FormItem className="space-y-3">
               <FormLabel className={undefined}>Select a Body Condition Score</FormLabel>
@@ -221,7 +221,7 @@ function CatForm() {
           />
           <FormField
             control={form.control}
-            name="activityLevel"
+            name="activity_level"
             render={({ field }) => (
             <FormItem className="space-y-3">
               <FormLabel className={undefined}>Select an activity level</FormLabel>
@@ -233,7 +233,7 @@ function CatForm() {
                 >
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="1" className={undefined} />
+                      <RadioGroupItem value="catlow" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
                     low activity - indoor cat, mostly inactive
@@ -241,7 +241,7 @@ function CatForm() {
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="2" className={undefined} />
+                      <RadioGroupItem value="catmoderate" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
                     moderate activity - indoor cat, but with frequent play time, walks on leash, or a highly active breed
@@ -249,7 +249,7 @@ function CatForm() {
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="3" className={undefined} />
+                      <RadioGroupItem value="cathigh" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
                     high activity - outdoor cat, or extremely active indoor cat
@@ -257,7 +257,7 @@ function CatForm() {
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="4" className={undefined} />
+                      <RadioGroupItem value="catkitten" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
                     growing kitten - under 1 year old
