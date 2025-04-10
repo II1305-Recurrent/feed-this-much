@@ -46,6 +46,7 @@ function DogForm() {
     },
   })
 
+
   const dob = form.watch("dob")
   const showExpectedWeight = (() => {
     if (!dob) return false
@@ -60,6 +61,29 @@ function DogForm() {
   function onSubmit(values: z.infer<typeof addPetSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    fetch('http://localhost:8000/api/save-pet/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    })
+      .then(async response => {
+        if (!response.ok) {
+          throw new Error('Failed to submit');
+        }
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          return await response.json();
+        }
+        return null; // No content
+      })
+      .then(data => {
+        console.log('Pet saved successfully:', data);
+      })
+      .catch(error => {
+        console.error('Error saving pet:', error);
+      });
     console.log(values)
   }
 
