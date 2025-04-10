@@ -135,13 +135,14 @@ export default function Header() {
                     </DropdownMenu>
                 </div>
 
-                <Image
+                <div style={{ maxWidth: '180px', width:"100%", height: 'auto' }}>
+                    <Image
                     src="/logo_feedthismuch.png"
                     alt="Feed This Much logo"
-                    width={180}
-                    height={100}
-                    className="logo"
-                />
+                    width={360}
+                    height={201}
+                    priority={true} />
+                </div>
             </div>
         </header>
     );
