@@ -1,6 +1,6 @@
 "use client"
 
-import {redirect} from "next/navigation"
+import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CatForm from "./CatForm"
@@ -10,9 +10,9 @@ import Image from "next/image";
 
 
 export default function petPage() {
-    return (<div style={{padding: "5%"}}>
+    return (<div style={{ padding: "5%" }}>
         <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
-        Add new pet
+            Add new pet
         </h1>
         <div className="flex justify-center min-h-screen">
             <Tabs defaultValue="sign-in" className="w-[400px]">
@@ -27,14 +27,15 @@ export default function petPage() {
                     <DogForm />
                 </TabsContent>
             </Tabs>
-        <Button variant="destructive" onClick={() => redirect("/home")}>
-            <Image src="/back-arrow.png"
-                alt="" 
-                width={20} 
-                height={20} 
-                className={styles.logo}>
-            </Image>
-        </Button>
+            <Button variant="destructive" onClick={() => redirect("/home")}>
+                <Image src="/back-arrow.png"
+                    alt=""
+                    width={20}
+                    height={20}
+                    className={styles.logo}>
+                </Image>
+            </Button>
         </div>
     </div>
-)}
+    )
+}
