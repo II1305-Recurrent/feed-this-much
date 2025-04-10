@@ -24,10 +24,10 @@ import { use } from "react";
 
 export default function Sign_in_page() {
     const router = useRouter();
-    const debug = true //for testing purposes
-    let base_url = 'https://api.feedthismuch.com'
+    const debug = false; //for testing purposes
+    let base_url = 'https://api.feedthismuch.com';
     if (debug) {
-        base_url = 'http://localhost:8000'
+        base_url = 'http://localhost:8000';
     }
 
     let email = "";
@@ -57,10 +57,10 @@ export default function Sign_in_page() {
         try {
             const response = await fetch(base_url.concat('/api/register/'), {
                 method: 'POST',
+                mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-				credentials: 'include',
                 body: JSON.stringify(data),
             });
 
@@ -81,10 +81,11 @@ export default function Sign_in_page() {
         try {
             const response = await fetch(base_url.concat('/api/login/'), {
                 method: 'POST',
+                mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-				credentials: 'include',
+                credentials: 'include',
                 body: JSON.stringify(data),
             });
 
@@ -103,7 +104,7 @@ export default function Sign_in_page() {
     }
 
     return (
-        <div style={{ padding: "5%" }}>
+        <div className="page">
 
             <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
                 Sign in

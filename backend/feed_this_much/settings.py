@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True
+DEBUG = False
 
 if os.getenv('DJANGO_DEBUG'):
 	DEBUG = True
@@ -48,10 +48,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'rest_framework',
-	'feed_this_much.pets',
-	'corsheaders',
-	'drf_spectacular'
+    'rest_framework',
+    'feed_this_much.pets',
+    'corsheaders',
+    'drf_spectacular'
 ]
 
 # config for DRF
@@ -74,13 +74,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-	'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "https://feedthismuch.com",
-]
 CSRF_TRUSTED_ORIGINS = [
     "https://feedthismuch.com",
 ]
@@ -128,9 +125,6 @@ if DEBUG:
 			'NAME': BASE_DIR / 'db.sqlite3',
 		}
 	}
-	CORS_ALLOWED_ORIGINS = [
-		"http://localhost:3000",
-    ]
 	CSRF_TRUSTED_ORIGINS = [
 		"http://localhost:3000",
 	]

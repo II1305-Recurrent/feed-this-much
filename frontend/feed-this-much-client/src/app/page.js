@@ -9,8 +9,8 @@ export default function NotSignedIn() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     isLoggedIn ? redirect("/home") : {}
     return (
-        <div style={{ padding: "5%" }}>
-            <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
+        <div className="page">
+            <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
                 Welcome!
             </h1>
 
