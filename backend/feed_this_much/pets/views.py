@@ -11,7 +11,7 @@ def save_pet(request):
     serializer = PetSerializer(data=request.data)
     
     if serializer.is_valid():
-        serializer.save(user=request.user)  # Save with userID
+        serializer.save(user=request.user if request.user.is_authenticated else None)  # Save with userID
         return Response(status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

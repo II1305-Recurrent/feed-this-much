@@ -6,7 +6,7 @@ class PetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Pet
-        fields = ['user', 'id', 'name', 'species', 'dob', 'current_weight', 'weight_unit', 'neutered', 'activity_level', 'condition_score']
+        fields = ['user', 'id', 'name', 'species', 'dob', 'current_weight', 'expected_weight', 'weight_unit', 'neutered', 'activity_level', 'condition_score']
 
     def validate(self, data):
         species = data.get('species', '').lower()
@@ -24,6 +24,11 @@ class PetSerializer(serializers.ModelSerializer):
         if species == 'dog' and activity_level not in dog_levels:
             raise serializers.ValidationError(
                 {"activity_level": f"Invalid activity level for dog. Must be one of {dog_levels}"}
+            )
+        
+        if species == 'dog' and data.get('expected_weight') is None:
+            raise serializers.ValidationError(
+                {"expected_weight": "Expected weight is required for dogs."}
             )
 
         return data

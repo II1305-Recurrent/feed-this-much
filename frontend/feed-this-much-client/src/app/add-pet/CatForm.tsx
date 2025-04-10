@@ -18,114 +18,118 @@ import {
 } from "@/components/ui/form"
 
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-  } from "@/components/ui/select"
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 import { Input } from "@/components/ui/input"
 
 import { addCatSchema, type addCatSchemaType } from "@/zod-schemas/cat"
 
 function CatForm() {
-    // 1. Define your form.
-    const form = useForm<z.infer<typeof addCatSchema>>({
-      resolver: zodResolver(addCatSchema),
-      defaultValues: {
-        name: "",
-        dob: "",
-        current_weight: "" as unknown as number,
-        species: "cat",
-        neutered: undefined,
-        weight_unit: undefined,
-        condition_score: "3" as unknown as number,
-        activity_level: undefined,
-      },
-    })
-   
-    // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof addCatSchema>) {
-      // Do something with the form values.
-      // ✅ This will be type-safe and validated.
-      fetch('http://localhost:8000/api/save-pet/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Failed to submit');
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Pet saved successfully:', data);
-        })
-        .catch(error => {
-          console.error('Error saving pet:', error);
-        });
-      console.log(values)
-    }
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof addCatSchema>>({
+    resolver: zodResolver(addCatSchema),
+    defaultValues: {
+      name: "",
+      dob: "",
+      current_weight: "" as unknown as number,
+      species: "cat",
+      neutered: undefined,
+      weight_unit: undefined,
+      condition_score: "3" as unknown as number,
+      activity_level: undefined,
+    },
+  })
 
-    return (
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className={undefined}>
-                  <FormLabel className={undefined}>Cat Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your cat's name" {...field} />
-                  </FormControl>
-                  <FormDescription className={undefined}>
-                    This is your pet&apos;s display name.
-                  </FormDescription>
-                  <FormMessage className={undefined} />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="dob"
-              render={({ field }) => (
-                <FormItem className={undefined}>
-                  <FormLabel className={undefined}>Enter your cat&apos;s date of birth</FormLabel>
-                  <FormControl>
-                    <Input placeholder="YYYY-MM-DD" {...field} />
-                  </FormControl>
-                  <FormDescription className={undefined}>
-                  This can be approximate if you aren&apos;t sure, especially if they are an adult.
-                  </FormDescription>
-                  <FormMessage className={undefined} />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="current_weight"
-              render={({ field }) => (
-                <FormItem className={undefined}>
-                  <FormLabel className={undefined}>Enter your cat&apos;s current weight</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your cat's weight here" {...field} />
-                  </FormControl>
-                  <FormDescription className={undefined}>
-                    Click here for tips on how to weigh your pet.
-                    </FormDescription>
-                  <FormMessage className={undefined} />
-                </FormItem>
-              )}
-            />
-            <FormField
-            control={form.control}
-            name="weight_unit"
-            render={({ field }) => (
+  // 2. Define a submit handler.
+  function onSubmit(values: z.infer<typeof addCatSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    fetch('http://localhost:8000/api/save-pet/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    })
+      .then(async response => {
+        if (!response.ok) {
+          throw new Error('Failed to submit');
+        }
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          return await response.json();
+        }
+        return null; // No content
+      })
+      .then(data => {
+        console.log('Pet saved successfully:', data);
+      })
+      .catch(error => {
+        console.error('Error saving pet:', error);
+      });
+    console.log(values)
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem className={undefined}>
+              <FormLabel className={undefined}>Cat Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your cat's name" {...field} />
+              </FormControl>
+              <FormDescription className={undefined}>
+                This is your pet&apos;s display name.
+              </FormDescription>
+              <FormMessage className={undefined} />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="dob"
+          render={({ field }) => (
+            <FormItem className={undefined}>
+              <FormLabel className={undefined}>Enter your cat&apos;s date of birth</FormLabel>
+              <FormControl>
+                <Input placeholder="YYYY-MM-DD" {...field} />
+              </FormControl>
+              <FormDescription className={undefined}>
+                This can be approximate if you aren&apos;t sure, especially if they are an adult.
+              </FormDescription>
+              <FormMessage className={undefined} />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="current_weight"
+          render={({ field }) => (
+            <FormItem className={undefined}>
+              <FormLabel className={undefined}>Enter your cat&apos;s current weight</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your cat's weight here" {...field} />
+              </FormControl>
+              <FormDescription className={undefined}>
+                Click here for tips on how to weigh your pet.
+              </FormDescription>
+              <FormMessage className={undefined} />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="weight_unit"
+          render={({ field }) => (
             <FormItem className={undefined}>
               {/* <FormLabel className={undefined}>Select Unit</FormLabel> */}
               <Select onValueChange={field.onChange} defaultValue={field.value}>
@@ -147,9 +151,9 @@ function CatForm() {
           )}
         />
         <FormField
-            control={form.control}
-            name="neutered"
-            render={({ field }) => (
+          control={form.control}
+          name="neutered"
+          render={({ field }) => (
             <FormItem className="space-y-3">
               <FormLabel className={undefined}>Is your cat spayed/neutered?</FormLabel>
               <FormControl>
@@ -179,11 +183,11 @@ function CatForm() {
               <FormMessage className={undefined} />
             </FormItem>
           )}
-          />
-          <FormField
-            control={form.control}
-            name="condition_score"
-            render={({ field }) => (
+        />
+        <FormField
+          control={form.control}
+          name="condition_score"
+          render={({ field }) => (
             <FormItem className="space-y-3">
               <FormLabel className={undefined}>Select a Body Condition Score</FormLabel>
               <FormControl>
@@ -237,11 +241,11 @@ function CatForm() {
               <FormMessage className={undefined} />
             </FormItem>
           )}
-          />
-          <FormField
-            control={form.control}
-            name="activity_level"
-            render={({ field }) => (
+        />
+        <FormField
+          control={form.control}
+          name="activity_level"
+          render={({ field }) => (
             <FormItem className="space-y-3">
               <FormLabel className={undefined}>Select an activity level</FormLabel>
               <FormControl>
@@ -255,7 +259,7 @@ function CatForm() {
                       <RadioGroupItem value="catlow" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                    low activity - indoor cat, mostly inactive
+                      low activity - indoor cat, mostly inactive
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -263,7 +267,7 @@ function CatForm() {
                       <RadioGroupItem value="catmoderate" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                    moderate activity - indoor cat, but with frequent play time, walks on leash, or a highly active breed
+                      moderate activity - indoor cat, but with frequent play time, walks on leash, or a highly active breed
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -271,7 +275,7 @@ function CatForm() {
                       <RadioGroupItem value="cathigh" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                    high activity - outdoor cat, or extremely active indoor cat
+                      high activity - outdoor cat, or extremely active indoor cat
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
@@ -279,7 +283,7 @@ function CatForm() {
                       <RadioGroupItem value="catkitten" className={undefined} />
                     </FormControl>
                     <FormLabel className="font-normal">
-                    growing kitten - under 1 year old
+                      growing kitten - under 1 year old
                     </FormLabel>
                   </FormItem>
                 </RadioGroup>
@@ -287,11 +291,11 @@ function CatForm() {
               <FormMessage className={undefined} />
             </FormItem>
           )}
-          />
-          <Button type="submit" className={undefined} variant={undefined} size={undefined}>Submit</Button>
-          </form>
-        </Form>
-      )
+        />
+        <Button type="submit" className={undefined} variant={undefined} size={undefined}>Submit</Button>
+      </form>
+    </Form>
+  )
 }
 
 export default CatForm;
