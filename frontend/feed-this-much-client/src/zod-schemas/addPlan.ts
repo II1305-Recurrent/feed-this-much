@@ -3,7 +3,9 @@ import { z } from "zod";
 
 export const addPlanSchema = z.object({
     title: z.string().min(1, "Please give this plan a name, it will be used to display your plans"),
-    petname: z.string().min(1, "Please choose a pet"),
+    petname: z.number({
+      required_error: "Please choose a pet",
+    }),
     // dateOfBirth: z.string().date("Please enter a date in the format YYYY-MM-DD"),
     // currentWeight: z.coerce
     // .number({

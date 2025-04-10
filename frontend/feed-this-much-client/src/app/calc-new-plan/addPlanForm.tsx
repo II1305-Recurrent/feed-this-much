@@ -40,7 +40,7 @@ function AddPlanForm() {
         defaultValues: {
             title: "Default title", //maybe generate random number based on ids of previous plans?
             foodname: [],
-            petname: "Steve"
+            petname: null,
         },
     })
 
@@ -119,14 +119,14 @@ function AddPlanForm() {
                     render={({ field }) => (
                         <FormItem className={undefined}>
                             <FormLabel className={undefined}>Pet Name</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select onValueChange={(value) => field.onChange(Number(value))} value={field.value?.toString()}>
                                 <FormControl>
                                     <SelectTrigger className={undefined} >
                                         <SelectValue placeholder="Select pet" />
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent className={undefined} >
-                                    {pets.map((item) => <SelectItem key={item.id} className={undefined} value={item.name}>{item.name}</SelectItem>)}
+                                    {pets.map((item) => <SelectItem key={item.id} className={undefined} value={item.id.toString()}>{item.name}</SelectItem>)}
                                 </SelectContent>
                             </Select>
                             <FormDescription className={undefined}>
