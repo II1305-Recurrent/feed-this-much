@@ -32,18 +32,18 @@ import { addPetSchema, type addPetSchemaType } from "@/zod-schemas/pet"
 function DogForm() {
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPetSchema>>({
-        resolver: zodResolver(addPetSchema),
-        defaultValues: {
-            name: "",
-            dob: "",
-            current_weight: "" as unknown as number,
-            expected_weight: "1" as unknown as number,
-            species: "dog",
-            neutered: undefined,
-            weight_unit: undefined,
-            condition_score: "3" as unknown as number,
-            activity_level: undefined,
-        },
+      resolver: zodResolver(addPetSchema),
+      defaultValues: {
+        name: "",
+        dob: "",
+        current_weight: "" as unknown as number,
+        expected_weight: "" as unknown as number,
+        species: "dog",
+        neutered: undefined,
+        weight_unit: undefined,
+        condition_score: "3" as unknown as number,
+        activity_level: undefined,
+      },
     })
 
     // 2. Define a submit handler.
