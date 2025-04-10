@@ -25,20 +25,3 @@ def get_pets(request):
             status=status.HTTP_200_OK # 200 OK even if no pets exist
         )
     return Response(status=status.HTTP_200_OK)
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def generate_plan(request):
-    pet = Pet.objects.filter(user=request.user, name=request.petname) # Filter by userID, petname
-    food = Food.objects.filter(user=request.user, name=request.foodname) # Filter by userID, foodname
-    if not pet.exists():
-        return Response(
-            {"error": "No such pet exists"},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-    if not food.exists():
-        return Response(
-            {"error": "No such food exists"},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-    return Response(status=status.HTTP_200_OK)
