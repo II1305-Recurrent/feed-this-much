@@ -67,16 +67,15 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
-	'corsheaders.middleware.CorsMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -84,7 +83,9 @@ CSRF_TRUSTED_ORIGINS = [
     "https://feedthismuch.com",
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://feedthismuch.com"
+]
 
 ROOT_URLCONF = 'feed_this_much.urls'
 
@@ -121,15 +122,18 @@ DATABASES = {
 
 
 if DEBUG:
-	DATABASES = {
-		'default': {
-			'ENGINE': 'django.db.backends.sqlite3',
-			'NAME': BASE_DIR / 'db.sqlite3',
-		}
-	}
-	CSRF_TRUSTED_ORIGINS = [
-		"http://localhost:3000",
-	]
+    DATABASES = {
+        'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+    CSRF_TRUSTED_ORIGINS = [
+        "http://localhost:3000",
+    ]
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000"
+    ]
 
 
 # Password validation
