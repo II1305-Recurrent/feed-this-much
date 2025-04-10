@@ -33,11 +33,6 @@ export default function NotSignedIn() {
         <Button onClick={() => redirect("/sign-in")} className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto">
           Get Started
         </Button>
-        
-        
-        <Button onClick={() => redirect("/calc-new-plan")} className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto">
-
-        </Button>
       </div>
     </div>
   );
