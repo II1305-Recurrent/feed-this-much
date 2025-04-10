@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from feed_this_much.pets.models import Pet
-from feed_this_much.feeding.models import Food
+#from feed_this_much.feeding.models import Food
 from backend.feed_this_much.feeding import calorie_calculator
 
 @api_view(['GET'])
@@ -11,24 +11,25 @@ from backend.feed_this_much.feeding import calorie_calculator
 def generate_plan(request):
     error_message = ""
     pet = Pet.objects.filter(user=request.user, name=request.petname) # Filter by userID, petname
-    food = Food.objects.filter(user=request.user, name=request.foodname) # Filter by userID, foodname
+    #food = Food.objects.filter(user=request.user, name=request.foodname) # Filter by userID, foodname
     energy_needs = None
 
     if not pet.exists():
         error_message = "No such pet exists"
-        if not food.exists():
-            error_message += ", no such food exists"
+        #if not food.exists():
+            #error_message += ", no such food exists"
         return Response(
             {"error": error_message},
             status=status.HTTP_400_BAD_REQUEST
         )
-    
+    """
     if not food.exists():
         error_message = "No such food exists"
         return Response(
             {"error": error_message},
             status=status.HTTP_400_BAD_REQUEST
         )
+    """
     
     if pet.species == "cat":
         energy_needs = calorie_calculator.calculate_cat_feeding(pet)
