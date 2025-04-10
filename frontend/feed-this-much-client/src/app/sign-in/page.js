@@ -58,13 +58,12 @@ export default function Sign_in_page() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+				credentials: 'include',
                 body: JSON.stringify(data),
             });
-            console.log(JSON.stringify(data))
 
             if (response.ok) {
-                const result = await response.json();
-                console.log('User registered successfully:', result);
+                console.log('User registered successfully:');
             } else {
                 const error = await response.json();
                 console.error('Error:', error);
@@ -83,13 +82,12 @@ export default function Sign_in_page() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+				credentials: 'include',
                 body: JSON.stringify(data),
             });
-            console.log(JSON.stringify(data))
 
             if (response.ok) {
-                const result = await response.json();
-                console.log('User logged in successfully:', result);
+                console.log('User logged in successfully:');
                 window.location.href = '/home';
             } else {
                 const error = await response.json();
