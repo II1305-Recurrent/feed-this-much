@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = False
+DEBUG = True
 
 if os.getenv('DJANGO_DEBUG'):
 	DEBUG = True
@@ -50,8 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 	'rest_framework',
 	'feed_this_much.pets',
-	'drf_spectacular',
 	'corsheaders',
+	'drf_spectacular'
 ]
 
 # config for DRF
@@ -72,6 +72,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
 ]
@@ -79,6 +80,8 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "https://feedthismuch.com",
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'feed_this_much.urls'
 
