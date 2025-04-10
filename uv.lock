@@ -122,6 +122,7 @@ dependencies = [
     { name = "npm" },
     { name = "npx" },
     { name = "pip" },
+    { name = "psycopg" },
     { name = "psycopg2-binary" },
     { name = "ruff" },
 ]
@@ -139,6 +140,7 @@ requires-dist = [
     { name = "npm", specifier = ">=0.1.1" },
     { name = "npx", specifier = ">=0.1.6" },
     { name = "pip", specifier = ">=25.0.1" },
+    { name = "psycopg", specifier = ">=3.2.6" },
     { name = "psycopg2-binary", specifier = ">=2.9.10" },
     { name = "ruff", specifier = ">=0.11.2" },
 ]

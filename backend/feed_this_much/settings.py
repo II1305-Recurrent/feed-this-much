@@ -29,7 +29,7 @@ if os.getenv('DJANGO_DEBUG'):
 	DEBUG = True
 
 if DEBUG:
-	ALLOWED_HOSTS = []
+	ALLOWED_HOSTS = ['172.30.243.173']
 	# SECURITY WARNING: keep the secret key used in production secret!
 	SECRET_KEY = 'django-insecure-&no-h*qc%06j)=_m0t=m(gwqa*iy5tyv$8q-xu7*xl%2&)hdhm'
 else:
@@ -50,8 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 	'rest_framework',
 	'feed_this_much.pets',
-	'drf_spectacular',
 	'corsheaders',
+	'drf_spectacular'
 ]
 
 # config for DRF
@@ -72,6 +72,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
 ]
@@ -79,6 +80,8 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "https://feedthismuch.com",
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'feed_this_much.urls'
 
