@@ -11,7 +11,7 @@ import Image from "next/image";
 
 export default function petPage() {
     return (<div className="page">
-        <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
+        <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
             Add new pet
         </h1>
         <div className="flex justify-center min-h-screen">

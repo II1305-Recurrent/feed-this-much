@@ -11,7 +11,7 @@ import FoodForm from "./FoodForm"
 export default function foodPage() {
     return (<div className="page">
         <div className="flex justify-between">
-            <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
+            <h1 className="scroll-m-20 text-2xl text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
                 Add Food
             </h1>
             <Button variant="destructive" onClick={() => redirect("/home")}>

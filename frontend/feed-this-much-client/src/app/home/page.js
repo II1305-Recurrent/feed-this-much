@@ -19,9 +19,9 @@ export default function Home() {
     const foods = [{ id: 1, title: "Fancy Chow" }];
     const plans = [{ id: 1, title: "Plan 1 for Mac" }];
     const { setIndex } = useModel();
-    return(
+    return (
         <div className="page">
-            <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
+            <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
                 Hi! You are now logged in.
             </h1>
             <Accordion type="single" collapsible className="w-full !pt-8">

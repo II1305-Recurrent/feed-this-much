@@ -3,7 +3,7 @@
 export default function Account() {
     return (
         <div className="page">
-            <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
+            <h1 className="scroll-m-20 text-2xl text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
                 Account
             </h1>
             <p className="text-l leading-5 text-[var(--custom-orange)] [&:not(:first-child)]:mt-4">
