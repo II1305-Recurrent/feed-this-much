@@ -19,8 +19,8 @@ export default function Home() {
     const foods = [{ id: 1, title: "Fancy Chow" }];
     const plans = [{ id: 1, title: "Plan 1 for Mac" }];
     const { setIndex } = useModel();
-    return (
-        <div style={{ padding: "5%" }}>
+    return(
+        <div className="page">
             <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
                 Hi! You are now logged in.
             </h1>

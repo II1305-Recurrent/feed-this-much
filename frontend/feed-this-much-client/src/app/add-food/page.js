@@ -9,7 +9,7 @@ import Image from "next/image";
 import FoodForm from "./FoodForm"
 
 export default function foodPage() {
-    return (<div style={{ padding: "5%" }}>
+    return (<div className="page">
         <div className="flex justify-between">
             <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
                 Add Food

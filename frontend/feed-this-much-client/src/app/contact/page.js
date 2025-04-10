@@ -2,7 +2,7 @@
 
 export default function Contact() {
     return (
-        <div style={{ padding: "5%" }}>
+        <div className="page">
             <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
                 Contact Us
             </h1>

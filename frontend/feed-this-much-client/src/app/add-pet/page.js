@@ -10,7 +10,7 @@ import Image from "next/image";
 
 
 export default function petPage() {
-    return (<div style={{ padding: "5%" }}>
+    return (<div className="page">
         <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
             Add new pet
         </h1>

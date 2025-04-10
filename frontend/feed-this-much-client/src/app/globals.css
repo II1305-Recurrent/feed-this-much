@@ -237,4 +237,10 @@ a {
 
 .dropdown a:hover {
     background-color: #f3e1c7;
-}
+  }
+  
+  .page {
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 5%;
+  }
