@@ -6,29 +6,24 @@ class PetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Pet
-        fields = ['user', 'id', 'name', 'species', 'dob', 'weight', 'weight_unit', 'neutered', 'activity_level', 'condition_score']
-       
-    def to_internal_value(self, data):
-        data = data.copy()
+        fields = ['user', 'id', 'name', 'species', 'dob', 'current_weight', 'weight_unit', 'neutered', 'activity_level', 'condition_score']
 
-        data['name'] = data.pop('petname', '')
-        data['dob'] = data.pop('dateOfBirth', '')
-        data['weight'] = data.pop('currentWeight', '')
+    def validate(self, data):
+        species = data.get('species', '').lower()
+        activity_level = data.get('activity_level', '').lower()
 
-        is_kg = data.pop('isKg', '').lower()
-        data['weight_unit'] = 'kg' if 'k' in is_kg else 'lb'
-
-        neutered = data.pop('neutered', '').lower()
-        data['neutered'] = neutered in ['yes', 'true', '1']
-
-        activity_map = ['low', 'moderate-low', 'moderate-high', 'high', 'very-high']
-        activity_index = int(data.pop('activityLevel', 0))
-        data['activity_level'] = activity_map[activity_index]
-
-        condition_map = [
-            'severely-underweight', 'underweight', 'ideal', 'overweight', 'obese'
+        cat_levels = ['catlow', 'catmoderate', 'cathigh', 'catkitten']
+        dog_levels = [
+            'doglow', 'dogmoderatelow', 'dogmoderatehigh', 'doghigh', 'dogveryhigh'
         ]
-        condition_index = int(data.pop('bodyConditionScore', 2))
-        data['condition_score'] = condition_map[condition_index]
 
-        return super().to_internal_value(data)
+        if species == 'cat' and activity_level not in cat_levels:
+            raise serializers.ValidationError(
+                {"activity_level": f"Invalid activity level for cat. Must be one of {cat_levels}"}
+            )
+        if species == 'dog' and activity_level not in dog_levels:
+            raise serializers.ValidationError(
+                {"activity_level": f"Invalid activity level for dog. Must be one of {dog_levels}"}
+            )
+
+        return data
