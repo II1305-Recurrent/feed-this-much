@@ -106,15 +106,12 @@ WSGI_APPLICATION = 'feed_this_much.wsgi.application'
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql',
-		'HOST': 'db',
+		'HOST': os.getenv('POSTGRES_HOST', '127.0.0.1'),
 		'PORT': '5432',
 		'NAME': os.getenv('POSTGRES_DB'),
 		'USER': os.getenv('POSTGRES_USER'),
-		'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-		'TEST': {
-			'ENGINE': 'django.db.backends.sqlite3',
-			'NAME': BASE_DIR / 'db.sqlite3',
-		}
+		'PASSWORD': os.getenv('POSTGRES_PASSWORD')
+	}
 }
 
 if DEBUG:
