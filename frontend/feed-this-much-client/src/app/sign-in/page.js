@@ -23,49 +23,49 @@ import { useRouter } from "next/navigation";
 import { use } from "react";
 
 export default function Sign_in_page() {
-    const router = useRouter();
-    const debug = false; //for testing purposes
-    let base_url = 'https://api.feedthismuch.com';
+    const debug = false //for testing purposes
+    let base_url = 'https://api.feedthismuch.com'
     if (debug) {
-        base_url = 'http://localhost:8000';
+        base_url = 'http://localhost:8000'
     }
 
-    let email = "";
-    let password = "";
-    let username = "";
-    let firstName = "";
+  let email = "";
+  let password = "";
+  let username = "";
+  let firstName = "";
 
-    function setPassword(data) {
-        password = data;
-    }
+  function setPassword(data) {
+  	password = data;
+  }
 
-    function setEmail(data) {
-        email = data;
-    }
+  function setEmail(data) {
+  	email = data;
+  }
 
-    function setUsername(data) {
-        username = data;
-    }
+  function setUsername(data) {
+  	username = data;
+  }
 
-    function setFirstName(data) {
-        firstName = data;
-    }
+  function setFirstName(data) {
+  	firstName = data;
+  }
 
-    async function register() {
-        const data = { username, email, password, firstName };
+  async function register() {
+    const data = { username, email, password, firstName };
 
         try {
             const response = await fetch(base_url.concat('/api/register/'), {
                 method: 'POST',
-                mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data),
             });
+            console.log(JSON.stringify(data))
 
             if (response.ok) {
-                console.log('User registered successfully:');
+                const result = await response.json();
+                console.log('User registered successfully:', result);
             } else {
                 const error = await response.json();
                 console.error('Error:', error);
@@ -104,7 +104,7 @@ export default function Sign_in_page() {
     }
 
     return (
-        <div className="page">
+        <div style={{ padding: "5%" }}>
 
             <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
                 Sign in
@@ -186,5 +186,5 @@ export default function Sign_in_page() {
             </div>
 
         </div>
-    );
+      );
 }
