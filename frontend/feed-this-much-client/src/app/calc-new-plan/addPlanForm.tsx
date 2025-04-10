@@ -61,12 +61,35 @@ function AddPlanForm() {
                                 <Input placeholder="Enter a name for the plan" {...field} />
                             </FormControl>
                             <FormDescription className={undefined}>
-                                Use a memorable name for the plan.
+                                Use a memorable name for the plan. This will be used later to identify your plans.
                             </FormDescription>
                             <FormMessage className={undefined} />
                         </FormItem>
 
 
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="petname"
+                    render={({ field }) => (
+                        <FormItem className={undefined}>
+                            <FormLabel className={undefined}>Pet Name</FormLabel>
+                            <Select onValueChange={(value) => field.onChange(Number(value))} value={field.value?.toString()}>
+                                <FormControl>
+                                    <SelectTrigger className={undefined} >
+                                        <SelectValue placeholder="Select pet" />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent className={undefined} >
+                                    {pets.map((item) => <SelectItem key={item.id} className={undefined} value={item.id.toString()}>{item.name}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                            <FormDescription className={undefined}>
+                                Choose which pet the plan is for.
+                            </FormDescription>
+                            <FormMessage className={undefined} />
+                        </FormItem>
                     )}
                 />
                 <FormField
@@ -109,30 +132,9 @@ function AddPlanForm() {
                                     }}
                                 />
                             ))}
-                            <FormDescription className={undefined}></FormDescription>
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="petname"
-                    render={({ field }) => (
-                        <FormItem className={undefined}>
-                            <FormLabel className={undefined}>Pet Name</FormLabel>
-                            <Select onValueChange={(value) => field.onChange(Number(value))} value={field.value?.toString()}>
-                                <FormControl>
-                                    <SelectTrigger className={undefined} >
-                                        <SelectValue placeholder="Select pet" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent className={undefined} >
-                                    {pets.map((item) => <SelectItem key={item.id} className={undefined} value={item.id.toString()}>{item.name}</SelectItem>)}
-                                </SelectContent>
-                            </Select>
                             <FormDescription className={undefined}>
-                                Please choose a pet
+                                Please choose the foods to include in the plan.
                             </FormDescription>
-                            <FormMessage className={undefined} />
                         </FormItem>
                     )}
                 />
