@@ -30,16 +30,32 @@ def get_pets(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def generate_plan(request):
-    pet = Pet.objects.filter(user=request.user, name=request.petname) # Filter by userID, petname
-    food = Food.objects.filter(user=request.user, name=request.foodname) # Filter by userID, foodname
-    if not pet.exists():
-        return Response(
-            {"error": "No such pet exists"},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-    if not food.exists():
-        return Response(
-            {"error": "No such food exists"},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-    return Response(status=status.HTTP_200_OK)
+     error_message = ""
+     pet = Pet.objects.filter(user=request.user, name=request.petname) # Filter by userID, petname
+     food = Food.objects.filter(user=request.user, name=request.foodname) # Filter by userID, foodname
+     #energy_needs = None
+ 
+     if not pet.exists():
+         error_message = "No such pet exists"
+         if not food.exists():
+             error_message += ", no such food exists"
+         return Response(
+             {"error": error_message},
+             status=status.HTTP_400_BAD_REQUEST
+         )
+ 
+     if not food.exists():
+         error_message = "No such food exists"
+         return Response(
+             {"error": error_message},
+             status=status.HTTP_400_BAD_REQUEST
+         )
+     
+     #if pet.species == "cat":
+         #energy_needs = calorie_calculator.calculate_cat_feeding(pet)
+     #elif pet.species == "dog":
+         #energy_needs = calorie_calculator.calculate_dog_feeding(pet)
+ 
+     # from the food, we get kJ per amount
+     # make energy_needs - food_energy = 0
+     # if overflow, limit to nearest decimal
