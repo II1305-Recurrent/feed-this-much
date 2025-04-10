@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from feed_this_much.pets.models import Pet
-from feed_this_much.feeding.models import Food
 from .serializers import PetSerializer 
 
 @api_view(['POST'])
@@ -24,22 +23,5 @@ def get_pets(request):
         return Response(
             {"message": "No pets yet!"},
             status=status.HTTP_200_OK # 200 OK even if no pets exist
-        )
-    return Response(status=status.HTTP_200_OK)
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def generate_plan(request):
-    pet = Pet.objects.filter(user=request.user, name=request.petname) # Filter by userID, petname
-    food = Food.objects.filter(user=request.user, name=request.foodname) # Filter by userID, foodname
-    if not pet.exists():
-        return Response(
-            {"error": "No such pet exists"},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-    if not food.exists():
-        return Response(
-            {"error": "No such food exists"},
-            status=status.HTTP_400_BAD_REQUEST
         )
     return Response(status=status.HTTP_200_OK)
