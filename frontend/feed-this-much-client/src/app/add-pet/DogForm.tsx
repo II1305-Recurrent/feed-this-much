@@ -180,7 +180,7 @@ function DogForm() {
           />
           <FormField
             control={form.control}
-            name="conditon_score"
+            name="condition_score"
             render={({ field }) => (
             <FormItem className="space-y-3">
               <FormLabel className={undefined}>Select a Body Condition Score</FormLabel>
