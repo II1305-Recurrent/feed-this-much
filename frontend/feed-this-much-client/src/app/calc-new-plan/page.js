@@ -11,7 +11,7 @@ import AddPlanForm from "./addPlanForm"
 export default function foodPage() {
     return (<div style={{padding: "5%"}}>
         <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl">
-            Add Food
+            Create new plan
         </h1>
         <div className="flex justify-center min-h-screen">
         <AddPlanForm />
