@@ -19,7 +19,7 @@ import {
   Users,
 } from "lucide-react"
 
-import {redirect} from "next/navigation"
+import { redirect } from "next/navigation"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
@@ -60,7 +60,7 @@ export default function Header() {
     <header className="navbar">
       <div className="menu-wrapper" style={{ padding: "5%" }}>
         <div className="hamburger-container">
-          <DropdownMenu open = {open} onOpenChange = {setOpen}>
+          <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="hamburger">☰</Button>
             </DropdownMenuTrigger>
@@ -70,19 +70,19 @@ export default function Header() {
                 <DropdownMenuItem onClick={handleClick}>
                   <Home />
                   <Link href="/">
-                  Home
+                    Home
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleClick}>
                   <Info />
                   <Link href="/about">
-                  About us
+                    About us
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleClick}>
                   <Mail />
                   <Link href="/contact">
-                  Contact us
+                    Contact us
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
@@ -90,7 +90,7 @@ export default function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <DropdownMenu accountOpen = {open} onOpenChange = {setAccountOpen}>
+          <DropdownMenu accountOpen={open} onOpenChange={setAccountOpen}>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="profile">
                 <Avatar>
@@ -103,26 +103,33 @@ export default function Header() {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem onClick={handleAccountClick}>
-                  <User />
-                  <Link href="/account">
-                  Account
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/account"
+                    onClick={() => setAccountOpen(false)}>
+                    <User />
+                    <span>Account</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleAccountClick}>
-                  <Settings />
-                  <Link href="/settings">
-                  Settings
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/settings"
+                    onClick={() => setAccountOpen(false)}>
+                    <Settings />
+                    <span>Settings</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleAccountClick}>
-                  <LogOut />
-                  <Link href="/">
-                  Log out
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/"
+                    onClick={() => setAccountOpen(false)}>
+                    <LogOut />
+                    <span>Log out</span>
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
+
 
             </DropdownMenuContent>
           </DropdownMenu>
