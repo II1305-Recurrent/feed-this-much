@@ -33,7 +33,7 @@ import { useModel } from "../Model";
 
 function DogForm() {
     const router = useRouter();
-    const { dog, resetDogFields } = useModel();
+    const { dog, resetDogFields, setDogFields } = useModel();
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPetSchema>>({
         resolver: zodResolver(addPetSchema),
@@ -92,6 +92,38 @@ function DogForm() {
         router.push('/home');
         console.log(values)
     }
+    function handleNameChange(e) {
+        console.log("changed name:", e.target.value);
+        setDogFields({ fieldName: "name", value: e.target.value });
+    }
+    function handleDOBChange(e) {
+        console.log("changed dob:", e.target.value)
+        setDogFields({ fieldName: "dob", value: e.target.value });
+    }
+    function handleWeightChange(e) {
+        console.log("changed weight:", e.target.value)
+        setDogFields({ fieldName: "current_weight", value: e.target.value });
+    }
+    function handlePuppyChange(e) {
+        console.log("changed expected weight:", e.target.value)
+        setDogFields({ fieldName: "expected_weight", value: e.target.value });
+    }
+    function handleUnitChange(v) {
+        console.log("changed unit:", v)
+        setDogFields({ fieldName: "weight_unit", value: v });
+    }
+    function handleNeuteredChange(v) {
+        console.log("neutered:", v)
+        setDogFields({ fieldName: "neutered", value: v });
+    }
+    function handleConditionChange(v) {
+        console.log("condition:", v)
+        setDogFields({ fieldName: "condition_score", value: v });
+    }
+    function handleActivityChange(v) {
+        console.log("activity:", v)
+        setDogFields({ fieldName: "activity_level", value: v });
+    }
 
     return (
         <Form {...form}>
@@ -103,7 +135,11 @@ function DogForm() {
                         <FormItem className={undefined}>
                             <FormLabel className={undefined}>Dog Name</FormLabel>
                             <FormControl>
-                                <Input placeholder="Enter your dog's name" {...field} />
+                                <Input placeholder="Enter your dog's name" {...field} onChange={(e) => {
+                                    // Custom onChange logic
+                                    field.onChange(e); // Call React Hook Form's onChange
+                                    handleNameChange(e); // Call your custom onChange logic
+                                }} />
                             </FormControl>
                             <FormDescription className={undefined}>
                                 This is your pet&apos;s display name.
@@ -119,7 +155,11 @@ function DogForm() {
                         <FormItem className={undefined}>
                             <FormLabel className={undefined}>Enter your dog&apos;s date of birth</FormLabel>
                             <FormControl>
-                                <Input placeholder="YYYY-MM-DD" {...field} />
+                                <Input placeholder="YYYY-MM-DD" {...field} onChange={(e) => {
+                                    // Custom onChange logic
+                                    field.onChange(e); // Call React Hook Form's onChange
+                                    handleDOBChange(e); // Call your custom onChange logic
+                                }} />
                             </FormControl>
                             <FormDescription className={undefined}>
                                 This can be approximate if you aren&apos;t sure, especially if they are an adult.
@@ -135,7 +175,11 @@ function DogForm() {
                         <FormItem className={undefined}>
                             <FormLabel className={undefined}>Enter your dog&apos;s current weight</FormLabel>
                             <FormControl>
-                                <Input placeholder="Enter your dog's weight here" {...field} />
+                                <Input placeholder="Enter your dog's weight here" {...field} onChange={(e) => {
+                                    // Custom onChange logic
+                                    field.onChange(e); // Call React Hook Form's onChange
+                                    handleWeightChange(e); // Call your custom onChange logic
+                                }} />
                             </FormControl>
                             <FormDescription className={undefined}>
                                 Click here for tips on how to weigh your pet.
@@ -152,7 +196,11 @@ function DogForm() {
                             <FormItem className={undefined}>
                                 <FormLabel className={undefined}>Enter your puppy&apos;s expected adult weight</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Enter puppy's expected adult weight here" {...field} />
+                                    <Input placeholder="Enter puppy's expected adult weight here" {...field} onChange={(e) => {
+                                        // Custom onChange logic
+                                        field.onChange(e); // Call React Hook Form's onChange
+                                        handlePuppyChange(e); // Call your custom onChange logic
+                                    }} />
                                 </FormControl>
                                 <FormDescription className={undefined}>
                                     Click here for tips on how to figure out this weight. You may need to adjust this value as your puppy grows and you have a better idea of how big or small they are. If they are over 1 year old, leave this as 1.
@@ -168,7 +216,7 @@ function DogForm() {
                     render={({ field }) => (
                         <FormItem className={undefined}>
                             {/* <FormLabel className={undefined}>Select Unit</FormLabel> */}
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select onValueChange={(v) => { field.onChange(v); handleUnitChange(v) }} defaultValue={field.value}>
                                 <FormControl>
                                     <SelectTrigger className={undefined} >
                                         <SelectValue placeholder="Select Unit" />
@@ -194,7 +242,7 @@ function DogForm() {
                             <FormLabel className={undefined}>Is your dog spayed/neutered?</FormLabel>
                             <FormControl>
                                 <RadioGroup
-                                    onValueChange={field.onChange}
+                                    onValueChange={(v) => { field.onChange(v); handleNeuteredChange(v) }}
                                     defaultValue={field.value}
                                     className="flex flex-col space-y-1"
                                 >
@@ -228,7 +276,7 @@ function DogForm() {
                             <FormLabel className={undefined}>Select a Body Condition Score</FormLabel>
                             <FormControl>
                                 <RadioGroup
-                                    onValueChange={field.onChange}
+                                    onValueChange={(v) => { field.onChange(v); handleConditionChange(v) }}
                                     defaultValue={field.value}
                                     className="flex flex-col space-y-1"
                                 >
@@ -286,7 +334,7 @@ function DogForm() {
                             <FormLabel className={undefined}>Select an activity level</FormLabel>
                             <FormControl>
                                 <RadioGroup
-                                    onValueChange={field.onChange}
+                                    onValueChange={(v) => { field.onChange(v); handleActivityChange(v) }}
                                     defaultValue={field.value}
                                     className="flex flex-col space-y-1"
                                 >
