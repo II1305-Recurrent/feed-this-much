@@ -82,31 +82,24 @@ function CatForm() {
         console.log(values)
     }
     function handleNameChange(e) {
-        console.log("changed name:", e.target.value);
         setCatFields({ fieldName: "name", value: e.target.value });
     }
     function handleDOBChange(e) {
-        console.log("changed dob:", e.target.value)
         setCatFields({ fieldName: "dob", value: e.target.value });
     }
     function handleWeightChange(e) {
-        console.log("changed weight:", e.target.value)
         setCatFields({ fieldName: "current_weight", value: e.target.value });
     }
     function handleUnitChange(v) {
-        console.log("changed unit:", v)
         setCatFields({ fieldName: "weight_unit", value: v });
     }
     function handleNeuteredChange(v) {
-        console.log("neutered:", v)
         setCatFields({ fieldName: "neutered", value: v });
     }
     function handleConditionChange(v) {
-        console.log("condition:", v)
         setCatFields({ fieldName: "condition_score", value: v });
     }
     function handleActivityChange(v) {
-        console.log("activity:", v)
         setCatFields({ fieldName: "activity_level", value: v });
     }
 
