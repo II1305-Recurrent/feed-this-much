@@ -11,7 +11,7 @@ from feed_this_much.feeding import calorie_calculator
 def generate_plan(request):
     error_message = ""
     pet = Pet.objects.filter(user=request.user, name=request.petname) # Filter by userID, petname
-    food = UserFood.objects.filter(user=request.user, name=request.foodname) # Filter by userID, foodname
+    food = UserFood.objects.filter(user=request.user, name=request.food_name) # Filter by userID, foodname
     energy_needs = None
 
     if not pet.exists():
