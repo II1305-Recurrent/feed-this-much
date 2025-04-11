@@ -35,7 +35,7 @@ export default function Home() {
         else {
             console.log(pets[id].name)
             setToDog();
-            setCatFields({ fieldName: "name", value: pets[id].name });
+            setDogFields({ fieldName: "name", value: pets[id].name });
         }
     }
     useEffect(() => {
@@ -53,11 +53,18 @@ export default function Home() {
                 <AccordionItem value="item-1">
                     <AccordionTrigger className="text-lg text-[var(--custom-brown)]">Pets</AccordionTrigger>
                     <AccordionContent>
-                        <div>
+                        <div className="w-full">
                             {pets.map((item) =>
-                                <Button style={{ height: 6 }} variant="ghost" key={item.id} onClick={() => setPetForEditing(item.id)} className="w-full justify-start">
-                                    <p className="text-md text-[var(--custom-brown)]">{item.name}</p>
-                                </Button>)
+                                <div key={item.id} className="flex justify-between w-full h-6">
+                                    <p className="text-md text-[var(--custom-brown)] flex justify-center items-center">{item.name}</p>
+                                    <Button variant="ghost" onClick={() => setPetForEditing(item.id)} className=" flex justify-center items-center">
+                                        <Image
+                                            src="/edit-icon.png"
+                                            alt=""
+                                            width={20}
+                                            height={20}></Image>
+                                    </Button>
+                                </div>)
                             }
                             <div className="inline-flex items-center gap-2 !p-[2px]">
                                 <Button variant="plus" onClick={() => redirect("/add-pet")}>
