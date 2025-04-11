@@ -93,35 +93,27 @@ function DogForm() {
         console.log(values)
     }
     function handleNameChange(e) {
-        console.log("changed name:", e.target.value);
         setDogFields({ fieldName: "name", value: e.target.value });
     }
     function handleDOBChange(e) {
-        console.log("changed dob:", e.target.value)
         setDogFields({ fieldName: "dob", value: e.target.value });
     }
     function handleWeightChange(e) {
-        console.log("changed weight:", e.target.value)
         setDogFields({ fieldName: "current_weight", value: e.target.value });
     }
     function handlePuppyChange(e) {
-        console.log("changed expected weight:", e.target.value)
         setDogFields({ fieldName: "expected_weight", value: e.target.value });
     }
     function handleUnitChange(v) {
-        console.log("changed unit:", v)
         setDogFields({ fieldName: "weight_unit", value: v });
     }
     function handleNeuteredChange(v) {
-        console.log("neutered:", v)
         setDogFields({ fieldName: "neutered", value: v });
     }
     function handleConditionChange(v) {
-        console.log("condition:", v)
         setDogFields({ fieldName: "condition_score", value: v });
     }
     function handleActivityChange(v) {
-        console.log("activity:", v)
         setDogFields({ fieldName: "activity_level", value: v });
     }
 

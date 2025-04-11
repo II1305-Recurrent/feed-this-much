@@ -28,19 +28,16 @@ export default function Home() {
     function setPetForEditing(id) {
         //fetch pet by ID
         if (pets[id].species === "cat") {
-            console.log(pets[id].name)
             setToCat();
             setCatFields({ fieldName: "name", value: pets[id].name });
         }
         else {
-            console.log(pets[id].name)
             setToDog();
             setDogFields({ fieldName: "name", value: pets[id].name });
         }
     }
     useEffect(() => {
         if (cat.name || dog.name) {
-            // After `cat` is updated, redirect
             router.push('/add-pet');
         }
     }, [cat.name, dog.name, router]);
