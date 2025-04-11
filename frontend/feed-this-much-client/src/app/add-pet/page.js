@@ -11,10 +11,10 @@ import { useModel } from "../Model"
 
 
 export default function PetPage() {
-    const { pet, resetCatFields, resetDogFields } = useModel();
+    const { pet, resetCatFields, resetDogFields, cat, dog } = useModel();
     return (<div className="page">
         <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
-            Add new pet
+            {(cat.name || dog.name) ? "Edit pet" : "Add new pet"}
         </h1>
         <div className="flex justify-center min-h-screen">
             <Tabs defaultValue={pet} className="w-[400px]">
