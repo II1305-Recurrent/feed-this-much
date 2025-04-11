@@ -74,7 +74,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',  
+    'django.contrib.messages.middleware.MessageMiddleware', 
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -84,8 +84,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://feedthismuch.com",
 ]
 
-CORS_ALLOWED_ORIGINS =[
-	"https://feedthismuch.com"
+CORS_ALLOWED_ORIGINS = [
+    "https://feedthismuch.com"
 ]
 
 ROOT_URLCONF = 'feed_this_much.urls'
