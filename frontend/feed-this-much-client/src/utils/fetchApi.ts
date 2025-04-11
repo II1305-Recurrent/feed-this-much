@@ -1,16 +1,29 @@
-function getRequest (
-    baseUrl: string,
-    path: string,
-    csrf: boolean): object {
-    
+function getBaseUrl(void): string {
+    let baseUrl = "https://api.feedthismuch.com";
+}
+
+function getCookieByName(name: string | null) {
+    const cookieString = document.cookie;
+    const cookies = cookieString.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(name + '=')) {
+            return cookie.substring(name.length + 1);
+        }
+    }
+    return null;
+}
+
+function getRequest (options: {
+    path: string }): object {
+   
+    const csrftoken = getCookieByName('csrftoken');
+
     let headers = {
         'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken,
     };
     
-    if (csrf) {
-        headers['X-CSRFToken'] = getCookie('csrftoken');
-    }
-
     try {
         const response = await fetch(baseUrl.concat(path), {
             method: 'GET',
@@ -23,10 +36,9 @@ function getRequest (
             const contentType = response.headers.get("content-type");
             if (contentType && contentType.indexOf("application/json") !== -1) {
                 return response.json();
-            }else {
+            } else {
                 return response.text();
             }
-            return result;
         } else {
             const error = await response.json();
             console.error('Error:', error);
@@ -36,18 +48,40 @@ function getRequest (
     }
 }
 
-function postRequest(
-    baseUrl: string,
+function postRequest(options: {
     path: string,
-    headers: object,
-    body: object || null,
-    credentials: string): object {
+    body: object }): object {
+
+    const csrftoken = getCookieByName('csrftoken');
+
+    let headers = {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken,
+    };
+    
+    try {
+        const response = await fetch(baseUrl.concat(path), {
+            method: 'POST',
+            mode: 'cors',
+            headers: headers,
+            credentials: 'include',
+            body: JSON.stringify(body),
+        });
+
+        if (response.ok) {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+                return response.json();
+            } else {
+                return response.text();
+            }
+        } else {
+            const error = await response.json();
+            console.error('Error:', error);
+        }
+    } catch (err) {
+        console.error('Request failed', err);
+    }
 }
 
-function getCookie(name: string) {
-  const cookieValue = document.cookie
-    .split('; ')
-    .find((row) => row.startsWith(name + '='))
-    ?.split('=')[1];
-  return cookieValue ?? null;
-}
+export getCookieByName, getRequest, postRequest;

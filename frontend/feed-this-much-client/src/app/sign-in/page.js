@@ -3,6 +3,7 @@
 import Image from "next/image";
 import styles from "@/app/page.module.css";
 import { Button } from "@/components/ui/button";
+import { getRequest, postRequest } from "@/utils/fetchApi";
 import {
     Card,
     CardContent,
@@ -35,14 +36,6 @@ export default function Sign_in_page() {
     let username = "";
     let first_name = "";
 
-    function getCookie(name) {
-        const cookieValue = document.cookie
-            .split('; ')
-            .find((row) => row.startsWith(name + '='))
-            ?.split('=')[1];
-        return cookieValue ?? null;
-    }
-
     function setPassword(data) {
         password = data;
     }
@@ -69,97 +62,19 @@ export default function Sign_in_page() {
     async function register() {
         const data = { username, email, password, first_name };
         // get csrf token
-        try {
-            const response = await fetch(base_url.concat('/api/register/'), {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                console.log('200');
-            } else {
-                const error = await response.json();
-                console.error('Error:', error);
-            }
-        } catch (err) {
-            console.error('Request failed', err);
-        }
+        getRequest({ path: '/api/register/' });
 
         // register
-        const csrftoken = getCookie('csrftoken');
-        try {
-            const response = await fetch(base_url.concat('/api/register/'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken,
-                },
-                body: JSON.stringify(data),
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                console.log('User registered successfully:', result);
-            } else {
-                const error = await response.json();
-                console.error('Error:', error);
-            }
-        } catch (err) {
-            console.error('Request failed', err);
-        }
+        postRequest({ path: '/api/register/', body: data });
     }
 
     async function login() {
         const data = { username, password };
-
-        try {
-            const response = await fetch(base_url.concat('/api/login/'), {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                console.log('200', result);
-            } else {
-                const error = await response.json();
-                console.error('Error:', error);
-            }
-        } catch (err) {
-            console.error('Request failed', err);
-        }
-
+       
+        // get csrf
+        getRequest({ path: '/api/login/' });
         // proceed with login
-        const csrftoken = getCookie('csrftoken');
-        try {
-            const response = await fetch(base_url.concat('/api/login/'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken,
-                },
-                credentials: 'include',
-                body: JSON.stringify(data),
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                console.log('User logged in successfully:', result);
-                router.push('/home');
-            } else {
-                const error = await response.json();
-                console.error('Error:', error);
-            }
-        } catch (err) {
-            console.error('Request failed', err);
-        }
+        postRequest({ path: '/api/login/', body: data });
     }
 
     return (
