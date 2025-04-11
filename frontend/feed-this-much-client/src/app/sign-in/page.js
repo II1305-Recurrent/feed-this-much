@@ -30,17 +30,22 @@ export default function Sign_in_page() {
         base_url = 'http://localhost:8000';
     }
 
+    function getCSRFToken() {
+        const match = document.cookie.match(/csrftoken=([\w-]+)/);
+        return match ? match[1] : null;
+    }
+
     let email = "";
     let password = "";
     let username = "";
     let first_name = "";
 
     function getCookie(name) {
-      const cookieValue = document.cookie
-        .split('; ')
-        .find((row) => row.startsWith(name + '='))
-        ?.split('=')[1];
-      return cookieValue ?? null;
+        const cookieValue = document.cookie
+            .split('; ')
+            .find((row) => row.startsWith(name + '='))
+            ?.split('=')[1];
+        return cookieValue ?? null;
     }
 
     function setPassword(data) {
@@ -88,41 +93,21 @@ export default function Sign_in_page() {
         } catch (err) {
             console.error('Request failed', err);
         }
-        
-        // register
-        const csrftoken = getCookie('csrftoken');
-        try {
-            const response = await fetch(base_url.concat('/api/register/'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken,
-                },
-                body: JSON.stringify(data),
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                console.log('User registered successfully:', result);
-            } else {
-                const error = await response.json();
-                console.error('Error:', error);
-            }
-        } catch (err) {
-            console.error('Request failed', err);
-        }
     }
+
+    // register
+    const csrftoken = getCookie('csrftoken');
 
     async function login() {
         const data = { username, password };
 
-        // get csrf token
         try {
             const response = await fetch(base_url.concat('/api/login/'), {
                 method: 'GET',
                 mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken(), // Include CSRF token in headers - Sajed
                 },
                 credentials: 'include',
             });
@@ -138,7 +123,7 @@ export default function Sign_in_page() {
         } catch (err) {
             console.error('Request failed', err);
         }
-        
+
         // proceed with login
         const csrftoken = getCookie('csrftoken');
         try {
@@ -250,5 +235,5 @@ export default function Sign_in_page() {
             </div>
 
         </div>
-      );
+    );
 }
