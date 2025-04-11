@@ -61,15 +61,23 @@ function DogForm() {
         return days >= 0 && days <= 365
     })()
 
+    function getCSRFToken() {  //Function to get CSRF token from cookies - Sajed
+        const match = document.cookie.match(/csrftoken=([\w-]+)/);
+        return match ? match[1] : null;
+    }
+
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof addPetSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
+        const csrfToken = getCSRFToken();
         fetch('http://localhost:8000/api/save-pet/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken || '',
             },
+            credentials: 'include',
             body: JSON.stringify(values),
         })
             .then(async response => {

@@ -35,18 +35,19 @@ import { useModel } from "../Model";
 function CatForm() {
     const router = useRouter();
     const { cat, resetCatFields, setCatFields } = useModel();
+
     // 1. Define your form.
     const form = useForm<z.infer<typeof addCatSchema>>({
         resolver: zodResolver(addCatSchema),
         defaultValues: {
-            name: cat.name,
-            dob: cat.dob,
-            current_weight: cat.current_weight as unknown as number,
+            name: "",
+            dob: "",
+            current_weight: "" as unknown as number,
             species: "cat",
-            neutered: cat.neutered,
-            weight_unit: cat.weight_unit,
-            condition_score: cat.condition_score as unknown as number,
-            activity_level: cat.activity_level,
+            neutered: undefined,
+            weight_unit: undefined,
+            condition_score: "3" as unknown as number,
+            activity_level: undefined,
         },
     })
 
@@ -77,10 +78,11 @@ function CatForm() {
             .catch(error => {
                 console.error('Error saving pet:', error);
             });
-        resetCatFields();
         router.push('/home');
         console.log(values)
     }
+
+
     function handleNameChange(e) {
         setCatFields({ fieldName: "name", value: e.target.value });
     }
@@ -332,7 +334,7 @@ function CatForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto !mt-2" variant={undefined} size={undefined}>Submit</Button>
+                <Button type="submit" className={undefined} variant={undefined} size={undefined}>Submit</Button>
             </form>
         </Form>
     )
