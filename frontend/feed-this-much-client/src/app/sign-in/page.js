@@ -107,7 +107,6 @@ export default function Sign_in_page() {
                 mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': getCSRFToken(), // Include CSRF token in headers - Sajed
                 },
                 credentials: 'include',
             });
@@ -115,7 +114,6 @@ export default function Sign_in_page() {
             if (response.ok) {
                 const result = await response.json();
                 console.log('User logged in successfully:', result);
-                router.push('/home');
             } else {
                 const error = await response.json();
                 console.error('Error:', error);
@@ -141,7 +139,6 @@ export default function Sign_in_page() {
             if (response.ok) {
                 const result = await response.json();
                 console.log('User logged in successfully:', result);
-                //window.location.href = '/home';
                 router.push('/home');
             } else {
                 const error = await response.json();
