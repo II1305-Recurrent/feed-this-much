@@ -1,19 +1,32 @@
 function getRequest (
     baseUrl: string,
     path: string,
-    headers: object,
-    credentials: string): object {
+    csrf: boolean): object {
     
+    let headers = {
+        'Content-Type': 'application/json',
+    };
+    
+    if (csrf) {
+        headers['X-CSRFToken'] = getCookie('csrftoken');
+    }
+
     try {
         const response = await fetch(baseUrl.concat(path), {
             method: 'GET',
             mode: 'cors',
             headers: headers,
-            credentials: credentials,
+            credentials: 'include',
         });
 
         if (response.ok) {
-            const result = await response.json();
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+                return response.json();
+            }else {
+                return response.text();
+            }
+            return result;
         } else {
             const error = await response.json();
             console.error('Error:', error);
