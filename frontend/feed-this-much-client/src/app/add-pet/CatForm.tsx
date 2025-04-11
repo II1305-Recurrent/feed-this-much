@@ -18,11 +18,11 @@ import {
 } from "@/components/ui/form"
 
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/select"
 
 import { Input } from "@/components/ui/input"
@@ -30,54 +30,56 @@ import { Input } from "@/components/ui/input"
 import { addCatSchema, type addCatSchemaType } from "@/zod-schemas/cat"
 
 import { useRouter } from "next/navigation";
+import { useModel } from "../Model";
 
 function CatForm() {
     const router = useRouter();
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof addCatSchema>>({
-    resolver: zodResolver(addCatSchema),
-    defaultValues: {
-      name: "",
-      dob: "",
-      current_weight: "" as unknown as number,
-      species: "cat",
-      neutered: undefined,
-      weight_unit: undefined,
-      condition_score: "3" as unknown as number,
-      activity_level: undefined,
-    },
-  })
-
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof addCatSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    fetch('http://localhost:8000/api/save-pet/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
+    const { cat } = useModel();
+    // 1. Define your form.
+    const form = useForm<z.infer<typeof addCatSchema>>({
+        resolver: zodResolver(addCatSchema),
+        defaultValues: {
+            name: cat.name,
+            dob: cat.dob,
+            current_weight: cat.current_weight as unknown as number,
+            species: "cat",
+            neutered: cat.neutered,
+            weight_unit: cat.weight_unit,
+            condition_score: cat.condition_score as unknown as number,
+            activity_level: cat.activity_level,
+        },
     })
-      .then(async response => {
-        if (!response.ok) {
-          throw new Error('Failed to submit');
-        }
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          return await response.json();
-        }
-        return null; // No content
-      })
-      .then(data => {
-        console.log('Pet saved successfully:', data);
-      })
-      .catch(error => {
-        console.error('Error saving pet:', error);
-      });
-    router.push('/home');
-    console.log(values)
-  }
+
+    // 2. Define a submit handler.
+    function onSubmit(values: z.infer<typeof addCatSchema>) {
+        // Do something with the form values.
+        // ✅ This will be type-safe and validated.
+        fetch('http://localhost:8000/api/save-pet/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+        })
+            .then(async response => {
+                if (!response.ok) {
+                    throw new Error('Failed to submit');
+                }
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    return await response.json();
+                }
+                return null; // No content
+            })
+            .then(data => {
+                console.log('Pet saved successfully:', data);
+            })
+            .catch(error => {
+                console.error('Error saving pet:', error);
+            });
+        router.push('/home');
+        console.log(values)
+    }
 
     return (
         <Form {...form}>

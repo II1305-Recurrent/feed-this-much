@@ -29,22 +29,24 @@ import { Input } from "@/components/ui/input"
 
 import { addPetSchema, type addPetSchemaType } from "@/zod-schemas/pet"
 import { useRouter } from "next/navigation";
+import { useModel } from "../Model";
 
 function DogForm() {
     const router = useRouter();
+    const { dog } = useModel();
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPetSchema>>({
         resolver: zodResolver(addPetSchema),
         defaultValues: {
-            name: "",
-            dob: "",
-            current_weight: "" as unknown as number,
-            expected_weight: "" as unknown as number,
+            name: dog.name,
+            dob: dog.dob,
+            current_weight: dog.current_weight as unknown as number,
+            expected_weight: dog.expected_weight as unknown as number,
             species: "dog",
-            neutered: undefined,
-            weight_unit: undefined,
-            condition_score: "3" as unknown as number,
-            activity_level: undefined,
+            neutered: dog.neutered,
+            weight_unit: dog.weight_unit,
+            condition_score: dog.condition_score as unknown as number,
+            activity_level: dog.activity_level,
         },
     })
 
