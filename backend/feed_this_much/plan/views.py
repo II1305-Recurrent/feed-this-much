@@ -4,13 +4,15 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from feed_this_much.pets.models import Pet
 from feed_this_much.food.models import UserFood
-from feed_this_much.feeding import calorie_calculator
+from feed_this_much.plan import calorie_calculator
+from .serializers import PlanSerializer
 
-@api_view(['GET', 'OPTIONS'])
+@api_view(['POST', 'OPTIONS'])
 @permission_classes([IsAuthenticated])
 def generate_plan(request):
+
     error_message = ""
-    pet = Pet.objects.filter(user=request.user, name=request.petname) # Filter by userID, petname
+    pet = Pet.objects.filter(user=request.user, name=request.data.get("pet_id")) # Filter by userID, petname
     food = UserFood.objects.filter(user=request.user, name=request.food_name) # Filter by userID, foodname
     energy_needs = None
 
@@ -51,18 +53,23 @@ def generate_plan(request):
     weight_feedback = f'You need to feed {pet.name} {daily_serving[0]} {daily_serving[1]} of {food.name} a day'
     portion_feedback = f'This equals {daily_serving[0]/food.weight_per_packet} {food.packet_type}(s)'
 
-    #food plan name, pet, food name, energy needs, daily serving in weight amount, daily serving in packet amount
-    #plan_title = None # leave undefined for now
-    #pet_name = pet.name
-    #food_name = food.name
-    #food_serving_type = food.packet_type
-    #daily_energy_needs = energy_needs
-    #daily_food_weight = daily_serving[0]
-    #daily_food_weight_unit = daily_serving[1]
-    #daily_servings_amount = daily_serving[0]/food.weight_per_packet
+    plan_data = {
+        "user": request.user,
+        "pet": pet,
+        "plan_title": request.data.get("plan_title"),
+        "pet_name": pet.name,
+        "food_name": food.food_name,
+        "food_serving_type": food.packet_type,
+        "daily_energy_needs": energy_needs,
+        "daily_food_weight": daily_serving[0],
+        "daily_food_weight_unit": daily_serving[1],
+        "daily_servings_amount": daily_serving[0]/food.weight_per_packet
+    }
 
+    serializer = PlanSerializer(data=plan_data)
 
-    return Response(
-        {"plan": (weight_feedback, portion_feedback)},
-        status=status.HTTP_200_OK
-    )
+    if serializer.is_valid():
+        serializer.save()
+        return Response(status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'feed_this_much.pets',
-    'feed_this_much.food',
+	'feed_this_much.food',
+	'feed_this_much.plan',
     'corsheaders',
     'drf_spectacular'
 ]

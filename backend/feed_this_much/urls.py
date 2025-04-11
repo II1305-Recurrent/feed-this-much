@@ -24,7 +24,7 @@ from feed_this_much.basic import views
 from feed_this_much.pets.views import save_pet, get_pets
 from feed_this_much.food.views import get_foods, save_food
 
-from feed_this_much.feeding.views import generate_plan
+from feed_this_much.plan.views import generate_plan
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
