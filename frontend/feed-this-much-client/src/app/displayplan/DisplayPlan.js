@@ -2,9 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 
-//import sampleData from "./exampleplandata.json";
-
-
 function DisplayPlan() {
 
     const base_url = 'http://localhost:8000'
@@ -60,7 +57,7 @@ function DisplayPlan() {
                 <div>
                     <p>PetName needs X KJ of energy every day</p>
                     <p>This is X grams of {data[0].food_name}.</p>
-                    <p>Give PetName X servingtype of FoodName a day.</p>
+                    <p>Give PetName X servingtype of {data[0].food_name} a day.</p>
                 </div>
             ) : (
                 // Display a loading message or other UI while data is being fetched
