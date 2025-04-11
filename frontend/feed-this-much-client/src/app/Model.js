@@ -28,16 +28,18 @@ export function ModelProvider({ children }) {
     });
     const setCatFields = ({ fieldName, value }) => { setCat((prev) => ({ ...prev, [fieldName]: value })) }
 
-    const resetCatFields = () => setCat({
-        name: "",
-        dob: "",
-        current_weight: "",
-        species: "cat",
-        neutered: undefined,
-        weight_unit: undefined,
-        condition_score: "3",
-        activity_level: undefined,
-    });
+    const resetCatFields = () => {
+        setCat({
+            name: "",
+            dob: "",
+            current_weight: "",
+            species: "cat",
+            neutered: undefined,
+            weight_unit: undefined,
+            condition_score: "3",
+            activity_level: undefined,
+        }); console.log("hey");
+    };
 
     const [dog, setDog] = useState({
         name: "",

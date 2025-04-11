@@ -81,9 +81,33 @@ function CatForm() {
         router.push('/home');
         console.log(values)
     }
-    function handleChange(e) {
+    function handleNameChange(e) {
         console.log("changed name:", e.target.value);
         setCatFields({ fieldName: "name", value: e.target.value });
+    }
+    function handleDOBChange(e) {
+        console.log("changed dob:", e.target.value)
+        setCatFields({ fieldName: "dob", value: e.target.value });
+    }
+    function handleWeightChange(e) {
+        console.log("changed weight:", e.target.value)
+        setCatFields({ fieldName: "current_weight", value: e.target.value });
+    }
+    function handleUnitChange(v) {
+        console.log("changed unit:", v)
+        setCatFields({ fieldName: "weight_unit", value: v });
+    }
+    function handleNeuteredChange(v) {
+        console.log("neutered:", v)
+        setCatFields({ fieldName: "neutered", value: v });
+    }
+    function handleConditionChange(v) {
+        console.log("condition:", v)
+        setCatFields({ fieldName: "condition_score", value: v });
+    }
+    function handleActivityChange(v) {
+        console.log("activity:", v)
+        setCatFields({ fieldName: "activity_level", value: v });
     }
 
     return (
@@ -99,7 +123,7 @@ function CatForm() {
                                 <Input placeholder="Enter your cat's name" {...field} onChange={(e) => {
                                     // Custom onChange logic
                                     field.onChange(e); // Call React Hook Form's onChange
-                                    handleChange(e); // Call your custom onChange logic
+                                    handleNameChange(e); // Call your custom onChange logic
                                 }} />
                             </FormControl>
                             <FormDescription className={undefined}>
@@ -116,7 +140,11 @@ function CatForm() {
                         <FormItem className={undefined}>
                             <FormLabel className={undefined}>Enter your cat&apos;s date of birth</FormLabel>
                             <FormControl>
-                                <Input placeholder="YYYY-MM-DD" {...field} />
+                                <Input placeholder="YYYY-MM-DD" {...field} onChange={(e) => {
+                                    // Custom onChange logic
+                                    field.onChange(e);
+                                    handleDOBChange(e);
+                                }} />
                             </FormControl>
                             <FormDescription className={undefined}>
                                 This can be approximate if you aren&apos;t sure, especially if they are an adult.
@@ -132,7 +160,11 @@ function CatForm() {
                         <FormItem className={undefined}>
                             <FormLabel className={undefined}>Enter your cat&apos;s current weight</FormLabel>
                             <FormControl>
-                                <Input placeholder="Enter your cat's weight here" {...field} />
+                                <Input placeholder="Enter your cat's weight here" {...field} onChange={(e) => {
+                                    // Custom onChange logic
+                                    field.onChange(e); // Call React Hook Form's onChange
+                                    handleWeightChange(e); // Call your custom onChange logic
+                                }} />
                             </FormControl>
                             <FormDescription className={undefined}>
                                 Click here for tips on how to weigh your pet.
@@ -147,7 +179,7 @@ function CatForm() {
                     render={({ field }) => (
                         <FormItem className={undefined}>
                             {/* <FormLabel className={undefined}>Select Unit</FormLabel> */}
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select onValueChange={(v) => { field.onChange(v); handleUnitChange(v) }} defaultValue={field.value}>
                                 <FormControl>
                                     <SelectTrigger className={undefined} >
                                         <SelectValue placeholder="Select Unit" />
@@ -173,7 +205,7 @@ function CatForm() {
                             <FormLabel className={undefined}>Is your cat spayed/neutered?</FormLabel>
                             <FormControl>
                                 <RadioGroup
-                                    onValueChange={field.onChange}
+                                    onValueChange={(v) => { field.onChange(v); handleNeuteredChange(v) }}
                                     defaultValue={field.value}
                                     className="flex flex-col space-y-1"
                                 >
@@ -207,7 +239,7 @@ function CatForm() {
                             <FormLabel className={undefined}>Select a Body Condition Score</FormLabel>
                             <FormControl>
                                 <RadioGroup
-                                    onValueChange={field.onChange}
+                                    onValueChange={(v) => { field.onChange(v); handleConditionChange(v) }}
                                     defaultValue={field.value}
                                     className="flex flex-col space-y-1"
                                 >
@@ -265,7 +297,7 @@ function CatForm() {
                             <FormLabel className={undefined}>Select an activity level</FormLabel>
                             <FormControl>
                                 <RadioGroup
-                                    onValueChange={field.onChange}
+                                    onValueChange={(v) => { field.onChange(v); handleActivityChange(v) }}
                                     defaultValue={field.value}
                                     className="flex flex-col space-y-1"
                                 >
