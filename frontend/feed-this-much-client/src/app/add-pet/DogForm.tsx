@@ -71,7 +71,7 @@ function DogForm() {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         const csrfToken = getCSRFToken();
-        fetch('http://localhost:8000/api/save-pet/', {
+        fetch('https://api.feedthismuch.com/api/save-pet/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -4,7 +4,6 @@ from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
-
 from feed_this_much.basic.serializers import GroupSerializer, UserSerializer, UserRegistrationSerializer
 
 
@@ -25,7 +24,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-@api_view(['GET', 'POST', 'OPTIONS']) # make sure we only get POST request, user making request to change things.
+@api_view(['GET', 'POST', 'OPTIONS'])
 def user_registration(request):
     if request.method == 'GET' or request.method == 'OPTIONS':
         return Response(status=status.HTTP_200_OK)

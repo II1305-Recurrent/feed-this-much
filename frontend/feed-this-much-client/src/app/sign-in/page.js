@@ -30,11 +30,6 @@ export default function Sign_in_page() {
         base_url = 'http://localhost:8000';
     }
 
-    function getCSRFToken() {
-        const match = document.cookie.match(/csrftoken=([\w-]+)/);
-        return match ? match[1] : null;
-    }
-
     let email = "";
     let password = "";
     let username = "";
@@ -77,6 +72,7 @@ export default function Sign_in_page() {
         try {
             const response = await fetch(base_url.concat('/api/register/'), {
                 method: 'GET',
+                mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -85,7 +81,7 @@ export default function Sign_in_page() {
 
             if (response.ok) {
                 const result = await response.json();
-                console.log('User registered successfully:', result);
+                console.log('200');
             } else {
                 const error = await response.json();
                 console.error('Error:', error);
@@ -97,6 +93,26 @@ export default function Sign_in_page() {
 
     // register
     const csrftoken = getCookie('csrftoken');
+    try {
+	const response = await fetch(base_url.concat('/api/register/'), {
+	    method: 'POST',
+	    headers: {
+		'Content-Type': 'application/json',
+		'X-CSRFToken': csrftoken,
+	    },
+	    body: JSON.stringify(data),
+	});
+
+	if (response.ok) {
+	    const result = await response.json();
+	    console.log('User registered successfully:', result);
+	} else {
+	    const error = await response.json();
+	    console.error('Error:', error);
+	}
+    } catch (err) {
+	console.error('Request failed', err);
+    }
 
     async function login() {
         const data = { username, password };
@@ -113,7 +129,7 @@ export default function Sign_in_page() {
 
             if (response.ok) {
                 const result = await response.json();
-                console.log('User logged in successfully:', result);
+                console.log('200', result);
             } else {
                 const error = await response.json();
                 console.error('Error:', error);
