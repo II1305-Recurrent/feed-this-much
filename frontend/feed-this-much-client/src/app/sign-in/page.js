@@ -24,10 +24,10 @@ import { use } from "react";
 
 export default function Sign_in_page() {
     const router = useRouter();
-    const debug = true //for testing purposes
-    let base_url = 'https://api.feedthismuch.com'
+    const debug = false; //for testing purposes
+    let base_url = 'https://api.feedthismuch.com';
     if (debug) {
-        base_url = 'http://localhost:8000'
+        base_url = 'http://localhost:8000';
     }
 
     let email = "";
