@@ -51,6 +51,17 @@ def generate_plan(request):
     weight_feedback = f'You need to feed {pet.name} {daily_serving[0]} {daily_serving[1]} of {food.name} a day'
     portion_feedback = f'This equals {daily_serving[0]/food.weight_per_packet} {food.packet_type}(s)'
 
+    #food plan name, pet, food name, energy needs, daily serving in weight amount, daily serving in packet amount
+    #plan_title = None # leave undefined for now
+    #pet_name = pet.name
+    #food_name = food.name
+    #food_serving_type = food.packet_type
+    #daily_energy_needs = energy_needs
+    #daily_food_weight = daily_serving[0]
+    #daily_food_weight_unit = daily_serving[1]
+    #daily_servings_amount = daily_serving[0]/food.weight_per_packet
+
+
     return Response(
         {"plan": (weight_feedback, portion_feedback)},
         status=status.HTTP_200_OK
