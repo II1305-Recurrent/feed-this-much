@@ -21,7 +21,6 @@ export default function Plan() {
                         height={20} >
                     </Image>
                 </Button></div>
-            <p>hi</p>
             <DisplayPlan />
         </div>
     )

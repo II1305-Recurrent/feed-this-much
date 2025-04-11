@@ -24,7 +24,7 @@ import { use } from "react";
 
 export default function Sign_in_page() {
     const router = useRouter();
-    const debug = false; //for testing purposes
+    const debug = true; //for testing purposes
     let base_url = 'https://api.feedthismuch.com';
     if (debug) {
         base_url = 'http://localhost:8000';
@@ -36,11 +36,11 @@ export default function Sign_in_page() {
     let first_name = "";
 
     function getCookie(name) {
-      const cookieValue = document.cookie
-        .split('; ')
-        .find((row) => row.startsWith(name + '='))
-        ?.split('=')[1];
-      return cookieValue ?? null;
+        const cookieValue = document.cookie
+            .split('; ')
+            .find((row) => row.startsWith(name + '='))
+            ?.split('=')[1];
+        return cookieValue ?? null;
     }
 
     function setPassword(data) {
@@ -88,7 +88,7 @@ export default function Sign_in_page() {
         } catch (err) {
             console.error('Request failed', err);
         }
-        
+
         // register
         const csrftoken = getCookie('csrftoken');
         try {
@@ -138,7 +138,7 @@ export default function Sign_in_page() {
         } catch (err) {
             console.error('Request failed', err);
         }
-        
+
         // proceed with login
         const csrftoken = getCookie('csrftoken');
         try {
@@ -250,5 +250,5 @@ export default function Sign_in_page() {
             </div>
 
         </div>
-      );
+    );
 }

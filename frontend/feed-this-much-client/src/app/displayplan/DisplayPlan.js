@@ -4,7 +4,18 @@ import React, { useState, useEffect } from 'react';
 
 //import sampleData from "./exampleplandata.json";
 
+
 function DisplayPlan() {
+
+    const base_url = 'http://localhost:8000'
+
+    function getCookie(name) {
+        const cookieValue = document.cookie
+            .split('; ')
+            .find((row) => row.startsWith(name + '='))
+            ?.split('=')[1];
+        return cookieValue ?? null;
+    }
 
     // State to store fetched data
     const [data, setData] = useState(null);
@@ -17,34 +28,38 @@ function DisplayPlan() {
     // Function to fetch data
     const fetchData = async () => {
         try {
-            // Make a GET request using the Fetch API
-            const response = await fetch('https://api.feedthismuch.com/api/get-pets/');
+            const csrftoken = getCookie('csrftoken');
+            const response = await fetch(base_url.concat('/api/get-foods/'), {
+                method: 'GET',
+                mode: "cors",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                credentials: "include",
+            });
 
-            // Check if the response is successful (status code 200-299)
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Data got successfully', result);
+                setData(result); // Update the state with the fetched data
+            } else {
+                const error = await response.json();
+                console.error('Error:', error);
             }
-
-            // Parse the JSON data from the response
-            const result = await response.json();
-
-            // Update the state with the fetched data
-            setData(result);
-        } catch (error) {
-            console.error('Error fetching data:', error.message);
+        } catch (err) {
+            console.error('Request failed', err);
         }
     };
 
     // Render component
-    // Render the component
     return (
         <div>
             {data ? (
                 // Display the fetched data
                 <div>
-                    <p>{JSON.stringify(data)}</p>
                     <p>PetName needs X KJ of energy every day</p>
-                    <p>This is X grams of FoodName.</p>
+                    <p>This is X grams of {data[0].food_name}.</p>
                     <p>Give PetName X servingtype of FoodName a day.</p>
                 </div>
             ) : (
