@@ -24,7 +24,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-@api_view(['GET', 'POST', 'OPTIONS']) # make sure we only get POST request, user making request to change things.
+@api_view(['GET', 'POST', 'OPTIONS'])
 @permission_classes([permissions.AllowAny])
 def user_registration(request):
     if request.method == 'GET' or request.method == 'OPTIONS':
@@ -55,6 +55,5 @@ def user_login(request):
 @api_view(['POST', 'OPTIONS'])
 @permission_classes([permissions.IsAuthenticated])
 def user_logout(request):
-    # potentially, we can check status with if request.user.is_authenticated:
     logout(request)
     return Response({"message": "Logout successful"}, status=status.HTTP_200_OK)
