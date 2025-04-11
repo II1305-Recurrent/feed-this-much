@@ -59,8 +59,15 @@ export default function Sign_in_page() {
         first_name = data;
     }
 
-  async function register() {
-    const data = { username, email, password, first_name };
+    function resetData() {
+        email = "";
+        password = "";
+        username = "";
+        first_name = "";
+    }
+
+    async function register() {
+        const data = { username, email, password, first_name };
         // get csrf token
         try {
             const response = await fetch(base_url.concat('/api/register/'), {
@@ -170,8 +177,8 @@ export default function Sign_in_page() {
             <div className="flex justify-center min-h-screen">
                 <Tabs defaultValue="sign-in" className="w-[400px]">
                     <TabsList className="grid w-full grid-cols-2 bg-[var(--custom-pink)]">
-                        <TabsTrigger value="sign-in">Sign-in</TabsTrigger>
-                        <TabsTrigger value="sign-up">Sign-up</TabsTrigger>
+                        <TabsTrigger value="sign-in" onClick={resetData}>Sign-in</TabsTrigger>
+                        <TabsTrigger value="sign-up" onClick={resetData}>Sign-up</TabsTrigger>
                     </TabsList>
                     <TabsContent value="sign-in">
                         <div>
