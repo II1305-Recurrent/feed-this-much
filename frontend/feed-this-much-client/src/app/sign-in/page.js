@@ -89,29 +89,29 @@ export default function Sign_in_page() {
         } catch (err) {
             console.error('Request failed', err);
         }
-    }
 
-    // register
-    const csrftoken = getCookie('csrftoken');
-    try {
-	const response = await fetch(base_url.concat('/api/register/'), {
-	    method: 'POST',
-	    headers: {
-		'Content-Type': 'application/json',
-		'X-CSRFToken': csrftoken,
-	    },
-	    body: JSON.stringify(data),
-	});
+        // register
+        const csrftoken = getCookie('csrftoken');
+        try {
+            const response = await fetch(base_url.concat('/api/register/'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify(data),
+            });
 
-	if (response.ok) {
-	    const result = await response.json();
-	    console.log('User registered successfully:', result);
-	} else {
-	    const error = await response.json();
-	    console.error('Error:', error);
-	}
-    } catch (err) {
-	console.error('Request failed', err);
+            if (response.ok) {
+                const result = await response.json();
+                console.log('User registered successfully:', result);
+            } else {
+                const error = await response.json();
+                console.error('Error:', error);
+            }
+        } catch (err) {
+            console.error('Request failed', err);
+        }
     }
 
     async function login() {

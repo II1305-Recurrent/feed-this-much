@@ -50,8 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'feed_this_much.pets',
-	'feed_this_much.food',
-	'feed_this_much.plan',
+    'feed_this_much.food',
+    'feed_this_much.plan',
     'corsheaders',
     'drf_spectacular'
 ]
@@ -74,7 +74,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware', 
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -134,7 +134,7 @@ if DEBUG:
     ]
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:3000"
-    ]    
+    ]
 
 
 # Password validation
