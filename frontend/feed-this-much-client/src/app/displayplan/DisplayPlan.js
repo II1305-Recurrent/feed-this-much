@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 
 function DisplayPlan() {
 
+    const planID = 0; // This should come from previous selection by the user
+
     const base_url = 'http://localhost:8000'
 
     function getCookie(name) {
@@ -56,8 +58,8 @@ function DisplayPlan() {
                 // Display the fetched data
                 <div>
                     <p>PetName needs X KJ of energy every day</p>
-                    <p>This is X grams of {data[0].food_name}.</p>
-                    <p>Give PetName X servingtype of {data[0].food_name} a day.</p>
+                    <p>This is X grams of {data[planID].food_name}.</p>
+                    <p>Give PetName X servingtype of {data[planID].food_name} a day.</p>
                 </div>
             ) : (
                 // Display a loading message or other UI while data is being fetched
