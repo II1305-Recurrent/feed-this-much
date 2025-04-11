@@ -50,9 +50,6 @@ def generate_plan(request):
     portion_multiplier = energy_needs/energy_given
     daily_serving = (portion_multiplier*food.weight, food.weight_unit)
 
-    weight_feedback = f'You need to feed {pet.name} {daily_serving[0]} {daily_serving[1]} of {food.name} a day'
-    portion_feedback = f'This equals {daily_serving[0]/food.weight_per_packet} {food.packet_type}(s)'
-
     plan_data = {
         "user": request.user,
         "pet": pet,
@@ -70,6 +67,6 @@ def generate_plan(request):
 
     if serializer.is_valid():
         serializer.save()
-        return Response(status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
