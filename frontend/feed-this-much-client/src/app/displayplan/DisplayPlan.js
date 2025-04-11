@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 
-import sampleData from "./exampleplandata.json";
+//import sampleData from "./exampleplandata.json";
 
 function DisplayPlan() {
 
@@ -41,7 +41,12 @@ function DisplayPlan() {
         <div>
             {data ? (
                 // Display the fetched data
-                <p>{JSON.stringify(data)}</p>
+                <div>
+                    <p>{JSON.stringify(data)}</p>
+                    <p>PetName needs X KJ of energy every day</p>
+                    <p>This is X grams of FoodName.</p>
+                    <p>Give PetName X servingtype of FoodName a day.</p>
+                </div>
             ) : (
                 // Display a loading message or other UI while data is being fetched
                 <p>Loading...</p>

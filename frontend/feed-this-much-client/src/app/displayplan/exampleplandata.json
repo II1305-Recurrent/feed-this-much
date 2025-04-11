@@ -1,0 +1,11 @@
+{
+    "planID": "0001",
+    "planTitle": "Fancy Mac",
+    "petName": "Mac",
+    "foodName": "Fancy Chow",
+    "foodServingType": "sachet",
+    "dailyEnergyNeeds": "600",
+    "dailyFoodWeight": "200",
+    "dailyFoodWeightUnit": "grams",
+    "dailyServingsAmount": "2"
+}
