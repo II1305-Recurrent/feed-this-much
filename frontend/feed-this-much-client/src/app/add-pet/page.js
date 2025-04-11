@@ -10,7 +10,7 @@ import Image from "next/image";
 import { useModel } from "../Model"
 
 
-export default function petPage() {
+export default function PetPage() {
     const { pet, resetCatFields, resetDogFields } = useModel();
     return (<div className="page">
         <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
