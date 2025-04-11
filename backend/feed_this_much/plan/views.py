@@ -6,6 +6,7 @@ from feed_this_much.pets.models import Pet
 from feed_this_much.food.models import UserFood
 from feed_this_much.plan import calorie_calculator
 from .serializers import PlanSerializer
+from .models import UserPlan
 
 @api_view(['POST', 'OPTIONS'])
 @permission_classes([IsAuthenticated])
@@ -70,3 +71,15 @@ def generate_plan(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['GET', 'OPTIONS'])
+@permission_classes([IsAuthenticated])
+def get_plans(request):
+    plans = UserPlan.objects.filter(user=request.user) # Filter by userID
+    if not plans.exists():
+        return Response(
+            {"message": "No plans yet!"},
+            status=status.HTTP_200_OK # 200 OK even if no pets exist
+        )
+    serialized_data = PlanSerializer(plans, many=True)
+    return Response(serialized_data.data, status=status.HTTP_200_OK)
