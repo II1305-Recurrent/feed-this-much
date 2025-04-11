@@ -33,7 +33,7 @@ export default function Sign_in_page() {
     let email = "";
     let password = "";
     let username = "";
-    let firstName = "";
+    let first_name = "";
 
     function getCookie(name) {
       const cookieValue = document.cookie
@@ -56,11 +56,11 @@ export default function Sign_in_page() {
     }
 
     function setFirstName(data) {
-        firstName = data;
+        first_name = data;
     }
 
   async function register() {
-    const data = { username, email, password, firstName };
+    const data = { username, email, password, first_name };
         // get csrf token
         try {
             const response = await fetch(base_url.concat('/api/register/'), {
