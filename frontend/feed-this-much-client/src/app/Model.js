@@ -12,6 +12,10 @@ export function ModelProvider({ children }) {
     };
     const setIndex = (value) => setPlanIndex(value)
 
+    const [pet, setPet] = useState("cat");
+    const setToCat = () => setPet("cat");
+    const setToDog = () => setPet("dog");
+
     const [cat, setCat] = useState({
         name: "",
         dob: "",
@@ -22,7 +26,18 @@ export function ModelProvider({ children }) {
         condition_score: "3",
         activity_level: undefined,
     });
-    const setCatFields = ({ fieldName, value }) => setCat((prev) => ({ ...prev, [fieldName]: value }))
+    const setCatFields = ({ fieldName, value }) => { setCat((prev) => ({ ...prev, [fieldName]: value })) }
+
+    const resetCatFields = () => setCat({
+        name: "",
+        dob: "",
+        current_weight: "",
+        species: "cat",
+        neutered: undefined,
+        weight_unit: undefined,
+        condition_score: "3",
+        activity_level: undefined,
+    });
 
     const [dog, setDog] = useState({
         name: "",
@@ -36,8 +51,21 @@ export function ModelProvider({ children }) {
         activity_level: undefined,
     })
     const setDogFields = ({ fieldName, value }) => setDog((prev) => ({ ...prev, [fieldName]: value }))
+
+    const resetDogFields = () => setDog({
+        name: "",
+        dob: "",
+        current_weight: "",
+        expected_weight: "",
+        species: "dog",
+        neutered: undefined,
+        weight_unit: undefined,
+        condition_score: "3",
+        activity_level: undefined,
+    })
+
     return (
-        <ModelContext.Provider value={{ planIndex, getIndex, setIndex, cat, setCatFields, dog, setDogFields }}>
+        <ModelContext.Provider value={{ planIndex, getIndex, setIndex, cat, setCatFields, resetCatFields, dog, setDogFields, resetDogFields, pet, setToDog, setToCat }}>
             {children}
         </ModelContext.Provider>
     );

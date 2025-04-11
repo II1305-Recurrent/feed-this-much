@@ -34,7 +34,7 @@ import { useModel } from "../Model";
 
 function CatForm() {
     const router = useRouter();
-    const { cat } = useModel();
+    const { cat, resetCatFields, setCatFields } = useModel();
     // 1. Define your form.
     const form = useForm<z.infer<typeof addCatSchema>>({
         resolver: zodResolver(addCatSchema),
@@ -77,8 +77,13 @@ function CatForm() {
             .catch(error => {
                 console.error('Error saving pet:', error);
             });
+        resetCatFields();
         router.push('/home');
         console.log(values)
+    }
+    function handleChange(e) {
+        console.log("changed name:", e.target.value);
+        setCatFields({ fieldName: "name", value: e.target.value });
     }
 
     return (
@@ -91,7 +96,11 @@ function CatForm() {
                         <FormItem className={undefined}>
                             <FormLabel className={undefined}>Cat Name</FormLabel>
                             <FormControl>
-                                <Input placeholder="Enter your cat's name" {...field} />
+                                <Input placeholder="Enter your cat's name" {...field} onChange={(e) => {
+                                    // Custom onChange logic
+                                    field.onChange(e); // Call React Hook Form's onChange
+                                    handleChange(e); // Call your custom onChange logic
+                                }} />
                             </FormControl>
                             <FormDescription className={undefined}>
                                 This is your pet&apos;s display name.

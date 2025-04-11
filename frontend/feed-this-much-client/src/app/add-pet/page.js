@@ -7,15 +7,17 @@ import CatForm from "./CatForm"
 import DogForm from "./DogForm"
 import styles from "@/app/page.module.css";
 import Image from "next/image";
+import { useModel } from "../Model"
 
 
 export default function petPage() {
+    const { pet, resetCatFields, resetDogFields } = useModel();
     return (<div className="page">
         <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
             Add new pet
         </h1>
         <div className="flex justify-center min-h-screen">
-            <Tabs defaultValue="sign-in" className="w-[400px]">
+            <Tabs defaultValue={pet} className="w-[400px]">
                 <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="cat">Cat</TabsTrigger>
                     <TabsTrigger value="dog">Dog</TabsTrigger>
@@ -27,7 +29,7 @@ export default function petPage() {
                     <DogForm />
                 </TabsContent>
             </Tabs>
-            <Button variant="destructive" onClick={() => redirect("/home")}>
+            <Button variant="destructive" onClick={() => { resetCatFields(); resetDogFields(); redirect("/home") }}>
                 <Image src="/back-arrow.png"
                     alt=""
                     width={20}
