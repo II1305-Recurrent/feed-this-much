@@ -13,12 +13,37 @@ import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation"
 import { useModel } from "../Model";
 
+import { useEffect } from "react";
+
+import { useRouter } from "next/navigation";
+
 
 export default function Home() {
-    const pets = [{ id: 1, title: "Mac" }]; //will need to be fetched from API
-    const foods = [{ id: 1, title: "Fancy Chow" }];
+    const router = useRouter();
+    const pets = [{ id: 0, name: "Little bitch", species: "cat" }, { id: 1, name: "Poppy", species: "dog" }, { id: 2, name: "Mac", species: "cat" }]
+    const foods = [{ id: 0, name: "Fancy chow" }, { id: 1, name: "Foooood" }]
     const plans = [{ id: 1, title: "Plan 1 for Mac" }];
-    const { setIndex } = useModel();
+    const { setIndex, setCatFields, setDogFields, cat, dog, setToCat, setToDog } = useModel();
+
+    function setPetForEditing(id) {
+        //fetch pet by ID
+        if (pets[id].species === "cat") {
+            console.log(pets[id].name)
+            setToCat();
+            setCatFields({ fieldName: "name", value: pets[id].name });
+        }
+        else {
+            console.log(pets[id].name)
+            setToDog();
+            setCatFields({ fieldName: "name", value: pets[id].name });
+        }
+    }
+    useEffect(() => {
+        if (cat.name || dog.name) {
+            // After `cat` is updated, redirect
+            router.push('/add-pet');
+        }
+    }, [cat.name, dog.name, router]);
     return (
         <div className="page">
             <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
@@ -30,7 +55,9 @@ export default function Home() {
                     <AccordionContent>
                         <div>
                             {pets.map((item) =>
-                                <p className="text-md text-[var(--custom-brown)]" key={item.id}>{item.title}</p>)
+                                <Button style={{ height: 6 }} variant="ghost" key={item.id} onClick={() => setPetForEditing(item.id)} className="w-full justify-start">
+                                    <p className="text-md text-[var(--custom-brown)]">{item.name}</p>
+                                </Button>)
                             }
                             <div className="inline-flex items-center gap-2 !p-[2px]">
                                 <Button variant="plus" onClick={() => redirect("/add-pet")}>
@@ -51,7 +78,7 @@ export default function Home() {
                     <AccordionContent>
                         <div>
                             {foods.map((item) =>
-                                <p className="text-md text-[var(--custom-brown)]" key={item.id}>{item.title}</p>)
+                                <p className="text-md text-[var(--custom-brown)]" key={item.id}>{item.name}</p>)
                             }
                             <div className="inline-flex items-center gap-2 !p-[2px]">
                                 <Button variant="plus" onClick={() => redirect("/add-food")}>
