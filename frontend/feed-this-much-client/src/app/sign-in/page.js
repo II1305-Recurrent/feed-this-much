@@ -23,45 +23,76 @@ import { useRouter } from "next/navigation";
 import { use } from "react";
 
 export default function Sign_in_page() {
-    const debug = false //for testing purposes
+    const router = useRouter();
+    const debug = true //for testing purposes
     let base_url = 'https://api.feedthismuch.com'
     if (debug) {
         base_url = 'http://localhost:8000'
     }
 
-  let email = "";
-  let password = "";
-  let username = "";
-  let firstName = "";
+    let email = "";
+    let password = "";
+    let username = "";
+    let firstName = "";
 
-  function setPassword(data) {
-  	password = data;
-  }
+    function getCookie(name) {
+      const cookieValue = document.cookie
+        .split('; ')
+        .find((row) => row.startsWith(name + '='))
+        ?.split('=')[1];
+      return cookieValue ?? null;
+    }
 
-  function setEmail(data) {
-  	email = data;
-  }
+    function setPassword(data) {
+        password = data;
+    }
 
-  function setUsername(data) {
-  	username = data;
-  }
+    function setEmail(data) {
+        email = data;
+    }
 
-  function setFirstName(data) {
-  	firstName = data;
-  }
+    function setUsername(data) {
+        username = data;
+    }
+
+    function setFirstName(data) {
+        firstName = data;
+    }
 
   async function register() {
     const data = { username, email, password, firstName };
+        // get csrf token
+        try {
+            const response = await fetch(base_url.concat('/api/register/'), {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
 
+            if (response.ok) {
+                const result = await response.json();
+                console.log('User registered successfully:', result);
+            } else {
+                const error = await response.json();
+                console.error('Error:', error);
+            }
+        } catch (err) {
+            console.error('Request failed', err);
+        }
+        
+        // register
+        const csrftoken = getCookie('csrftoken');
         try {
             const response = await fetch(base_url.concat('/api/register/'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
                 },
                 body: JSON.stringify(data),
             });
-            console.log(JSON.stringify(data))
 
             if (response.ok) {
                 const result = await response.json();
@@ -78,12 +109,38 @@ export default function Sign_in_page() {
     async function login() {
         const data = { username, password };
 
+        // get csrf token
+        try {
+            const response = await fetch(base_url.concat('/api/login/'), {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('User logged in successfully:', result);
+                router.push('/home');
+            } else {
+                const error = await response.json();
+                console.error('Error:', error);
+            }
+        } catch (err) {
+            console.error('Request failed', err);
+        }
+        
+        // proceed with login
+        const csrftoken = getCookie('csrftoken');
         try {
             const response = await fetch(base_url.concat('/api/login/'), {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
                 },
                 credentials: 'include',
                 body: JSON.stringify(data),

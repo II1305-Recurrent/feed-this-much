@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = False
+DEBUG = True
 
 if os.getenv('DJANGO_DEBUG'):
 	DEBUG = True
@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'feed_this_much.pets',
-	'feed_this_much.food',
+    'feed_this_much.food',
     'corsheaders',
     'drf_spectacular'
 ]
@@ -67,7 +67,6 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
-
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

@@ -2,9 +2,7 @@ from django.contrib.auth.models import Group, User
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from django.views.decorators.csrf import csrf_exempt
-
+from rest_framework.decorators import api_view, permission_classes
 
 from feed_this_much.basic.serializers import GroupSerializer, UserSerializer, UserRegistrationSerializer
 
@@ -26,18 +24,24 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-@csrf_exempt
-@api_view(['POST', 'OPTIONS']) # make sure we only get POST request, user making request to change things.
+@api_view(['GET', 'POST', 'OPTIONS']) # make sure we only get POST request, user making request to change things.
+@permission_classes([permissions.AllowAny])
 def user_registration(request):
+    if request.method == 'GET' or request.method == 'OPTIONS':
+        return Response(status=status.HTTP_200_OK)
+
     serializer = UserRegistrationSerializer(data=request.data) # input registration data into serializer
     if serializer.is_valid():
         serializer.save() # validates data and calls on UserRegistrationSerializer.create()
         return Response({"message": "User registered successfully!"}, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@csrf_exempt
-@api_view(['POST', 'OPTIONS'])
+@api_view(['GET', 'POST', 'OPTIONS'])
+@permission_classes([permissions.AllowAny])
 def user_login(request):
+    if request.method == 'GET' or request.method == 'OPTIONS':
+        return Response(status=status.HTTP_200_OK)
+
     username = request.data.get("username")
     password = request.data.get("password")
 
@@ -49,6 +53,7 @@ def user_login(request):
     return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST', 'OPTIONS'])
+@permission_classes([permissions.IsAuthenticated])
 def user_logout(request):
     # potentially, we can check status with if request.user.is_authenticated:
     logout(request)
