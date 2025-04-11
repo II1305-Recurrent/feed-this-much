@@ -38,7 +38,7 @@ export function ModelProvider({ children }) {
             weight_unit: undefined,
             condition_score: "3",
             activity_level: undefined,
-        }); console.log("hey");
+        });
     };
 
     const [dog, setDog] = useState({

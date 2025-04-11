@@ -16,7 +16,7 @@ export default function PetPage() {
         return (<div className="page">
             <div className="flex justify-between">
                 <h1 className="scroll-m-20 text-2xl text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
-                    Edit your cat's details
+                    Edit your cat&apos;s details
                 </h1>
                 <Button variant="destructive" onClick={() => { resetCatFields(); redirect("/home") }}>
                     <Image src="/back-arrow.png"
@@ -36,7 +36,7 @@ export default function PetPage() {
         return (<div className="page">
             <div className="flex justify-between">
                 <h1 className="scroll-m-20 text-2xl text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
-                    Edit your dog's details
+                    Edit your dog&apos;s details
                 </h1>
                 <Button variant="destructive" onClick={() => { resetDogFields(); redirect("/home") }}>
                     <Image src="/back-arrow.png"

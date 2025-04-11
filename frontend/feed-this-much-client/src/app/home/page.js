@@ -54,13 +54,22 @@ export default function Home() {
                             {pets.map((item) =>
                                 <div key={item.id} className="flex justify-between w-full h-6">
                                     <p className="text-md text-[var(--custom-brown)] flex justify-center items-center">{item.name}</p>
-                                    <Button variant="ghost" onClick={() => setPetForEditing(item.id)} className=" flex justify-center items-center">
-                                        <Image
-                                            src="/edit-icon.png"
-                                            alt=""
-                                            width={20}
-                                            height={20}></Image>
-                                    </Button>
+                                    <div className=" flex justify-center items-center gap-2">
+                                        <Button variant="ghost" onClick={() => setPetForEditing(item.id)}>
+                                            <Image
+                                                src="/edit-icon.png"
+                                                alt=""
+                                                width={15}
+                                                height={15}></Image>
+                                        </Button>
+                                        <Button variant="ghost" onClick={() => console.log("delete")}>
+                                            <Image
+                                                src="/delete-icon.png"
+                                                alt=""
+                                                width={15}
+                                                height={15}></Image>
+                                        </Button>
+                                    </div>
                                 </div>)
                             }
                             <div className="inline-flex items-center gap-2 !p-[2px]">
@@ -82,7 +91,16 @@ export default function Home() {
                     <AccordionContent>
                         <div>
                             {foods.map((item) =>
-                                <p className="text-md text-[var(--custom-brown)]" key={item.id}>{item.name}</p>)
+                                <div key={item.id} className="flex justify-between w-full h-6">
+                                    <p className="text-md text-[var(--custom-brown)] flex justify-center items-center">{item.name}</p>
+                                    <Button variant="ghost" onClick={() => console.log("delete")}>
+                                        <Image
+                                            src="/delete-icon.png"
+                                            alt=""
+                                            width={15}
+                                            height={15}></Image>
+                                    </Button>
+                                </div>)
                             }
                             <div className="inline-flex items-center gap-2 !p-[2px]">
                                 <Button variant="plus" onClick={() => redirect("/add-food")}>
@@ -103,9 +121,18 @@ export default function Home() {
                     <AccordionContent>
                         <div>
                             {plans.map((item) =>
-                                <Button key={item.id} variant="ghost" onClick={() => { setIndex(item.id); redirect("/plans") }} className="w-full justify-start">
-                                    <p className="text-md text-[var(--custom-brown)] float-left">{item.title}</p>
-                                </Button>)
+                                <div key={item.id} className="flex justify-between w-full h-6">
+                                    <Button key={item.id} variant="ghost" onClick={() => { setIndex(item.id); redirect("/plans") }} className="flex justify-center items-center">
+                                        <p className="text-md text-[var(--custom-brown)] float-left">{item.title}</p>
+                                    </Button>
+                                    <Button variant="ghost" onClick={() => console.log("delete")}>
+                                        <Image
+                                            src="/delete-icon.png"
+                                            alt=""
+                                            width={15}
+                                            height={15}></Image>
+                                    </Button>
+                                </div>)
                             }
                             <div className="inline-flex items-center gap-2 !p-[2px]">
                                 <Button variant="plus" onClick={() => redirect("/calc-new-plan")}>
