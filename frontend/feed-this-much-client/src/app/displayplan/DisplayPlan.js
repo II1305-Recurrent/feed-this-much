@@ -68,9 +68,9 @@ function DisplayPlan() {
                 {petData && foodData ? (
                     // Display the fetched data
                     <div>
-                        <p>{petData[planID].name} needs X KJ of energy every day</p>
-                        <p>This is X grams of {foodData[foodID].food_name}.</p>
-                        <p>Give {petData[planID].name} X {foodData[foodID].packet_type}s of {foodData[foodID].food_name} a day.</p>
+                        <p>{petData[planID].name} needs 600 KJ of energy every day</p>
+                        <p>This is 350 grams of {foodData[foodID].food_name}.</p>
+                        <p>Give {petData[planID].name} 2 {foodData[foodID].packet_type}s of {foodData[foodID].food_name} a day.</p>
                     </div>
                 ) : (
                     // Display a loading message or other UI while data is being fetched
