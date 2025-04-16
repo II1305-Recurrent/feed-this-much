@@ -45,7 +45,7 @@ function AddPlanForm() {
         base_url = 'http://localhost:8000';
     }
 
-    function getCookie(name) {
+    function getCookie(name: string): string | null {
         const cookieValue = document.cookie
             .split('; ')
             .find((row) => row.startsWith(name + '='))
@@ -54,8 +54,8 @@ function AddPlanForm() {
     }
 
     async function getFoods() {
-        const csrftoken = getCookie('csrftoken');
         try {
+            const csrftoken = getCookie('csrftoken');
             const response = await fetch(base_url.concat('/api/get-foods/'), {
                 method: 'GET',
                 mode: 'cors',
@@ -86,8 +86,8 @@ function AddPlanForm() {
 
     async function getPets() {
 
-        const csrftoken = getCookie('csrftoken');
         try {
+            const csrftoken = getCookie('csrftoken');
             const response = await fetch(base_url.concat('/api/get-pets/'), {
                 method: 'GET',
                 mode: 'cors',
@@ -126,17 +126,44 @@ function AddPlanForm() {
         resolver: zodResolver(addPlanSchema),
         defaultValues: {
             title: "Default title", //maybe generate random number based on ids of previous plans?
-            foodname: [],
+            foodname: null,
             petname: null,
         },
     })
 
-    function onSubmit(values: z.infer<typeof addPlanSchema>) {
+    async function onSubmit(values: z.infer<typeof addPlanSchema>) {
+        console.log(values.foodname);
         router.push('/home');
         const form_schema_mapping = {
-            foodname: "food_name",
-            
+            foodname: "food_id",
+            title: "plan_title",
+            petname: "pet_id"
         };
+        const data: Record<string, any> = {};
+        for (const [formKey, apiKey] of Object.entries(form_schema_mapping)) {
+            data[apiKey] = values[formKey as keyof typeof values];
+        }
+        try {
+            const csrftoken = getCookie('csrftoken');
+            const response = await fetch(base_url.concat('/api/generate-plan/'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': ' application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                credentials: 'include',
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                console.log('Info sent to generator');
+            } else {
+                const error = await response.json();
+                console.error('Error:', error);
+            }
+        } catch (err) {
+            console.error('Request failed', err);
+        }
     }
 
 
@@ -187,46 +214,23 @@ function AddPlanForm() {
                 <FormField
                     control={form.control}
                     name="foodname"
-                    render={() => (
+                    render={({ field }) => (
                         <FormItem className={undefined}>
-                            <FormLabel className={undefined}>Food name(s)</FormLabel>
-                            {foods.map((item) => (
-                                <FormField
-                                    key={item.id}
-                                    control={form.control}
-                                    name="foodname"
-                                    render={({ field }) => {
-                                        return (
-                                            <FormItem
-                                                key={item.id}
-                                                className="flex flex-row items-start space-x-3 space-y-0"
-                                            >
-                                                <FormControl>
-                                                    <Checkbox
-                                                        className={undefined}
-                                                        checked={field.value?.includes(item.id)}
-                                                        onCheckedChange={(checked) => {
-                                                            return checked
-                                                                ? field.onChange([...field.value, item.id])
-                                                                : field.onChange(
-                                                                    field.value?.filter(
-                                                                        (value) => value !== item.id
-                                                                    )
-                                                                )
-                                                        }}
-                                                    />
-                                                </FormControl>
-                                                <FormLabel className="text-sm font-normal">
-                                                    {item.food_name}
-                                                </FormLabel>
-                                            </FormItem>
-                                        )
-                                    }}
-                                />
-                            ))}
+                            <FormLabel className={undefined}>Food Name</FormLabel>
+                            <Select onValueChange={(value) => field.onChange(Number(value))} value={field.value?.toString()}>
+                                <FormControl>
+                                    <SelectTrigger className={undefined} >
+                                        <SelectValue placeholder="Select food" />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent className={undefined} >
+                                    {foods.map((item) => <SelectItem key={item.id} className={undefined} value={item.id.toString()}>{item.food_name}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
                             <FormDescription className={undefined}>
-                                Please choose the foods to include in the plan.
+                                Choose which food the plan is using.
                             </FormDescription>
+                            <FormMessage className={undefined} />
                         </FormItem>
                     )}
                 />
