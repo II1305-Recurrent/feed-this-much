@@ -25,11 +25,6 @@ import { use } from "react";
 
 export default function Sign_in_page() {
     const router = useRouter();
-    const debug = false; //for testing purposes
-    let base_url = 'https://api.feedthismuch.com';
-    if (debug) {
-        base_url = 'http://localhost:8000';
-    }
 
     let email = "";
     let password = "";
@@ -62,19 +57,22 @@ export default function Sign_in_page() {
     async function register() {
         const data = { username, email, password, first_name };
         // get csrf token
-        getRequest({ path: '/api/register/' });
+        await getRequest({ path: '/api/register/' });
 
         // register
-        postRequest({ path: '/api/register/', body: data });
+        await postRequest({ path: '/api/register/', body: data });
     }
 
     async function login() {
         const data = { username, password };
        
         // get csrf
-        getRequest({ path: '/api/login/' });
+        await getRequest({ path: '/api/login/' });
         // proceed with login
-        postRequest({ path: '/api/login/', body: data });
+        const resp = await postRequest({ path: '/api/login/', body: data });
+        if (resp.response.ok) {
+            router.push('/home');
+        }
     }
 
     return (

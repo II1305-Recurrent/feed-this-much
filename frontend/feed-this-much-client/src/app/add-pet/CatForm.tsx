@@ -1,11 +1,12 @@
 "use client"
 
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
-import { Button } from "@/components/ui/button"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Button } from "@/components/ui/button";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { getRequest, postRequest } from "@/utils/fetchApi";
 
 import {
     Form,
@@ -52,32 +53,14 @@ function CatForm() {
     })
 
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof addCatSchema>) {
+    async function onSubmit(values: z.infer<typeof addCatSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        fetch('http://localhost:8000/api/save-pet/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(values),
-        })
-            .then(async response => {
-                if (!response.ok) {
-                    throw new Error('Failed to submit');
-                }
-                const contentType = response.headers.get('content-type');
-                if (contentType && contentType.includes('application/json')) {
-                    return await response.json();
-                }
-                return null; // No content
-            })
-            .then(data => {
-                console.log('Pet saved successfully:', data);
-            })
-            .catch(error => {
-                console.error('Error saving pet:', error);
-            });
+        const resp = await postRequest({ path: '/api/save-pet/', body: values });
+
+        if (resp.response.ok) {
+            console.log("Cat saved successfully");
+        }
         router.push('/home');
         console.log(values)
     }
