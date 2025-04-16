@@ -65,8 +65,8 @@ function DogForm() {
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof addPetSchema>) {
-        const resp = await postRequest({ path: '/api/save-pet/', body: values});
-        if (resp.response.ok) {
+        const response = await postRequest({ path: '/api/save-pet/', body: values});
+        if (response.ok) {
             console.log("Pet saved successfully");
         }
         resetDogFields();

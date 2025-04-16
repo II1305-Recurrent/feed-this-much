@@ -69,8 +69,8 @@ export default function Sign_in_page() {
         // get csrf
         await getRequest({ path: '/api/login/' });
         // proceed with login
-        const resp = await postRequest({ path: '/api/login/', body: data });
-        if (resp.response.ok) {
+        const response = await postRequest({ path: '/api/login/', body: data });
+        if (response.ok) {
             router.push('/home');
         }
     }
