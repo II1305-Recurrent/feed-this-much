@@ -1,21 +1,12 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
+import { getRequest, postRequest } from "@/utils/fetchApi";
 
 function DisplayPlan() {
 
     const planID = 0; // This should come from previous selection by the user
     const foodID = 1; // testing only
-
-    const base_url = 'http://localhost:8000';
-
-    function getCookie(name) {
-        const cookieValue = document.cookie
-            .split('; ')
-            .find((row) => row.startsWith(name + '='))
-            ?.split('=')[1];
-        return cookieValue ?? null;
-    }
 
     // State to store fetched data
     const [food, setFood] = useState();
@@ -31,6 +22,34 @@ function DisplayPlan() {
         fetchPetData();
     }, []); // Empty dependency array ensures the effect runs once on mount
 
+
+    // Function to fetch Food data
+    const fetchFoodData = async () => {
+        try {
+            const resp = await getRequest({ path: '/api/get-food/' });
+
+            if (response.ok) {
+                setFood(resp.payload)
+            }
+        } catch (err) {
+            console.error('Request failed', err);
+        }
+    };
+
+    // Function to fetch Pet data
+    const fetchPetData = async () => {
+        try {
+            const resp = await getRequest({ path: '/api/get-pet/' });
+
+            if (response.ok) {
+                setPet(resp.payload)
+            }
+        } catch (err) {
+            console.error('Request failed', err);
+        }
+    };
+
+    /*
     // Function to fetch Food data
     const fetchFoodData = async () => {
         try {
@@ -57,7 +76,9 @@ function DisplayPlan() {
             console.error('Request failed', err);
         }
     };
+    */
 
+    /*
     // Function to fetch Pet data
     const fetchPetData = async () => {
         try {
@@ -84,6 +105,7 @@ function DisplayPlan() {
             console.error('Request failed', err);
         }
     };
+    */
 
     // Silly function to change packet image because I got bored waiting for the plans api
     // Dynamically set image based on packet_type

@@ -15,9 +15,9 @@ function getCookieByName(name: string | null) {
 
 }
 
-async function getRequest ({
-    path 
-}: { 
+async function getRequest({
+    path
+}: {
     path: string;
 }): object {
 
@@ -29,9 +29,9 @@ async function getRequest ({
     if (csrftoken) {
         headers['X-CSRFToken'] = csrftoken;
     }
-    
+
     let baseUrl = getBaseUrl();
-      
+
     try {
         const response = await fetch(baseUrl.concat(path), {
             method: 'GET',
@@ -42,7 +42,7 @@ async function getRequest ({
         if (response.ok) {
             const contentType = response.headers.get("content-type");
             if (contentType && contentType.indexOf("application/json") !== -1) {
-                const respJson =  await response.json();
+                const respJson = await response.json();
 
                 return { "response": response, "payload": respJson };
             } else {
@@ -53,7 +53,7 @@ async function getRequest ({
         } else {
             const error = await response.json();
             console.error('Error:', error);
-            
+
             return false;
         }
     } catch (err) {
@@ -66,7 +66,7 @@ async function getRequest ({
 async function postRequest({
     path,
     body
-}: { 
+}: {
     path: string;
     body: object;
 }): object {
@@ -79,7 +79,7 @@ async function postRequest({
     if (csrftoken) {
         headers['X-CSRFToken'] = csrftoken;
     }
-    
+
     let baseUrl = getBaseUrl();
     try {
         const response = await fetch(baseUrl.concat(path), {
@@ -93,7 +93,7 @@ async function postRequest({
         if (response.ok) {
             const contentType = response.headers.get("content-type");
             if (contentType && contentType.indexOf("application/json") !== -1) {
-                const respJson =  await response.json();
+                const respJson = await response.json();
 
                 return { "response": response, "payload": respJson };
             } else {
@@ -104,7 +104,7 @@ async function postRequest({
         } else {
             const error = await response.json();
             console.error('Error:', error);
-            
+
             return false;
         }
     } catch (err) {
