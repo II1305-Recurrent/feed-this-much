@@ -12,14 +12,13 @@ function getBaseUrl(): string {
 
 function getCookieByName(name: string | null) {
     return Cookies.get(name);
-
 }
 
 async function getRequest({
     path
 }: {
     path: string;
-}): object {
+}): Promise<any> {
 
     let headers = {
         'Content-Type': 'application/json',
@@ -39,27 +38,10 @@ async function getRequest({
             credentials: 'include',
         });
 
-        if (response.ok) {
-            const contentType = response.headers.get("content-type");
-            if (contentType && contentType.indexOf("application/json") !== -1) {
-                const respJson = await response.json();
-
-                return { "response": response, "payload": respJson };
-            } else {
-                const respText = await response.text();
-
-                return { "response": response, "payload": respText };
-            }
-        } else {
-            const error = await response.json();
-            console.error('Error:', error);
-
-            return false;
-        }
+        return await constructReturnObj(response);
     } catch (err) {
         console.error('Request failed', err);
-
-        return false;
+        return await constructReturnObj(null);
     }
 }
 
@@ -69,7 +51,7 @@ async function postRequest({
 }: {
     path: string;
     body: object;
-}): object {
+}): Promise<any> {
 
     let headers = {
         'Content-Type': 'application/json',
@@ -90,28 +72,39 @@ async function postRequest({
             body: JSON.stringify(body),
         });
 
-        if (response.ok) {
-            const contentType = response.headers.get("content-type");
-            if (contentType && contentType.indexOf("application/json") !== -1) {
-                const respJson = await response.json();
-
-                return { "response": response, "payload": respJson };
-            } else {
-                const respText = await response.text();
-
-                return { "response": response, "payload": respText };
-            }
-        } else {
-            const error = await response.json();
-            console.error('Error:', error);
-
-            return false;
-        }
+        return await constructReturnObj(response);
     } catch (err) {
         console.error('Request failed', err);
-
-        return false;
+        return await constructReturnObj(null);
     }
 }
 
+async function getResponsePayload(response: any): Promise<any> {
+    const contentType = response.headers.get("content-type");
+
+    try {
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            return await response.json();
+        } else {
+            return await response.text();
+        }
+    } catch (err) {
+        return null;
+    }
+}
+
+async function constructReturnObj(response: any | null): Promise<any> {
+
+    if (response) {
+        const returnObj = {
+            ok: response.ok,
+            status: response.status,
+            payload: await getResponsePayload(response),
+        }
+
+        return returnObj;
+    }
+
+    return {};
+}
 export { getCookieByName, getRequest, postRequest };
