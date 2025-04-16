@@ -1,33 +1,40 @@
-function getBaseUrl(void): string {
+import Cookies from 'js-cookie';
+
+function getBaseUrl(): string {
+    const debug = true;
+    if (debug) {
+        let baseUrl = "http://localhost:8000";
+        return baseUrl;
+    }
     let baseUrl = "https://api.feedthismuch.com";
+    return baseUrl;
 }
 
 function getCookieByName(name: string | null) {
-    const cookieString = document.cookie;
-    const cookies = cookieString.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        if (cookie.startsWith(name + '=')) {
-            return cookie.substring(name.length + 1);
-        }
-    }
-    return null;
+    return Cookies.get(name);
+
 }
 
-function getRequest (options: {
-    path: string }): object {
-   
-    const csrftoken = getCookieByName('csrftoken');
+async function getRequest ({
+    path 
+}: { 
+    path: string;
+}): object {
 
     let headers = {
         'Content-Type': 'application/json',
-        'X-CSRFToken': csrftoken,
     };
+
+    const csrftoken = getCookieByName('csrftoken');
+    if (csrftoken) {
+        headers['X-CSRFToken'] = csrftoken;
+    }
     
+    let baseUrl = getBaseUrl();
+      
     try {
         const response = await fetch(baseUrl.concat(path), {
             method: 'GET',
-            mode: 'cors',
             headers: headers,
             credentials: 'include',
         });
@@ -35,30 +42,45 @@ function getRequest (options: {
         if (response.ok) {
             const contentType = response.headers.get("content-type");
             if (contentType && contentType.indexOf("application/json") !== -1) {
-                return response.json();
+                const respJson =  await response.json();
+
+                return { "response": response, "payload": respJson };
             } else {
-                return response.text();
+                const respText = await response.text();
+
+                return { "response": response, "payload": respText };
             }
         } else {
             const error = await response.json();
             console.error('Error:', error);
+            
+            return false;
         }
     } catch (err) {
         console.error('Request failed', err);
+
+        return false;
     }
 }
 
-function postRequest(options: {
-    path: string,
-    body: object }): object {
-
-    const csrftoken = getCookieByName('csrftoken');
+async function postRequest({
+    path,
+    body
+}: { 
+    path: string;
+    body: object;
+}): object {
 
     let headers = {
         'Content-Type': 'application/json',
-        'X-CSRFToken': csrftoken,
     };
+
+    const csrftoken = getCookieByName('csrftoken');
+    if (csrftoken) {
+        headers['X-CSRFToken'] = csrftoken;
+    }
     
+    let baseUrl = getBaseUrl();
     try {
         const response = await fetch(baseUrl.concat(path), {
             method: 'POST',
@@ -71,17 +93,25 @@ function postRequest(options: {
         if (response.ok) {
             const contentType = response.headers.get("content-type");
             if (contentType && contentType.indexOf("application/json") !== -1) {
-                return response.json();
+                const respJson =  await response.json();
+
+                return { "response": response, "payload": respJson };
             } else {
-                return response.text();
+                const respText = await response.text();
+
+                return { "response": response, "payload": respText };
             }
         } else {
             const error = await response.json();
             console.error('Error:', error);
+            
+            return false;
         }
     } catch (err) {
         console.error('Request failed', err);
+
+        return false;
     }
 }
 
-export getCookieByName, getRequest, postRequest;
+export { getCookieByName, getRequest, postRequest };

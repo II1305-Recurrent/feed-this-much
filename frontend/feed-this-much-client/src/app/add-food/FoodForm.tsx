@@ -1,11 +1,12 @@
 "use client"
 
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
-import { Button } from "@/components/ui/button"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Button } from "@/components/ui/button";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { getRequest, postRequest } from "@/utils/fetchApi";
 
 import {
     Form,
@@ -33,11 +34,6 @@ import { useRouter } from "next/navigation";
 function FoodForm() {
     const router = useRouter();
 
-    //const base_url = 'https://api.feedthismuch.com'
-    // for testing purposes:
-    const base_url = 'http://localhost:8000'
-
-
     // 1. Define your form.
     const form = useForm<z.infer<typeof addFoodSchema>>({
         resolver: zodResolver(addFoodSchema),
@@ -59,7 +55,6 @@ function FoodForm() {
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof addFoodSchema>) {
-        router.push('/home');
         const form_schema_mapping = {
             foodname: "food_name",
             foodType: "food_type",
@@ -79,34 +74,11 @@ function FoodForm() {
             data[apiKey] = values[formKey as keyof typeof values];
         }
 
-        function getCookie(name: string): string | null {
-            const cookieValue = document.cookie
-                .split('; ')
-                .find((row) => row.startsWith(name + '='))
-                ?.split('=')[1];
-            return cookieValue ?? null;
-        }
+        const resp = await postRequest({ path: '/api/save-food/', body: data });
 
-        try {
-            const csrftoken = getCookie('csrftoken');
-            const response = await fetch(base_url.concat('/api/save-food/'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': ' application/json',
-                    'X-CSRFToken': csrftoken,
-                },
-                credentials: 'include',
-                body: JSON.stringify(data),
-            });
-
-            if (response.ok) {
-                console.log('Food Details Stored Successfully:');
-            } else {
-                const error = await response.json();
-                console.error('Error:', error);
-            }
-        } catch (err) {
-            console.error('Request failed', err);
+        if (resp.response.ok) {
+            console.log("Food saved successfully");
+            router.push('/home');
         }
     }
 
