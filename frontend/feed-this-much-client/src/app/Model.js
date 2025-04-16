@@ -15,6 +15,7 @@ export function ModelProvider({ children }) {
     const [pet, setPet] = useState("cat");
     const setToCat = () => setPet("cat");
     const setToDog = () => setPet("dog");
+    const [edit, setEdit] = useState(false);
 
     const [cat, setCat] = useState({
         name: "",
@@ -66,8 +67,11 @@ export function ModelProvider({ children }) {
         activity_level: undefined,
     })
 
+    const doEdit = () => setEdit(true);
+    const dontEdit = () => setEdit(false);
+
     return (
-        <ModelContext.Provider value={{ planIndex, getIndex, setIndex, cat, setCatFields, resetCatFields, dog, setDogFields, resetDogFields, pet, setToDog, setToCat }}>
+        <ModelContext.Provider value={{ planIndex, getIndex, setIndex, cat, setCatFields, resetCatFields, dog, setDogFields, resetDogFields, pet, setToDog, setToCat, edit, doEdit, dontEdit }}>
             {children}
         </ModelContext.Provider>
     );

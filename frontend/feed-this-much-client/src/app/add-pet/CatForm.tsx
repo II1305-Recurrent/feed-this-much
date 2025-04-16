@@ -35,7 +35,7 @@ import { useModel } from "../Model";
 
 function CatForm() {
     const router = useRouter();
-    const { cat, resetCatFields, setCatFields } = useModel();
+    const { cat, resetCatFields, setCatFields, dontEdit } = useModel();
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof addCatSchema>>({
@@ -51,6 +51,11 @@ function CatForm() {
             activity_level: undefined,
         },
     })
+
+    function getCSRFToken() {  //Function to get CSRF token from cookies - Sajed
+        const match = document.cookie.match(/csrftoken=([\w-]+)/);
+        return match ? match[1] : null;
+    }
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof addCatSchema>) {

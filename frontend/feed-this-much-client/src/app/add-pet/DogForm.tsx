@@ -35,7 +35,8 @@ import { useModel } from "../Model";
 
 function DogForm() {
     const router = useRouter();
-    const { dog, resetDogFields, setDogFields } = useModel();
+    const { dog, resetDogFields, setDogFields, dontEdit } = useModel();
+
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPetSchema>>({
         resolver: zodResolver(addPetSchema),
@@ -65,11 +66,12 @@ function DogForm() {
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof addPetSchema>) {
-        const resp = await postRequest({ path: '/api/save-pet/', body: values});
+        const resp = await postRequest({ path: '/api/save-pet/', body: values });
         if (resp.response.ok) {
             console.log("Pet saved successfully");
         }
         resetDogFields();
+        dontEdit();
         router.push('/home');
     }
     function handleNameChange(e) {
