@@ -23,15 +23,17 @@ export default function Home() {
     const pets = [{ id: 0, name: "Little bitch", species: "cat" }, { id: 1, name: "Poppy", species: "dog" }, { id: 2, name: "Mac", species: "cat" }]
     const foods = [{ id: 0, name: "Fancy chow" }, { id: 1, name: "Foooood" }]
     const plans = [{ id: 1, title: "Plan 1 for Mac" }];
-    const { setIndex, setCatFields, setDogFields, cat, dog, setToCat, setToDog } = useModel();
+    const { setIndex, setCatFields, setDogFields, cat, dog, setToCat, setToDog, doEdit } = useModel();
 
     function setPetForEditing(id) {
         //fetch pet by ID
         if (pets[id].species === "cat") {
+            doEdit();
             setToCat();
             setCatFields({ fieldName: "name", value: pets[id].name });
         }
         else {
+            doEdit();
             setToDog();
             setDogFields({ fieldName: "name", value: pets[id].name });
         }

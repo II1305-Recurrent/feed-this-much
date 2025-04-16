@@ -33,7 +33,7 @@ import { useModel } from "../Model";
 
 function DogForm() {
     const router = useRouter();
-    const { dog, resetDogFields, setDogFields } = useModel();
+    const { dog, resetDogFields, setDogFields, dontEdit } = useModel();
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPetSchema>>({
         resolver: zodResolver(addPetSchema),
@@ -89,6 +89,7 @@ function DogForm() {
                 console.error('Error saving pet:', error);
             });
         resetDogFields();
+        dontEdit();
         router.push('/home');
         console.log(values)
     }

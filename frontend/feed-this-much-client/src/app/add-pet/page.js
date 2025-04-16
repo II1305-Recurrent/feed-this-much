@@ -11,8 +11,8 @@ import { useModel } from "../Model"
 
 
 export default function PetPage() {
-    const { pet, resetCatFields, resetDogFields, cat, dog } = useModel();
-    if (cat.name) {
+    const { pet, resetCatFields, resetDogFields, cat, dog, edit } = useModel();
+    if (edit && cat.name) {
         return (<div className="page">
             <div className="flex justify-between">
                 <h1 className="scroll-m-20 text-2xl text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
@@ -32,7 +32,7 @@ export default function PetPage() {
             </div>
         </div>)
     }
-    else if (dog.name) {
+    else if (edit && dog.name) {
         return (<div className="page">
             <div className="flex justify-between">
                 <h1 className="scroll-m-20 text-2xl text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
