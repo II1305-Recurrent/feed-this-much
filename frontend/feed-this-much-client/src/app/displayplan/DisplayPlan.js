@@ -9,6 +9,7 @@ function DisplayPlan() {
     const [foodData, setFoodData] = useState(null);
     const [petData, setPetData] = useState(null);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetchData() {
@@ -16,32 +17,29 @@ function DisplayPlan() {
                 const foodRes = await getRequest({ path: "/api/get-foods/" });
                 const petRes = await getRequest({ path: "/api/get-pets/" });
 
-                if (foodRes && foodRes.payload) {
-                    setFoodData(foodRes.payload);
-                } else {
-                    throw new Error("Failed to fetch food data.");
+                if (foodRes.ok) {
+                    setFoodData(Array.isArray(foodRes.payload) ? foodRes.payload : []);
                 }
 
-                if (petRes && petRes.payload) {
-                    setPetData(petRes.payload);
-                } else {
-                    throw new Error("Failed to fetch pet data.");
+                if (petRes.ok) {
+                    setPetData(Array.isArray(petRes.payload) ? petRes.payload : []);
                 }
+
             } catch (err) {
                 console.error("Fetch error:", err);
                 setError("Failed to fetch data.");
+            } finally {
+                setLoading(false);
             }
+
         }
 
         fetchData();
     }, []);
 
-    if (error) return <p>{error}</p>;
-    if (!foodData || !petData) return <p>Loading...</p>;
-
     // For testing purposes, using a fixed ID
     const planID = 0;
-    const foodID = 0;
+    const foodID = 1;
 
     // Silly function to change packet image because I got bored waiting for the plans api
     // Dynamically set image based on packet_type
@@ -65,16 +63,20 @@ function DisplayPlan() {
     return (
         <div className="page">
             <div>
-                {petData && foodData ? (
-                    // Display the fetched data
+                {loading ? (
+                    <p>Loading...</p>
+                ) : error ? (
+                    <p>{error}</p>
+                ) : !foodData?.[foodID] || !petData?.[planID] ? (
+                    <p>No pet or food data to display!</p>
+                ) : (
                     <div>
                         <p>{petData[planID].name} needs 600 KJ of energy every day</p>
                         <p>This is 350 grams of {foodData[foodID].food_name}.</p>
-                        <p>Give {petData[planID].name} 2 {foodData[foodID].packet_type}s of {foodData[foodID].food_name} a day.</p>
+                        <p>
+                            Give {petData[planID].name} 2 {foodData[foodID].packet_type}s of {foodData[foodID].food_name} a day.
+                        </p>
                     </div>
-                ) : (
-                    // Display a loading message or other UI while data is being fetched
-                    <p>Loading...</p>
                 )}
             </div>
             <img src={imageToDisplay} width={150} height={150} alt={altTextToDisplay} />
