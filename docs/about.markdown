@@ -3,24 +3,22 @@ layout: post
 title: About
 permalink: /about/
 ---
+# Sprint number 1 
 
-
-#Sprint number 1 
-
-##sprint goal
+## print goal
  The sprint goal is to set up the foundation of the web app and implement features to be able to input details for one pet and one food and generate a basic feeding plan.
 
-##User Stories 
+## User Stories 
 - Setup(tech story)
 - Enter details for one pet and generate a basic feeding plan
 - Enter details for one food 
 
-#Sprint number 2
+# Sprint number 2
 
-##sprint goal
+## sprint goal
 Generating a feeding plan for one pet. 
 
-##User Stories 
+## User Stories 
 - Setup(tech story)
 - Enter details for one pet and generate a basic feeding plan
 - Enter details for one food 
@@ -35,7 +33,7 @@ Generating a feeding plan for one pet.
 - Kinga Koltai
 - Ozan Ali
 
-##Link to demo 
+## Link to demo 
 https://feedthismuch.com/
 
 <!--
