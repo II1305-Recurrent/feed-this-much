@@ -13,9 +13,11 @@ from .models import UserPlan
 def generate_plan(request):
 
     error_message = ""
-    pet = Pet.objects.filter(user=request.user, name=request.data.get("pet_id")) # Filter by userID, petname
-    food = UserFood.objects.filter(user=request.user, name=request.food_name) # Filter by userID, foodname
+    pet = Pet.objects.filter(user=request.user, name=request.data.get("pet_id")).first()
+    food = UserFood.objects.filter(user=request.user, id=request.data.get("food_id")) # Filter by userID, foodname
     energy_needs = None
+    print("pet: ", pet)
+    print(food)
 
     if not pet.exists():
         error_message = "No such pet exists"
@@ -32,7 +34,7 @@ def generate_plan(request):
             status=status.HTTP_400_BAD_REQUEST
         )
     
-    if pet.species == "cat":
+    if pet.species == "Cat":
         energy_needs = calorie_calculator.calculate_cat_feeding(pet)
     elif pet.species == "dog":
         energy_needs = calorie_calculator.calculate_dog_feeding(pet)
@@ -53,7 +55,7 @@ def generate_plan(request):
 
     plan_data = {
         "user": request.user,
-        "pet": pet,
+        "pet_id": pet.id,
         "plan_title": request.data.get("plan_title"),
         "food_name": food.food_name,
         "food_serving_type": food.packet_type,
