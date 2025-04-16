@@ -4,12 +4,14 @@ import datetime
 # returns daily energy needs in kJ
 
 def calculate_cat_feeding(pet):
-    weight = pet.weight
+    weight = pet.current_weight
     if pet.weight_unit == pet.WEIGHT_UNITS[1]:
         weight *= 0.453592
     energy_base = None
     life_stage_factor = None
-    age_months = (datetime.date(pet.dob) - datetime.date.today()).days/12
+    #timestamp = int(datetime.datetime.combine(my_date, datetime.time()).timestamp())
+
+    age_months = (datetime.date.today() - pet.dob).days/(365.25/12)
 
     if (age_months < 12):
         energy_base  = 314
@@ -30,7 +32,7 @@ def calculate_cat_feeding(pet):
 
 def calculate_dog_feeding(pet):
     expected_weight = pet.expected_weight
-    weight = pet.weight
+    weight = pet.current_weight
     if pet.weight_unit == pet.WEIGHT_UNITS[1]:
         weight *= 0.453592
         expected_weight *= 0.453592

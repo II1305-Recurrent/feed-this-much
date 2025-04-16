@@ -13,21 +13,21 @@ from .models import UserPlan
 def generate_plan(request):
 
     error_message = ""
-    pet = Pet.objects.filter(user=request.user, id=request.data.get("pet_id")).first()
-    food = UserFood.objects.filter(user=request.user, id=request.data.get("food_id")) # Filter by userID, foodname
+    pet = Pet.objects.filter(user=request.user, id=request.data['pet_id']).first()
+    food = UserFood.objects.filter(user=request.user, id=request.data['food_id']).first() # Filter by userID, foodname
     energy_needs = None
     print("pet: ", pet)
     print(food)
 
-    if not pet.exists():
+    if not pet:
         error_message = "No such pet exists"
-        if not food.exists():
+        if not food:
             error_message += ", no such food exists"
         return Response(
             {"error": error_message},
             status=status.HTTP_400_BAD_REQUEST
         )
-    if not food.exists():
+    if not food:
         error_message = "No such food exists"
         return Response(
             {"error": error_message},
@@ -54,9 +54,9 @@ def generate_plan(request):
     daily_serving = (portion_multiplier*food.weight, food.weight_unit)
 
     plan_data = {
-        "user": request.user,
-        "pet_id": pet.id,
-        "plan_title": request.data.get("plan_title"),
+        "user": request.user.id,
+        "pet": pet.id,
+        "plan_title": request.data['plan_title'],
         "food_name": food.food_name,
         "food_serving_type": food.packet_type,
         "daily_energy_needs": energy_needs,
@@ -70,7 +70,9 @@ def generate_plan(request):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else: 
+        print("serializer error:", serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'OPTIONS'])
