@@ -47,7 +47,7 @@ export default function Home() {
                 const result = await getRequest({ path: '/api/get-pets/' });
 
                 if (result.ok) {
-                    setPets(result.payload);
+                    setPets(Array.isArray(result.payload) ? result.payload : []);
                 } else {
                     console.error("Failed to fetch pets:", result.error);
                 }
