@@ -11,7 +11,7 @@ We are developing a web app that generates personalized feeding plans for pet ow
 
 The platform is specifically designed for cat and dog owners.
 
-[Link to another page](./about)
+[Learn more about our sprint process](./about)
 
 ## Project Feed This Much
 
