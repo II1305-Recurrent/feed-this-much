@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
     const router = useRouter();
+    const [pets, setPets] = useState([]);
     //const pets = [{ id: 0, name: "Little bitch", species: "cat" }, { id: 1, name: "Poppy", species: "dog" }, { id: 2, name: "Mac", species: "cat" }]
     const foods = [{ id: 0, name: "Fancy chow" }, { id: 1, name: "Foooood" }]
     const plans = [{ id: 1, title: "Plan 1 for Mac" }];
