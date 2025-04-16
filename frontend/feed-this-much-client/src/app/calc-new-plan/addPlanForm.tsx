@@ -69,7 +69,7 @@ function AddPlanForm() {
         getPets();
         getFoods();
         console.log(pets);
-    }, []);
+    });
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPlanSchema>>({
