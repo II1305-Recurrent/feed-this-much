@@ -1,0 +1,90 @@
+services:
+  web:
+    image: traefik:latest
+    container_name: web-traefik
+    restart: always
+    command:
+      - "--log.level=DEBUG"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.websecure.address=:443"
+      - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entryPoints.web.http.redirections.entrypoint.permanent=true"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=oznali2@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  whoami:
+    image: "traefik/whoami"
+    container_name: "simple-service"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.feedthismuch.com`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls.certresolver=myresolver"
+      - "traefik.http.services.whoami.loadbalancer.server.port=80" 
+    depends_on:
+      web:
+        condition: service_started
+
+  backend:
+    image: "backend:latest"
+    restart: "always"
+    container_name: "backend-app"
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_SECRET_KEY: "EMPTY"
+      POSTGRES_HOST: "db"
+      POSTGRES_USER: "feedthismuch"
+      POSTGRES_DB: "feedthismuch" 
+      POSTGRES_PASSWORD: "POSTGRES_PASS"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`api.feedthismuch.com`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls.certresolver=myresolver"
+      - "traefik.http.services.backend.loadbalancer.server.port=8000" 
+    depends_on:
+      web:
+        condition: service_started
+      db:
+        condition: service_started
+
+  frontend:
+    image: "frontend:latest"
+    restart: "always"
+    container_name: "frontend-app"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`feedthismuch.com`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=myresolver"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000" 
+    depends_on:
+      web:
+        condition: service_started
+
+  db:
+    image: "postgres:latest"
+    container_name: "postgres-db"
+    restart: "always"
+    environment:
+      POSTGRES_USER: "feedthismuch"
+      POSTGRES_DB: "feedthismuch" 
+      POSTGRES_PASSWORD: "POSTGRES_PASS"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
