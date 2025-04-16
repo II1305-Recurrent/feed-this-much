@@ -72,7 +72,6 @@ export default function Sign_in_page() {
         try {
             const response = await fetch(base_url.concat('/api/register/'), {
                 method: 'GET',
-                mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -120,7 +119,6 @@ export default function Sign_in_page() {
         try {
             const response = await fetch(base_url.concat('/api/login/'), {
                 method: 'GET',
-                mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -143,7 +141,6 @@ export default function Sign_in_page() {
         try {
             const response = await fetch(base_url.concat('/api/login/'), {
                 method: 'POST',
-                mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': csrftoken,
