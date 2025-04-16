@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
+import { getRequest, postRequest } from "@/utils/fetchApi";
+
+
 import {
     Form,
     FormControl,
@@ -38,79 +41,26 @@ function AddPlanForm() {
     const [pets, setPets] = useState([]);
     const [foods, setFoods] = useState([]);
 
-
-    const debug = true; //for testing purposes
-    let base_url = 'https://api.feedthismuch.com';
-    if (debug) {
-        base_url = 'http://localhost:8000';
-    }
-
-    function getCookie(name: string): string | null {
-        const cookieValue = document.cookie
-            .split('; ')
-            .find((row) => row.startsWith(name + '='))
-            ?.split('=')[1];
-        return cookieValue ?? null;
-    }
-
     async function getFoods() {
-        try {
-            const csrftoken = getCookie('csrftoken');
-            const response = await fetch(base_url.concat('/api/get-foods/'), {
-                method: 'GET',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken,
-                },
-                credentials: 'include',
-            });
-
-            if (response.ok) {
-                const foods = await response.json();
-                if (foods !== "No food yet!"){
-                setFoods(foods);
-                }
-                console.log('Foods fetched successfully:', foods);
-                //window.location.href = '/home';
-            } else {
-                const error = await response.json();
-                console.error('Error:', error);
+        const response = await getRequest({ path: '/api/get-foods/' });
+        if (response.ok) {
+            if (response.payload !== "No food yet") {
+                setFoods(response.payload);
+                console.log("Foods fetched", response.payload);
             }
-        } catch (err) {
-            console.error('Request failed', err);
         }
 
     }
 
-
     async function getPets() {
 
-        try {
-            const csrftoken = getCookie('csrftoken');
-            const response = await fetch(base_url.concat('/api/get-pets/'), {
-                method: 'GET',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken,
-                },
-                credentials: 'include',
-            });
+        const response = await getRequest({ path: '/api/get-pets/' });
 
-            if (response.ok) {
-                const pets = await response.json();
-                if (pets != "No pets yet!"){
-                setPets(pets);
-                }
-                console.log('Pets fetched successfully:', pets);
-                //window.location.href = '/home';
-            } else {
-                const error = await response.json();
-                console.error('Error:', error);
+        if (response.ok) {
+            if (response.payload !== "No pets yet!") {
+                setPets(response.payload);
+                console.log("Pets fetched", response.payload);
             }
-        } catch (err) {
-            console.error('Request failed', err);
         }
 
     }
@@ -143,26 +93,11 @@ function AddPlanForm() {
         for (const [formKey, apiKey] of Object.entries(form_schema_mapping)) {
             data[apiKey] = values[formKey as keyof typeof values];
         }
-        try {
-            const csrftoken = getCookie('csrftoken');
-            const response = await fetch(base_url.concat('/api/generate-plan/'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': ' application/json',
-                    'X-CSRFToken': csrftoken,
-                },
-                credentials: 'include',
-                body: JSON.stringify(data),
-            });
 
-            if (response.ok) {
-                console.log('Info sent to generator');
-            } else {
-                const error = await response.json();
-                console.error('Error:', error);
-            }
-        } catch (err) {
-            console.error('Request failed', err);
+        const response = await postRequest({ path: '/api/generate-plan/', body: data });
+
+        if (response.ok) {
+            console.log("Plan submitted");
         }
     }
 
