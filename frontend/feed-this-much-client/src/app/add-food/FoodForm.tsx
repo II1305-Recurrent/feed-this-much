@@ -74,9 +74,9 @@ function FoodForm() {
             data[apiKey] = values[formKey as keyof typeof values];
         }
 
-        const resp = await postRequest({ path: '/api/save-food/', body: data });
+        const response = await postRequest({ path: '/api/save-food/', body: data });
 
-        if (resp.response.ok) {
+        if (response.ok) {
             console.log("Food saved successfully");
             router.push('/home');
         }
