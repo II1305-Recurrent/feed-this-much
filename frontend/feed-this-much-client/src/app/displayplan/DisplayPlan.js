@@ -41,7 +41,7 @@ function DisplayPlan() {
 
     // For testing purposes, using a fixed ID
     const planID = 0;
-    const foodID = 1;
+    const foodID = 0;
 
     // Silly function to change packet image because I got bored waiting for the plans api
     // Dynamically set image based on packet_type
@@ -77,7 +77,7 @@ function DisplayPlan() {
                     <p>Loading...</p>
                 )}
             </div>
-            <img src={imageToDisplay} alt={altTextToDisplay} />
+            <img src={imageToDisplay} width={150} height={150} alt={altTextToDisplay} />
         </div>
     );
 }
