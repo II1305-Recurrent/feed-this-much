@@ -14,8 +14,10 @@ import { redirect } from "next/navigation"
 import { useModel } from "../Model";
 
 import { useEffect } from "react";
+import { useState } from "react";
 
 import { useRouter } from "next/navigation";
+import { getRequest } from "@/utils/fetchApi";
 
 
 export default function Home() {
@@ -41,6 +43,22 @@ export default function Home() {
             setDogFields({ fieldName: "name", value: selectedPet.name });
         }
     }
+    useEffect(() => {
+        async function fetchPets() {
+            try {
+                const result = await getRequest({ path: '/api/get-pets/' });
+
+                if (result.ok) {
+                    setPets(result.payload);
+                } else {
+                    console.error("Failed to fetch pets:", result.error);
+                }
+            } catch (err) {
+                console.error("Error fetching pets:", err);
+            }
+        }
+        fetchPets();
+    }, []);
     useEffect(() => {
         if (cat.name || dog.name) {
             router.push('/add-pet');

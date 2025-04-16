@@ -52,6 +52,7 @@ function CatForm() {
         },
     })
 
+
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof addCatSchema>) {
         // Do something with the form values.
@@ -60,8 +61,8 @@ function CatForm() {
 
         if (response.ok) {
             console.log("Cat saved successfully");
+            router.push('/home');
         }
-        router.push('/home');
         console.log(values)
     }
 
