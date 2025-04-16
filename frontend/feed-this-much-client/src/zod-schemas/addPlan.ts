@@ -6,10 +6,9 @@ export const addPlanSchema = z.object({
     petname: z.number({
         required_error: "Please choose a pet",
     }),
-    foodname: z.array(z.number(), {
-        required_error: "Please select at least one food",
-    })
-        .min(1, "Please select at least one food"),
+    foodname: z.number({
+        required_error: "Please choose a food",
+    }),
 })
 
 export type addPlanSchemaType = typeof addPlanSchema._type
