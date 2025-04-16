@@ -35,6 +35,11 @@ import { useModel } from "../Model";
 
 function CatForm() {
     const router = useRouter();
+    const debug = false; // for testing purposes
+    let base_url = 'https://api.feedthismuch.com';
+    if (debug) {
+        base_url = 'http://localhost:8000';
+    }
     const { cat, resetCatFields, setCatFields } = useModel();
 
     // 1. Define your form.
@@ -51,6 +56,11 @@ function CatForm() {
             activity_level: undefined,
         },
     })
+
+    function getCSRFToken() {
+        const match = document.cookie.match(/csrftoken=([\w-]+)/);
+        return match ? match[1] : null;
+    }
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof addCatSchema>) {
