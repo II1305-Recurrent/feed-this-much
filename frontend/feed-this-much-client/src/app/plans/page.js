@@ -24,7 +24,7 @@ export default function Plan() {
     return (
         <div className="page">
             <div className="flex justify-between"><h1 className="scroll-m-20 text-2xl text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
-                {plan.title}
+                {plans[0].plan_title}
             </h1>
                 <Button variant="destructive" onClick={() => redirect("/home")}>
                     <Image src="/back-arrow.png"
