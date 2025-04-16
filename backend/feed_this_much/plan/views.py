@@ -13,7 +13,7 @@ from .models import UserPlan
 def generate_plan(request):
 
     error_message = ""
-    pet = Pet.objects.filter(user=request.user, name=request.data.get("pet_id")).first()
+    pet = Pet.objects.filter(user=request.user, id=request.data.get("pet_id")).first()
     food = UserFood.objects.filter(user=request.user, id=request.data.get("food_id")) # Filter by userID, foodname
     energy_needs = None
     print("pet: ", pet)
