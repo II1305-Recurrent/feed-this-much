@@ -4,4 +4,4 @@ from .models import UserPlan
 class PlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPlan
-        fields = ['user', 'pet_id', 'plan_title', 'food_name', 'food_serving_type', 'daily_energy_needs', 'daily_food_weight', 'daily_food_weight_unit', 'daily_servings_amount']
+        fields = ['user', 'pet', 'plan_title', 'food_name', 'food_serving_type', 'daily_energy_needs', 'daily_food_weight', 'daily_food_weight_unit', 'daily_servings_amount']

@@ -12,8 +12,8 @@ class UserPlan(models.Model):
         ('oz', 'ounces')
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null = True)
-    pet_id = models.CharField(max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null = False)
+    pet = models.ForeignKey(User, on_delete=models.CASCADE, related_name = 'user_pet', null = False)
     plan_title = models.CharField(max_length=255)
     food_name = models.CharField(max_length=255)
     food_serving_type = models.CharField(max_length=100, choices=[
