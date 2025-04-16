@@ -35,6 +35,11 @@ import { useModel } from "../Model";
 
 function DogForm() {
     const router = useRouter();
+    const debug = false; // for testing purposes
+    let base_url = 'https://api.feedthismuch.com';
+    if (debug) {
+        base_url = 'http://localhost:8000';
+    }
     const { dog, resetDogFields, setDogFields } = useModel();
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPetSchema>>({
@@ -65,7 +70,7 @@ function DogForm() {
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof addPetSchema>) {
-        const response = await postRequest({ path: '/api/save-pet/', body: values});
+        const response = await postRequest({ path: '/api/save-pet/', body: values });
         if (response.ok) {
             console.log("Pet saved successfully");
         }

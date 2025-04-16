@@ -14,28 +14,48 @@ import { redirect } from "next/navigation"
 import { useModel } from "../Model";
 
 import { useEffect } from "react";
+import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
 
 export default function Home() {
     const router = useRouter();
-    const pets = [{ id: 0, name: "Little bitch", species: "cat" }, { id: 1, name: "Poppy", species: "dog" }, { id: 2, name: "Mac", species: "cat" }]
+    const [pets, setPets] = useState([]);
+    //const pets = [{ id: 0, name: "Little bitch", species: "cat" }, { id: 1, name: "Poppy", species: "dog" }, { id: 2, name: "Mac", species: "cat" }]
     const foods = [{ id: 0, name: "Fancy chow" }, { id: 1, name: "Foooood" }]
     const plans = [{ id: 1, title: "Plan 1 for Mac" }];
     const { setIndex, setCatFields, setDogFields, cat, dog, setToCat, setToDog } = useModel();
 
     function setPetForEditing(id) {
         //fetch pet by ID
-        if (pets[id].species === "cat") {
+        const selectedPet = pets.find(p => p.id === id);
+        if (!selectedPet) return;
+
+        if (selectedPet.species === "cat") {
             setToCat();
-            setCatFields({ fieldName: "name", value: pets[id].name });
-        }
-        else {
+            setCatFields({ fieldName: "name", value: selectedPet.name });
+        } else {
             setToDog();
-            setDogFields({ fieldName: "name", value: pets[id].name });
+            setDogFields({ fieldName: "name", value: selectedPet.name });
         }
     }
+    useEffect(() => {
+        async function fetchPets() {
+            try {
+                const response = await fetch("http://localhost:8000/api/get-pets/", {
+                    credentials: 'include',
+                });
+                if (!response.ok) throw new Error("Failed to fetch pets");
+
+                const data = await response.json();
+                setPets(data);
+            } catch (err) {
+                console.error("Error fetching pets:", err);
+            }
+        }
+        fetchPets();
+    }, []);
     useEffect(() => {
         if (cat.name || dog.name) {
             router.push('/add-pet');
