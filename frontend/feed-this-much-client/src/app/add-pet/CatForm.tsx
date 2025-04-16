@@ -52,18 +52,13 @@ function CatForm() {
         },
     })
 
-    function getCSRFToken() {  //Function to get CSRF token from cookies - Sajed
-        const match = document.cookie.match(/csrftoken=([\w-]+)/);
-        return match ? match[1] : null;
-    }
-
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof addCatSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         const resp = await postRequest({ path: '/api/save-pet/', body: values });
 
-        if (resp.response.ok) {
+        if (response.ok) {
             console.log("Cat saved successfully");
         }
         router.push('/home');
