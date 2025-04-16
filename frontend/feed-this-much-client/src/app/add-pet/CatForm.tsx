@@ -56,7 +56,7 @@ function CatForm() {
     async function onSubmit(values: z.infer<typeof addCatSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        const resp = await postRequest({ path: '/api/save-pet/', body: values });
+        const response = await postRequest({ path: '/api/save-pet/', body: values });
 
         if (response.ok) {
             console.log("Cat saved successfully");
