@@ -65,7 +65,7 @@ export default function Sign_in_page() {
 
     async function login() {
         const data = { username, password };
-       
+
         // get csrf
         await getRequest({ path: '/api/login/' });
         // proceed with login

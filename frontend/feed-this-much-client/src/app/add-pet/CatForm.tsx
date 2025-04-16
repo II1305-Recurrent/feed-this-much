@@ -35,7 +35,7 @@ import { useModel } from "../Model";
 
 function CatForm() {
     const router = useRouter();
-    const { cat, resetCatFields, setCatFields } = useModel();
+    const { cat, resetCatFields, setCatFields, dontEdit } = useModel();
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof addCatSchema>>({

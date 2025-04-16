@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 
 function getBaseUrl(): string {
-    const debug = false;
+    const debug = false; // SET TO FALSE WHEN COMMIT TO MAIN
     if (debug) {
         let baseUrl = "http://localhost:8000";
         return baseUrl;
@@ -14,9 +14,9 @@ function getCookieByName(name: string | null) {
     return Cookies.get(name);
 }
 
-async function getRequest ({
-    path 
-}: { 
+async function getRequest({
+    path
+}: {
     path: string;
 }): Promise<any> {
 
@@ -28,9 +28,9 @@ async function getRequest ({
     if (csrftoken) {
         headers['X-CSRFToken'] = csrftoken;
     }
-    
+
     let baseUrl = getBaseUrl();
-      
+
     try {
         const response = await fetch(baseUrl.concat(path), {
             method: 'GET',
@@ -48,7 +48,7 @@ async function getRequest ({
 async function postRequest({
     path,
     body
-}: { 
+}: {
     path: string;
     body: object;
 }): Promise<any> {
@@ -61,7 +61,7 @@ async function postRequest({
     if (csrftoken) {
         headers['X-CSRFToken'] = csrftoken;
     }
-    
+
     let baseUrl = getBaseUrl();
     try {
         const response = await fetch(baseUrl.concat(path), {
