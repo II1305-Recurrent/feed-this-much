@@ -31,10 +31,95 @@ import { Input } from "@/components/ui/input"
 import { addPlanSchema, type addPlanSchemaType } from "@/zod-schemas/addPlan"
 import { useRouter } from "next/navigation";
 
+import { useEffect, useState } from "react";
+
 function AddPlanForm() {
     const router = useRouter();
-    const pets = [{ id: 0, name: "Little bitch" }, { id: 1, name: "Poppy" }]
-    const foods = [{ id: 0, name: "Fancy chow" }, { id: 1, name: "Foooood" }]
+    const [pets, setPets] = useState([]);
+    const [foods, setFoods] = useState([]);
+
+
+    const debug = true; //for testing purposes
+    let base_url = 'https://api.feedthismuch.com';
+    if (debug) {
+        base_url = 'http://localhost:8000';
+    }
+
+    function getCookie(name) {
+        const cookieValue = document.cookie
+            .split('; ')
+            .find((row) => row.startsWith(name + '='))
+            ?.split('=')[1];
+        return cookieValue ?? null;
+    }
+
+    async function getFoods() {
+        const csrftoken = getCookie('csrftoken');
+        try {
+            const response = await fetch(base_url.concat('/api/get-foods/'), {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                const foods = await response.json();
+                if (foods !== "No food yet!"){
+                setFoods(foods);
+                }
+                console.log('Foods fetched successfully:', foods);
+                //window.location.href = '/home';
+            } else {
+                const error = await response.json();
+                console.error('Error:', error);
+            }
+        } catch (err) {
+            console.error('Request failed', err);
+        }
+
+    }
+
+
+    async function getPets() {
+
+        const csrftoken = getCookie('csrftoken');
+        try {
+            const response = await fetch(base_url.concat('/api/get-pets/'), {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                const pets = await response.json();
+                if (pets != "No pets yet!"){
+                setPets(pets);
+                }
+                console.log('Pets fetched successfully:', pets);
+                //window.location.href = '/home';
+            } else {
+                const error = await response.json();
+                console.error('Error:', error);
+            }
+        } catch (err) {
+            console.error('Request failed', err);
+        }
+
+    }
+
+    useEffect(() => {
+        getPets();
+        getFoods();
+        console.log(pets);
+    }, []);
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPlanSchema>>({
@@ -48,8 +133,12 @@ function AddPlanForm() {
 
     function onSubmit(values: z.infer<typeof addPlanSchema>) {
         router.push('/home');
-        console.log(values)
+        const form_schema_mapping = {
+            foodname: "food_name",
+            
+        };
     }
+
 
     return (
         <Form {...form}>
@@ -59,7 +148,7 @@ function AddPlanForm() {
                     name="title"
                     render={({ field }) => (
                         <FormItem className={undefined}>
-                            <FormLabel className={undefined}>Pet Name</FormLabel>
+                            <FormLabel className={undefined}>Plan Name</FormLabel>
                             <FormControl>
                                 <Input placeholder="Enter a name for the plan" {...field} />
                             </FormControl>
@@ -128,7 +217,7 @@ function AddPlanForm() {
                                                     />
                                                 </FormControl>
                                                 <FormLabel className="text-sm font-normal">
-                                                    {item.name}
+                                                    {item.food_name}
                                                 </FormLabel>
                                             </FormItem>
                                         )
