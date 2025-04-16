@@ -20,22 +20,24 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
     const router = useRouter();
-    const pets = [{ id: 0, name: "Little bitch", species: "cat" }, { id: 1, name: "Poppy", species: "dog" }, { id: 2, name: "Mac", species: "cat" }]
+    //const pets = [{ id: 0, name: "Little bitch", species: "cat" }, { id: 1, name: "Poppy", species: "dog" }, { id: 2, name: "Mac", species: "cat" }]
     const foods = [{ id: 0, name: "Fancy chow" }, { id: 1, name: "Foooood" }]
     const plans = [{ id: 1, title: "Plan 1 for Mac" }];
     const { setIndex, setCatFields, setDogFields, cat, dog, setToCat, setToDog, doEdit } = useModel();
 
     function setPetForEditing(id) {
         //fetch pet by ID
-        if (pets[id].species === "cat") {
+        const selectedPet = pets.find(p => p.id === id);
+        if (!selectedPet) return;
+
+        if (selectedPet.species === "cat") {
             doEdit();
             setToCat();
-            setCatFields({ fieldName: "name", value: pets[id].name });
-        }
-        else {
+            setCatFields({ fieldName: "name", value: selectedPet.name });
+        } else {
             doEdit();
             setToDog();
-            setDogFields({ fieldName: "name", value: pets[id].name });
+            setDogFields({ fieldName: "name", value: selectedPet.name });
         }
     }
     useEffect(() => {
