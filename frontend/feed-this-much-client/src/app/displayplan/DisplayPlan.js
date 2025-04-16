@@ -5,115 +5,51 @@ import { getRequest, postRequest } from "@/utils/fetchApi";
 
 function DisplayPlan() {
 
-    const planID = 0; // This should come from previous selection by the user
-    const foodID = 1; // testing only
-
     // State to store fetched data
-    const [food, setFood] = useState();
-    const [pets, setPet] = useState();
+    const [foodData, setFoodData] = useState(null);
+    const [petData, setPetData] = useState(null);
+    const [error, setError] = useState(null);
 
-    // Effect to fetch data when the component mounts
     useEffect(() => {
-        fetchFoodData();
-    }, []); // Empty dependency array ensures the effect runs once on mount
+        async function fetchData() {
+            try {
+                const foodRes = await getRequest({ path: "/api/get-foods/" });
+                const petRes = await getRequest({ path: "/api/get-pets/" });
 
-    // Effect to fetch data when the component mounts
-    useEffect(() => {
-        fetchPetData();
-    }, []); // Empty dependency array ensures the effect runs once on mount
+                if (foodRes && foodRes.payload) {
+                    setFoodData(foodRes.payload);
+                } else {
+                    throw new Error("Failed to fetch food data.");
+                }
 
-
-    // Function to fetch Food data
-    const fetchFoodData = async () => {
-        try {
-            const resp = await getRequest({ path: '/api/get-food/' });
-
-            if (response.ok) {
-                setFood(resp.payload)
+                if (petRes && petRes.payload) {
+                    setPetData(petRes.payload);
+                } else {
+                    throw new Error("Failed to fetch pet data.");
+                }
+            } catch (err) {
+                console.error("Fetch error:", err);
+                setError("Failed to fetch data.");
             }
-        } catch (err) {
-            console.error('Request failed', err);
         }
-    };
 
-    // Function to fetch Pet data
-    const fetchPetData = async () => {
-        try {
-            const resp = await getRequest({ path: '/api/get-pet/' });
+        fetchData();
+    }, []);
 
-            if (response.ok) {
-                setPet(resp.payload)
-            }
-        } catch (err) {
-            console.error('Request failed', err);
-        }
-    };
+    if (error) return <p>{error}</p>;
+    if (!foodData || !petData) return <p>Loading...</p>;
 
-    /*
-    // Function to fetch Food data
-    const fetchFoodData = async () => {
-        try {
-            const csrftoken = getCookie('csrftoken');
-            const response = await fetch(base_url.concat('/api/get-foods/'), {
-                method: 'GET',
-                mode: "cors",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken,
-                },
-                credentials: "include",
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                console.log('Food Data got successfully', result);
-                setFood(result); // Update the state with the fetched data
-            } else {
-                const error = await response.json();
-                console.error('Error:', error);
-            }
-        } catch (err) {
-            console.error('Request failed', err);
-        }
-    };
-    */
-
-    /*
-    // Function to fetch Pet data
-    const fetchPetData = async () => {
-        try {
-            const csrftoken = getCookie('csrftoken');
-            const response = await fetch(base_url.concat('/api/get-pets/'), {
-                method: 'GET',
-                mode: "cors",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken,
-                },
-                credentials: "include",
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                console.log('Pet Data got successfully', result);
-                setPet(result); // Update the state with the fetched data
-            } else {
-                const error = await response.json();
-                console.error('Error:', error);
-            }
-        } catch (err) {
-            console.error('Request failed', err);
-        }
-    };
-    */
+    // For testing purposes, using a fixed ID
+    const planID = 0;
+    const foodID = 1;
 
     // Silly function to change packet image because I got bored waiting for the plans api
     // Dynamically set image based on packet_type
     let imageToDisplay = "/foodbowl01.png"; // Default image
     const altTextToDisplay = "Food Packet Image"
 
-    if (food && food[foodID]) {
-        const packetType = food[foodID].packet_type;
+    if (foodData && foodData[foodID]) {
+        const packetType = foodData[foodID].packet_type;
         if (packetType === "scoop") {
             imageToDisplay = "/packet_scoop01.png";
         } else if (packetType === "carton") {
@@ -129,12 +65,12 @@ function DisplayPlan() {
     return (
         <div className="page">
             <div>
-                {pets && food ? (
+                {petData && foodData ? (
                     // Display the fetched data
                     <div>
-                        <p>{pets[planID].name} needs X KJ of energy every day</p>
-                        <p>This is X grams of {food[foodID].food_name}.</p>
-                        <p>Give {pets[planID].name} X {food[foodID].packet_type}s of {food[foodID].food_name} a day.</p>
+                        <p>{petData[planID].name} needs X KJ of energy every day</p>
+                        <p>This is X grams of {foodData[foodID].food_name}.</p>
+                        <p>Give {petData[planID].name} X {foodData[foodID].packet_type}s of {foodData[foodID].food_name} a day.</p>
                     </div>
                 ) : (
                     // Display a loading message or other UI while data is being fetched

@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 
 function getBaseUrl(): string {
-    const debug = false;
+    const debug = true;
     if (debug) {
         let baseUrl = "http://localhost:8000";
         return baseUrl;
