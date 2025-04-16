@@ -19,6 +19,7 @@ def save_pet(request):
 @api_view(['GET', 'OPTIONS'])
 @permission_classes([IsAuthenticated])
 def get_pets(request):
+    print("request.user:", request.user)
     pets = Pet.objects.filter(user=request.user) # Filter by userID
     if not pets.exists():
         return Response(
