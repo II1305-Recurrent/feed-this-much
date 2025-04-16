@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 import { useRouter } from "next/navigation";
+import { getRequest } from "@/utils/fetchApi";
 
 
 export default function Home() {
@@ -43,13 +44,13 @@ export default function Home() {
     useEffect(() => {
         async function fetchPets() {
             try {
-                const response = await fetch("http://localhost:8000/api/get-pets/", {
-                    credentials: 'include',
-                });
-                if (!response.ok) throw new Error("Failed to fetch pets");
+                const result = await getRequest({ path: '/api/get-pets/' });
 
-                const data = await response.json();
-                setPets(data);
+                if (result.response.ok) {
+                    setPets(result.payload);
+                } else {
+                    console.error("Failed to fetch pets:", result.error);
+                }
             } catch (err) {
                 console.error("Error fetching pets:", err);
             }
