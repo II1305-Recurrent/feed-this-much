@@ -23,9 +23,12 @@ import { getRequest } from "@/utils/fetchApi";
 export default function Home() {
     const router = useRouter();
     const [pets, setPets] = useState([]);
+    const [foods, setFoods] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
     //const pets = [{ id: 0, name: "Little bitch", species: "cat" }, { id: 1, name: "Poppy", species: "dog" }, { id: 2, name: "Mac", species: "cat" }]
-    const foods = [{ id: 0, name: "Fancy chow" }, { id: 1, name: "Foooood" }]
-    const plans = [{ id: 1, title: "Plan 1 for Mac" }];
+    //const foods = [{ id: 0, name: "Fancy chow" }, { id: 1, name: "Foooood" }]
+    const plans = [{ id: 1, title: "Test Plan" }];
     const { setIndex, setCatFields, setDogFields, cat, dog, setToCat, setToDog, doEdit } = useModel();
 
     function setPetForEditing(id) {
@@ -44,20 +47,29 @@ export default function Home() {
         }
     }
     useEffect(() => {
-        async function fetchPets() {
+        async function fetchData() {
             try {
-                const result = await getRequest({ path: '/api/get-pets/' });
+                const foodRes = await getRequest({ path: "/api/get-foods/" });
+                const petRes = await getRequest({ path: "/api/get-pets/" });
 
-                if (result.ok) {
-                    setPets(Array.isArray(result.payload) ? result.payload : []);
-                } else {
-                    console.error("Failed to fetch pets:", result.error);
+                if (foodRes.ok) {
+                    setFoods(Array.isArray(foodRes.payload) ? foodRes.payload : []);
                 }
+
+                if (petRes.ok) {
+                    setPets(Array.isArray(petRes.payload) ? petRes.payload : []);
+                }
+
             } catch (err) {
-                console.error("Error fetching pets:", err);
+                console.error("Fetch error:", err);
+                setError("Failed to fetch data.");
+            } finally {
+                setLoading(false);
             }
+
         }
-        fetchPets();
+
+        fetchData();
     }, []);
     useEffect(() => {
         if (cat.name || dog.name) {
@@ -74,27 +86,30 @@ export default function Home() {
                     <AccordionTrigger className="text-lg text-[var(--custom-brown)]">Pets</AccordionTrigger>
                     <AccordionContent>
                         <div className="w-full">
-                            {pets.map((item) =>
-                                <div key={item.id} className="flex justify-between w-full h-6">
-                                    <p className="text-md text-[var(--custom-brown)] flex justify-center items-center">{item.name}</p>
-                                    <div className=" flex justify-center items-center gap-2">
-                                        <Button variant="ghost" onClick={() => setPetForEditing(item.id)}>
-                                            <Image
-                                                src="/edit-icon.png"
-                                                alt=""
-                                                width={15}
-                                                height={15}></Image>
-                                        </Button>
-                                        <Button variant="ghost" onClick={() => console.log("delete")}>
-                                            <Image
-                                                src="/delete-icon.png"
-                                                alt=""
-                                                width={15}
-                                                height={15}></Image>
-                                        </Button>
+                            {pets.map((item) => {
+                                console.log('Rendering petItem:', item);
+                                return (
+                                    <div key={item.id} className="flex justify-between w-full h-6">
+                                        <p className="text-md text-[var(--custom-brown)] flex justify-center items-center">{item.name}</p>
+                                        <div className=" flex justify-center items-center gap-2">
+                                            <Button variant="ghost" onClick={() => setPetForEditing(item.id)}>
+                                                <Image
+                                                    src="/edit-icon.png"
+                                                    alt=""
+                                                    width={15}
+                                                    height={15}></Image>
+                                            </Button>
+                                            <Button variant="ghost" onClick={() => console.log("delete")}>
+                                                <Image
+                                                    src="/delete-icon.png"
+                                                    alt=""
+                                                    width={15}
+                                                    height={15}></Image>
+                                            </Button>
+                                        </div>
                                     </div>
-                                </div>)
-                            }
+                                );
+                            })}
                             <div className="inline-flex items-center gap-2 !p-[2px]">
                                 <Button variant="plus" onClick={() => redirect("/add-pet")}>
                                     <Image src="/plus-sign-circle-icon.png"
@@ -113,18 +128,21 @@ export default function Home() {
                     <AccordionTrigger className="text-lg text-[var(--custom-brown)]">Food</AccordionTrigger>
                     <AccordionContent>
                         <div>
-                            {foods.map((item) =>
-                                <div key={item.id} className="flex justify-between w-full h-6">
-                                    <p className="text-md text-[var(--custom-brown)] flex justify-center items-center">{item.name}</p>
-                                    <Button variant="ghost" onClick={() => console.log("delete")}>
-                                        <Image
-                                            src="/delete-icon.png"
-                                            alt=""
-                                            width={15}
-                                            height={15}></Image>
-                                    </Button>
-                                </div>)
-                            }
+                            {foods.map((foodItem) => {
+                                console.log('Rendering foodItem:', foodItem);
+                                return (
+                                    <div key={foodItem.id} className="flex justify-between w-full h-6">
+                                        <p className="text-md text-[var(--custom-brown)] flex justify-center items-center">{foodItem.food_name}</p>
+                                        <Button variant="ghost" onClick={() => console.log("delete")}>
+                                            <Image
+                                                src="/delete-icon.png"
+                                                alt=""
+                                                width={15}
+                                                height={15}></Image>
+                                        </Button>
+                                    </div>
+                                );
+                            })}
                             <div className="inline-flex items-center gap-2 !p-[2px]">
                                 <Button variant="plus" onClick={() => redirect("/add-food")}>
                                     <Image src="/plus-sign-circle-icon.png"
@@ -145,7 +163,7 @@ export default function Home() {
                         <div>
                             {plans.map((item) =>
                                 <div key={item.id} className="flex justify-between w-full h-6">
-                                    <Button key={item.id} variant="ghost" onClick={() => { setIndex(item.id); redirect("/plans") }} className="flex justify-center items-center">
+                                    <Button key={item.id} variant="ghost" onClick={() => { setIndex(item.id); redirect("/displayplan") }} className="flex justify-center items-center">
                                         <p className="text-md text-[var(--custom-brown)] float-left">{item.title}</p>
                                     </Button>
                                     <Button variant="ghost" onClick={() => console.log("delete")}>
