@@ -12,17 +12,12 @@ from .models import UserPlan
 @permission_classes([IsAuthenticated])
 def generate_plan(request):
 
-    error_message = ""
     pet = Pet.objects.filter(user=request.user, id=request.data['pet_id']).first()
     food = UserFood.objects.filter(user=request.user, id=request.data['food_id']).first() # Filter by userID, foodname
     energy_needs = None
-    print("pet: ", pet)
-    print(food)
 
     if not pet:
         error_message = "No such pet exists"
-        if not food:
-            error_message += ", no such food exists"
         return Response(
             {"error": error_message},
             status=status.HTTP_400_BAD_REQUEST
@@ -71,7 +66,6 @@ def generate_plan(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     else: 
-        print("serializer error:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
