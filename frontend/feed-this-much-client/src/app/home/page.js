@@ -24,11 +24,12 @@ export default function Home() {
     const router = useRouter();
     const [pets, setPets] = useState([]);
     const [foods, setFoods] = useState([]);
+    const [plans, setPlans] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     //const pets = [{ id: 0, name: "Little bitch", species: "cat" }, { id: 1, name: "Poppy", species: "dog" }, { id: 2, name: "Mac", species: "cat" }]
     //const foods = [{ id: 0, name: "Fancy chow" }, { id: 1, name: "Foooood" }]
-    const plans = [{ id: 1, title: "Test Plan" }];
+    //const plans = [{ id: 1, title: "Test Plan" }];
     const { setIndex, setCatFields, setDogFields, cat, dog, setToCat, setToDog, doEdit } = useModel();
 
     function setPetForEditing(id) {
@@ -51,6 +52,7 @@ export default function Home() {
             try {
                 const foodRes = await getRequest({ path: "/api/get-foods/" });
                 const petRes = await getRequest({ path: "/api/get-pets/" });
+                const planRes = await getRequest({ path: "/api/get-plans/" });
 
                 if (foodRes.ok) {
                     setFoods(Array.isArray(foodRes.payload) ? foodRes.payload : []);
@@ -58,6 +60,10 @@ export default function Home() {
 
                 if (petRes.ok) {
                     setPets(Array.isArray(petRes.payload) ? petRes.payload : []);
+                }
+
+                if (planRes.ok) {
+                    setPlans(Array.isArray(planRes.payload) ? planRes.payload : []);
                 }
 
             } catch (err) {
@@ -161,20 +167,24 @@ export default function Home() {
                     <AccordionTrigger className="text-lg text-[var(--custom-brown)]">Feeding plans</AccordionTrigger>
                     <AccordionContent>
                         <div>
-                            {plans.map((item) =>
-                                <div key={item.id} className="flex justify-between w-full h-6">
-                                    <Button key={item.id} variant="ghost" onClick={() => { setIndex(item.id); redirect("/displayplan") }} className="flex justify-center items-center">
-                                        <p className="text-md text-[var(--custom-brown)] float-left">{item.title}</p>
-                                    </Button>
-                                    <Button variant="ghost" onClick={() => console.log("delete")}>
-                                        <Image
-                                            src="/delete-icon.png"
-                                            alt=""
-                                            width={15}
-                                            height={15}></Image>
-                                    </Button>
-                                </div>)
-                            }
+                            {plans.map((item) => {
+                                console.log('Rendering planItem:', item);
+                                return (
+                                    //TODO: CHANGE WHEN ID IS ADDED TO PLAN SERIALIZER
+                                    <div key={/*item.id*/item.plan_title} className="flex justify-between w-full h-6">
+                                        <Button key={item.id} variant="ghost" onClick={() => { setIndex(item.id); redirect("/displayplan") }} className="flex justify-center items-center">
+                                            <p className="text-md text-[var(--custom-brown)] float-left">{item.plan_title}</p>
+                                        </Button>
+                                        <Button variant="ghost" onClick={() => console.log("delete")}>
+                                            <Image
+                                                src="/delete-icon.png"
+                                                alt=""
+                                                width={15}
+                                                height={15}></Image>
+                                        </Button>
+                                    </div>
+                                );
+                            })}
                             <div className="inline-flex items-center gap-2 !p-[2px]">
                                 <Button variant="plus" onClick={() => redirect("/calc-new-plan")}>
                                     <Image src="/plus-sign-circle-icon.png"
