@@ -29,7 +29,7 @@ def generate_plan(request):
             status=status.HTTP_400_BAD_REQUEST
         )
     
-    if pet.species == "Cat":
+    if pet.species == "cat": # TODO: reminder, this was "Cat" before, ask Ozan or Izzy why.
         energy_needs = calorie_calculator.calculate_cat_feeding(pet)
     elif pet.species == "dog":
         energy_needs = calorie_calculator.calculate_dog_feeding(pet)
