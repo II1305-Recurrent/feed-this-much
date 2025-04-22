@@ -17,6 +17,8 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 import { getRequest } from "@/utils/fetchApi";
+import { deleteRequest } from "@/utils/fetchApi";
+import { get } from "http";
 
 
 export default function Home() {
@@ -30,6 +32,45 @@ export default function Home() {
     //const foods = [{ id: 0, name: "Fancy chow" }, { id: 1, name: "Foooood" }]
     //const plans = [{ id: 1, title: "Test Plan" }];
     const { setIndex, setCatFields, setDogFields, cat, dog, setToCat, setToDog, doEdit } = useModel();
+
+    // generic helper to call DELETE endpoints
+    async function deleteResource(resource, id) {
+        const res = await deleteRequest({ path: `/api/delete-${resource}/${id}/` });
+        if (!res.ok) {
+            throw new Error(res.payload?.message || `${resource} delete failed`);
+        }
+    }
+
+    // Handlers for each type
+    async function handleDeletePet(id) {
+        try {
+            await deleteResource('pet', id);
+            setPets(prev => prev.filter(p => p.id !== id));
+        } catch (e) {
+            console.error(e);
+            setError(e.message);
+        }
+    }
+
+    async function handleDeleteFood(id) {
+        try {
+            await deleteResource('food', id);
+            setFoods(prev => prev.filter(f => f.id !== id));
+        } catch (e) {
+            console.error(e);
+            setError(e.message);
+        }
+    }
+
+    async function handleDeletePlan(id) {
+        try {
+            await deleteResource('plan', id);
+            setPlans(prev => prev.filter(pl => pl.id !== id));
+        } catch (e) {
+            console.error(e);
+            setError(e.message);
+        }
+    }
 
     function setPetForEditing(id) {
         //fetch pet by ID
@@ -62,6 +103,9 @@ export default function Home() {
 
                 if (petRes.ok) {
                     setPets(Array.isArray(petRes.payload) ? petRes.payload : []);
+                }
+                if (planRes.ok) {
+                    setPlans(Array.isArray(planRes.payload) ? planRes.payload : []);
                 }
 
                 if (planRes.ok) {
@@ -107,7 +151,7 @@ export default function Home() {
                                                     width={15}
                                                     height={15}></Image>
                                             </Button>
-                                            <Button variant="ghost" onClick={() => console.log("delete")}>
+                                            <Button variant="ghost" onClick={() => handleDeletePet(item.id)}>
                                                 <Image
                                                     src="/delete-icon.png"
                                                     alt=""
@@ -141,7 +185,7 @@ export default function Home() {
                                 return (
                                     <div key={foodItem.id} className="flex justify-between w-full h-6">
                                         <p className="text-md text-[var(--custom-brown)] flex justify-center items-center">{foodItem.food_name}</p>
-                                        <Button variant="ghost" onClick={() => console.log("delete")}>
+                                        <Button variant="ghost" onClick={() => handleDeleteFood(foodItem.id)}>
                                             <Image
                                                 src="/delete-icon.png"
                                                 alt=""
@@ -169,27 +213,29 @@ export default function Home() {
                     <AccordionTrigger className="text-lg text-[var(--custom-brown)]">Feeding plans</AccordionTrigger>
                     <AccordionContent>
                         <div>
-                            {plans.map((item) => {
-                                console.log('Rendering planItem:', item);
-                                return (
-                                    //TODO: CHANGE WHEN ID IS ADDED TO PLAN SERIALIZER - done!
-                                    <div key={item.id} className="flex justify-between w-full h-6">
-                                        <Button key={item.id} variant="ghost" onClick={() => {
-                                            setIndex(item.id);
-                                            router.push(`/displayplan?id=${item.id}`); // sets the id of the plan to show on the display plan page
-                                        }} className="flex justify-center items-center">
-                                            <p className="text-md text-[var(--custom-brown)] float-left">{item.plan_title}</p>
-                                        </Button>
-                                        <Button variant="ghost" onClick={() => console.log("delete")}>
-                                            <Image
-                                                src="/delete-icon.png"
-                                                alt=""
-                                                width={15}
-                                                height={15}></Image>
-                                        </Button>
-                                    </div>
-                                );
-                            })}
+                            {
+                                plans.map((item) => {
+                                    console.log('Rendering planItem:', item);
+                                    return (
+                                        //TODO: CHANGE WHEN ID IS ADDED TO PLAN SERIALIZER - done!
+                                        <div key={item.id} className="flex justify-between w-full h-6">
+                                            <Button key={item.id} variant="ghost" onClick={() => {
+                                                setIndex(item.id);
+                                                router.push(`/displayplan?id=${item.id}`); // sets the id of the plan to show on the display plan page
+                                            }} className="flex justify-center items-center">
+                                                <p className="text-md text-[var(--custom-brown)] float-left">{item.plan_title}</p>
+                                            </Button>
+                                            <Button variant="ghost" onClick={() => handleDeletePlan(item.id)}>
+                                                <Image
+                                                    src="/delete-icon.png"
+                                                    alt=""
+                                                    width={15}
+                                                    height={15}></Image>
+                                            </Button>
+                                        </div>
+                                    );
+                                })
+                            }
                             <div className="inline-flex items-center gap-2 !p-[2px]">
                                 <Button variant="plus" onClick={() => router.push("/calc-new-plan")}>
                                     <Image src="/plus-sign-circle-icon.png"
@@ -201,10 +247,10 @@ export default function Home() {
                                     <p className="text-[var(--custom-brown)] !pr-2">Calculate new plan</p>
                                 </Button>
                             </div>
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
-            </Accordion>
-        </div>
+                        </div >
+                    </AccordionContent >
+                </AccordionItem >
+            </Accordion >
+        </div >
     )
 }

@@ -7,6 +7,8 @@ from feed_this_much.food.models import UserFood
 from feed_this_much.plan import calorie_calculator
 from .serializers import PlanSerializer
 from .models import UserPlan
+from django.shortcuts import get_object_or_404
+
 
 @api_view(['POST', 'OPTIONS'])
 @permission_classes([IsAuthenticated])
@@ -125,3 +127,10 @@ def get_plans(request):
         )
     serialized_data = PlanSerializer(plans, many=True)
     return Response(serialized_data.data, status=status.HTTP_200_OK)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_plan(request, plan_id):
+    plan = get_object_or_404(UserPlan, pk=plan_id, user=request.user)
+    plan.delete()
+    return Response({'msg': 'Plan deleted successfully'}, status=status.HTTP_200_OK)
