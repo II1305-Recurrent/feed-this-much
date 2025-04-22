@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .serializers import FoodSerializer 
+from django.shortcuts import get_object_or_404
 
 @api_view(['POST', 'OPTIONS'])
 @permission_classes([IsAuthenticated]) # User auth
@@ -26,3 +27,10 @@ def get_foods(request):
         )
     serialized_data = FoodSerializer(food, many=True)
     return Response(serialized_data.data, status=status.HTTP_200_OK)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_food(request, food_id):
+    food = get_object_or_404(UserFood, pk=food_id, user=request.user)
+    food.delete()
+    return Response({'msg': 'Food deleted successfully'}, status=status.HTTP_200_OK)

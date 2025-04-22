@@ -21,10 +21,9 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 from rest_framework import routers
 
 from feed_this_much.basic import views
-from feed_this_much.pets.views import save_pet, get_pets, update_pet
-from feed_this_much.food.views import get_foods, save_food
-
-from feed_this_much.plan.views import generate_plan, get_plans
+from feed_this_much.pets.views import save_pet, get_pets, update_pet, delete_pet
+from feed_this_much.food.views import get_foods, save_food, delete_food
+from feed_this_much.plan.views import generate_plan, get_plans, delete_plan
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -49,5 +48,8 @@ urlpatterns = [
     path('api/get-foods/', get_foods, name='get_foods'),
     path('api/save-food/', save_food, name='save_food'),
     path('api/is-logged/', views.is_logged_in, name='is-logged'),
-    path('api/get-user/', views.get_user_details, name='get-user')
-]
+    path('api/get-user/', views.get_user_details, name='get-user'),
+    path('api/delete-food/<int:food_id>/', delete_food, name='delete_food'),
+    path('api/delete-pet/<int:pet_id>/', delete_pet, name='delete_pet'),
+    path('api/delete-plan/<int:plan_id>/', delete_plan, name='delete_plan'),
+    ]
