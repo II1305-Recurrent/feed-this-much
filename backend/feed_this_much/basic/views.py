@@ -59,3 +59,8 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return Response({"message": "Logout successful"}, status=status.HTTP_200_OK)
+
+@api_view(['GET', 'OPTIONS'])
+@permission_classes([permissions.IsAuthenticated])
+def is_logged_in(request):
+    return Response(status=status.HTTP_200_OK)

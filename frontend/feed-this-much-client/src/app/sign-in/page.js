@@ -21,7 +21,8 @@ import {
     TabsTrigger,
 } from "@/components/ui/tabs"
 import { useRouter } from "next/navigation";
-import { use } from "react";
+import { use, useEffect } from "react";
+import { toast } from "sonner";
 
 export default function Sign_in_page() {
     const router = useRouter();
@@ -60,7 +61,13 @@ export default function Sign_in_page() {
         await getRequest({ path: '/api/register/' });
 
         // register
-        await postRequest({ path: '/api/register/', body: data });
+        const response = await postRequest({ path: '/api/register/', body: data });
+
+        if (response.ok) {
+            toast.success('User created');
+        } else {
+            toast.error(JSON.stringify(response.payload.error));
+        }
     }
 
     async function login() {
@@ -71,9 +78,21 @@ export default function Sign_in_page() {
         // proceed with login
         const response = await postRequest({ path: '/api/login/', body: data });
         if (response.ok) {
+            toast.success('Welcome!');
             router.push('/home');
+        } else {
+            toast.error(JSON.stringify(response.payload.error));
         }
     }
+    
+    useEffect(() => {
+        getRequest({ path: '/api/is-logged/' }).then(response => {
+            if (response.ok) {
+                toast.success('You are already logged in');
+                router.push('/home');
+            }
+        });
+    });
 
     return (
         <div style={{ padding: "5%" }}>
