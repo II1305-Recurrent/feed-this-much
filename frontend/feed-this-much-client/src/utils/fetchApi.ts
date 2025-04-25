@@ -12,14 +12,7 @@ function getBaseUrl(): string {
 }
 
 function getCookieByName(name: string | null) {
-    if (debug) {
-        return Cookies.get(name);
-    } else {
-        return Cookies.get(name, {
-            domain: 'api.feedthismuch.com',
-            path: '/'
-        });
-    }
+    return Cookies.get(name);
 }
 
 async function getRequest({
