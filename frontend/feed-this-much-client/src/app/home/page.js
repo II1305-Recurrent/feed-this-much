@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button";
 
-import { redirect } from "next/navigation"
 import { useModel } from "../Model";
 
 import { useEffect } from "react";
@@ -111,7 +110,7 @@ export default function Home() {
                                 );
                             })}
                             <div className="inline-flex items-center gap-2 !p-[2px]">
-                                <Button variant="plus" onClick={() => redirect("/add-pet")}>
+                                <Button variant="plus" onClick={() => router.push("/add-pet")}>
                                     <Image src="/plus-sign-circle-icon.png"
                                         alt=""
                                         width={20}
@@ -144,7 +143,7 @@ export default function Home() {
                                 );
                             })}
                             <div className="inline-flex items-center gap-2 !p-[2px]">
-                                <Button variant="plus" onClick={() => redirect("/add-food")}>
+                                <Button variant="plus" onClick={() => router.push("/add-food")}>
                                     <Image src="/plus-sign-circle-icon.png"
                                         alt=""
                                         width={20}
@@ -163,7 +162,7 @@ export default function Home() {
                         <div>
                             {plans.map((item) =>
                                 <div key={item.id} className="flex justify-between w-full h-6">
-                                    <Button key={item.id} variant="ghost" onClick={() => { setIndex(item.id); redirect("/displayplan") }} className="flex justify-center items-center">
+                                    <Button key={item.id} variant="ghost" onClick={() => { setIndex(item.id); router.push("/displayplan") }} className="flex justify-center items-center">
                                         <p className="text-md text-[var(--custom-brown)] float-left">{item.title}</p>
                                     </Button>
                                     <Button variant="ghost" onClick={() => console.log("delete")}>
@@ -176,7 +175,7 @@ export default function Home() {
                                 </div>)
                             }
                             <div className="inline-flex items-center gap-2 !p-[2px]">
-                                <Button variant="plus" onClick={() => redirect("/calc-new-plan")}>
+                                <Button variant="plus" onClick={() => router.push("/calc-new-plan")}>
                                     <Image src="/plus-sign-circle-icon.png"
                                         alt=""
                                         width={20}
