@@ -1,7 +1,8 @@
 import Cookies from 'js-cookie';
 
+const debug = false; // SET TO FALSE WHEN COMMIT TO MAIN
+
 function getBaseUrl(): string {
-    const debug = false; // SET TO FALSE WHEN COMMIT TO MAIN
     if (debug) {
         let baseUrl = "http://localhost:8000";
         return baseUrl;
@@ -11,7 +12,14 @@ function getBaseUrl(): string {
 }
 
 function getCookieByName(name: string | null) {
-    return Cookies.get(name);
+    if (debug) {
+        return Cookies.get(name);
+    } else {
+        return Cookies.get(name, {
+            domain: 'api.feedthismuch.com',
+            path: '/'
+        });
+    }
 }
 
 async function getRequest({
