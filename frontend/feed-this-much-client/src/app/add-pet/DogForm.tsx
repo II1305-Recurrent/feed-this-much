@@ -166,9 +166,9 @@ function DogForm() {
                                         </TooltipTrigger>
                                         <TooltipContent
                                             side="right"
-                                            className="bg-[#f5f5dc] text-black text-center rounded-md px-3 py-2 shadow-md border-2 max-w-[200px] whitespace-normal"
+                                            className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-2 max-w-[200px] whitespace-normal "
                                         >
-                                            <p>Weigh your dog on a pet scale, or weigh yourself holding them and subtract your weight.</p>
+                                            <p>Weigh your dog on a pet scale (or a kitchen scale for smaller dogs). Alternatively, weigh yourself while holding your dog and subtract your weight.</p>
                                         </TooltipContent>
                                     </Tooltip>
                                 </TooltipProvider>
@@ -193,7 +193,33 @@ function DogForm() {
                         name="expected_weight"
                         render={({ field }) => (
                             <FormItem className={undefined}>
-                                <FormLabel className={undefined}>Enter your puppy&apos;s expected adult weight</FormLabel>
+                                <div className="flex items-center gap-2">
+                                    <FormLabel className={undefined}>Enter your puppy&apos;s expected adult weight</FormLabel>
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <button type="button" className="text-blue-600"> <Info size={16} /> </button>
+                                            </TooltipTrigger>
+                                            <TooltipContent
+                                                side="right"
+                                                className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-7  max-w-[200px] whitespace-normal "
+                                            >
+                                                <div className="text-xs">
+                                                    <p>Estimate your puppy's adult weight</p>
+                                                    <a
+                                                        href="https://sydneyanimalhospitals.com.au/puppy-weight-calculator/"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="inline-block font-medium text-blue-700 underline hover:text-blue-900 mt-2"
+                                                        style={{ textDecoration: 'underline', color: '#1d4ed8' }}
+                                                    >
+                                                        Adult Weight Calculator
+                                                    </a>
+                                                </div>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                </div>
                                 <FormControl>
                                     <Input placeholder="Enter puppy's expected adult weight here" {...field} onChange={(e) => {
                                         // Custom onChange logic
@@ -272,7 +298,29 @@ function DogForm() {
                     name="condition_score"
                     render={({ field }) => (
                         <FormItem className="space-y-3">
-                            <FormLabel className={undefined}>Select a Body Condition Score</FormLabel>
+                            <div className="flex items-center gap-2">
+                                <FormLabel className={undefined}>Select a Body Condition Score</FormLabel>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <button type="button" className="text-blue-600"> <Info size={16} /> </button>
+                                        </TooltipTrigger>
+                                        <TooltipContent
+                                            side="right"
+                                            className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-4 max-w-[360px] whitespace-normal "
+                                        >
+                                            <p>
+                                                <span className="font-medium"> Severely Underweight:</span> Bones clearly visible, no fat and muscle loss. <br />
+                                                <span className="font-medium"> Underweight:</span> Ribs and spine easy to see and minimal fat. <br />
+                                                <span className="font-medium"> Ideal:</span> Ribs felt but not seen, clear waist and tummy tuck. <br />
+                                                <span className="font-medium"> Overweight:</span> Ribs hard to feel and waist barely visible. <br />
+                                                <span className="font-medium"> Severely Obese:</span> Ribs not felt, heavy fat deposits and low mobility.
+                                            </p>
+
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={(v) => { field.onChange(v); handleConditionChange(v) }}
