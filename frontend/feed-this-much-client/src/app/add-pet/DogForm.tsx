@@ -33,6 +33,16 @@ import { addPetSchema, type addPetSchemaType } from "@/zod-schemas/pet"
 import { useRouter } from "next/navigation";
 import { useModel } from "../Model";
 
+import {
+    Tooltip,
+    TooltipTrigger,
+    TooltipContent,
+    TooltipProvider,
+} from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
+
+
+
 function DogForm() {
     const router = useRouter();
     const { dog, resetDogFields, setDogFields, dontEdit } = useModel();
@@ -147,10 +157,24 @@ function DogForm() {
                     name="current_weight"
                     render={({ field }) => (
                         <FormItem className={undefined}>
-                            <FormLabel className={undefined}>Enter your dog&apos;s current weight</FormLabel>
+                            <div className="flex items-center gap-2">
+                                <FormLabel className={undefined}>Enter your dog&apos;s current weight</FormLabel>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <button type="button" className="text-blue-600"> <Info size={16} /> </button>
+                                        </TooltipTrigger>
+                                        <TooltipContent
+                                            side="right"
+                                            className="bg-[#f5f5dc] text-black text-center rounded-md px-3 py-2 shadow-md border-2 max-w-[200px] whitespace-normal"
+                                        >
+                                            <p>Weigh your dog on a pet scale, or weigh yourself holding them and subtract your weight.</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
                             <FormControl>
                                 <Input placeholder="Enter your dog's weight here" {...field} onChange={(e) => {
-                                    // Custom onChange logic
                                     field.onChange(e); // Call React Hook Form's onChange
                                     handleWeightChange(e); // Call your custom onChange logic
                                 }} />
@@ -162,6 +186,7 @@ function DogForm() {
                         </FormItem>
                     )}
                 />
+
                 {showExpectedWeight && (
                     <FormField
                         control={form.control}
