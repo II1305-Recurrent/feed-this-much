@@ -33,6 +33,16 @@ import { addCatSchema, type addCatSchemaType } from "@/zod-schemas/cat"
 import { useRouter } from "next/navigation";
 import { useModel } from "../Model";
 
+import {
+    Tooltip,
+    TooltipTrigger,
+    TooltipContent,
+    TooltipProvider,
+} from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
+
+
+
 function CatForm() {
     const router = useRouter();
     const { cat, resetCatFields, setCatFields, dontEdit } = useModel();
@@ -137,7 +147,23 @@ function CatForm() {
                     name="current_weight"
                     render={({ field }) => (
                         <FormItem className={undefined}>
-                            <FormLabel className={undefined}>Enter your cat&apos;s current weight</FormLabel>
+                            <div className="flex items-center gap-2">
+                                <FormLabel className={undefined}>Enter your cat&apos;s current weight</FormLabel>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <button type="button" className="text-blue-600"> <Info size={16} /> </button>
+                                        </TooltipTrigger>
+                                        <TooltipContent
+                                            side="right"
+                                            className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[300px] whitespace-normal "
+                                        >
+                                            <p>Place the carrier on a scale with the entrance facing upward. Gently place your cat inside and record the total weight. To get your cat&apos;s weight, subtract the weight of the empty carrier from the total weight.</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
+
                             <FormControl>
                                 <Input placeholder="Enter your cat's weight here" {...field} onChange={(e) => {
                                     // Custom onChange logic
@@ -215,7 +241,29 @@ function CatForm() {
                     name="condition_score"
                     render={({ field }) => (
                         <FormItem className="space-y-3">
-                            <FormLabel className={undefined}>Select a Body Condition Score</FormLabel>
+                            <div className="flex items-center gap-2">
+                                <FormLabel className={undefined}>Select a Body Condition Score</FormLabel>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <button type="button" className="text-blue-600"> <Info size={16} /> </button>
+                                        </TooltipTrigger>
+                                        <TooltipContent
+                                            side="right"
+                                            className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[450px] whitespace-normal "
+                                        >
+                                            <p>
+                                                <span className="font-medium"> Severely Underweight:</span> Ribs, spine, and bones are highly visible with little to no fat. <br />
+                                                <span className="font-medium"> Underweight:</span> Ribs easily felt and visible and minimal fat cover. <br />
+                                                <span className="font-medium"> Ideal:</span> Ribs can be felt but not seen, waist is visible from above. <br />
+                                                <span className="font-medium"> Overweight:</span> Ribs hard to feel under fat, slight waist visible from above and rounded belly. <br />
+                                                <span className="font-medium"> Severely Obese:</span> Ribs not felt, no waist, large fat deposits, especially around belly and spine.
+                                            </p>
+
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
+                            </div>
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={(v) => { field.onChange(v); handleConditionChange(v) }}
