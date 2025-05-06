@@ -166,7 +166,7 @@ function DogForm() {
                                         </TooltipTrigger>
                                         <TooltipContent
                                             side="right"
-                                            className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-2 max-w-[200px] whitespace-normal "
+                                            className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[300px] whitespace-normal "
                                         >
                                             <p>Weigh your dog on a pet scale (or a kitchen scale for smaller dogs). Alternatively, weigh yourself while holding your dog and subtract your weight.</p>
                                         </TooltipContent>
@@ -202,7 +202,7 @@ function DogForm() {
                                             </TooltipTrigger>
                                             <TooltipContent
                                                 side="right"
-                                                className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-7  max-w-[200px] whitespace-normal "
+                                                className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-8  max-w-[400px] whitespace-normal "
                                             >
                                                 <div className="text-xs">
                                                     <p>Estimate your puppy's adult weight</p>
@@ -307,7 +307,7 @@ function DogForm() {
                                         </TooltipTrigger>
                                         <TooltipContent
                                             side="right"
-                                            className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-4 max-w-[360px] whitespace-normal "
+                                            className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[400px] whitespace-normal "
                                         >
                                             <p>
                                                 <span className="font-medium"> Severely Underweight:</span> Bones clearly visible, no fat and muscle loss. <br />
@@ -431,7 +431,7 @@ function DogForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className={undefined} variant={undefined} size={undefined}>Submit</Button>
+                <Button type="submit" className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto !mt-2" variant={undefined} size={undefined}>Submit</Button>
             </form>
         </Form>
     )
