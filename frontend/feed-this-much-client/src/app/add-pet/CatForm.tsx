@@ -34,11 +34,11 @@ import { useRouter } from "next/navigation";
 import { useModel } from "../Model";
 
 import {
-    Tooltip,
-    TooltipTrigger,
-    TooltipContent,
-    TooltipProvider,
-} from "@/components/ui/tooltip";
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+
 import { Info } from "lucide-react";
 
 
@@ -151,19 +151,17 @@ function CatForm() {
                         <FormItem className={undefined}>
                             <div className="flex items-center gap-2">
                                 <FormLabel className={undefined}>Enter your cat&apos;s current weight</FormLabel>
-                                <TooltipProvider>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <button type="button" className="text-blue-600"> <Info size={16} /> </button>
-                                        </TooltipTrigger>
-                                        <TooltipContent
-                                            side="right"
-                                            className="bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[300px] whitespace-normal "
-                                        >
-                                            <p>Place the carrier on a scale with the entrance facing upward. Gently place your cat inside and record the total weight. To get your cat&apos;s weight, subtract the weight of the empty carrier from the total weight.</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <button type="button" className="text-blue-600"> <Info size={16} /> </button>
+                                    </PopoverTrigger>
+                                    <PopoverContent
+                                        side="bottom"
+                                        className="w-[250px] max-w-[250px] bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-6 whitespace-normal "
+                                    >
+                                        <p>Place the carrier on a scale with the entrance facing upward. Gently place your cat inside and record the total weight. To get your cat&apos;s weight, subtract the weight of the empty carrier from the total weight.</p>
+                                    </PopoverContent>
+                                </Popover>
                             </div>
 
                             <FormControl>
@@ -246,26 +244,24 @@ function CatForm() {
                         <FormItem className="space-y-3">
                             <div className="flex items-center gap-2">
                                 <FormLabel className={undefined}>Select a Body Condition Score</FormLabel>
-                                <TooltipProvider>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <button type="button" className="text-blue-600"> <Info size={16} /> </button>
-                                        </TooltipTrigger>
-                                        <TooltipContent
-                                            side="right"
-                                            className="bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[450px] whitespace-normal "
-                                        >
-                                            <p>
-                                                <span className="font-medium"> Severely Underweight:</span> Ribs, spine, and bones are highly visible with little to no fat. <br />
-                                                <span className="font-medium"> Underweight:</span> Ribs easily felt and visible and minimal fat cover. <br />
-                                                <span className="font-medium"> Ideal:</span> Ribs can be felt but not seen, waist is visible from above. <br />
-                                                <span className="font-medium"> Overweight:</span> Ribs hard to feel under fat, slight waist visible from above and rounded belly. <br />
-                                                <span className="font-medium"> Severely Obese:</span> Ribs not felt, no waist, large fat deposits, especially around belly and spine.
-                                            </p>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <button type="button" className="text-blue-600"> <Info size={16} /> </button>
+                                    </PopoverTrigger>
+                                    <PopoverContent
+                                        side="bottom"
+                                        className="w-[250px] max-w-[250px] bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-6 whitespace-normal "
+                                    >
+                                        <p>
+                                            <span className="font-medium"> Severely Underweight:</span> Ribs, spine, and bones are highly visible with little to no fat. <br />
+                                            <span className="font-medium"> Underweight:</span> Ribs easily felt and visible and minimal fat cover. <br />
+                                            <span className="font-medium"> Ideal:</span> Ribs can be felt but not seen, waist is visible from above. <br />
+                                            <span className="font-medium"> Overweight:</span> Ribs hard to feel under fat, slight waist visible from above and rounded belly. <br />
+                                            <span className="font-medium"> Severely Obese:</span> Ribs not felt, no waist, large fat deposits, especially around belly and spine.
+                                        </p>
 
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
+                                    </PopoverContent>
+                                </Popover>
                             </div>
                             <FormControl>
                                 <RadioGroup
