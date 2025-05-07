@@ -36,7 +36,7 @@ def calculate_dog_feeding(pet):
     if pet.weight_unit == pet.WEIGHT_UNITS[1]:
         weight *= 0.453592
         expected_weight *= 0.453592
-        age_months = (datetime.date.today() - pet.dob).days / (365.25 / 12)
+    age_months = (datetime.date.today() - pet.dob).days / (365.25 / 12)
 
     if (age_months > 12):
         life_stage_factor = None
