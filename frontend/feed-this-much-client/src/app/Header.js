@@ -18,6 +18,8 @@ import {
     UserPlus,
     Users,
 } from "lucide-react"
+import Cookies from 'js-cookie';
+import { toast } from "sonner";
 
 import { redirect } from "next/navigation"
 
@@ -38,6 +40,7 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { postRequest } from "@/utils/fetchApi";
 
 
 import { useState } from "react";
@@ -53,6 +56,18 @@ export default function Header() {
     const [accountOpen, setAccountOpen] = useState(false);
     const handleAccountClick = () => {
         setAccountOpen(false)
+    }
+
+    async function logout() {
+        const response = await postRequest({ path: '/api/logout/', body: {} });
+        if (response.ok) {
+            Cookies.remove('csrftoken');
+            Cookies.remove('sessionid');
+            toast.success('Logged out');
+            router.push('/sign-in');
+        } else {
+            toast.error("Error with logging out");
+        }
     }
 
 
@@ -123,9 +138,9 @@ export default function Header() {
                                 <DropdownMenuItem asChild>
                                     <Link
                                         href="/"
-                                        onClick={() => setAccountOpen(false)}>
+                                        onClick={() => logout()}>
                                         <LogOut />
-                                        <span>Log out</span>
+                                        <span>Logout</span>
                                     </Link>
                                 </DropdownMenuItem>
                             </DropdownMenuGroup>
