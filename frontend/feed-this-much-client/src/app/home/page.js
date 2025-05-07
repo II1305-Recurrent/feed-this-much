@@ -173,7 +173,7 @@ export default function Home() {
                                     <div key={item.id} className="flex justify-between w-full h-6">
                                         <Button key={item.id} variant="ghost" onClick={() => {
                                             setIndex(item.id);
-                                            redirect(`/displayplan?id=${item.id}`); // sets the id of the plan to show on the display plan page
+                                            router.push(`/displayplan?id=${item.id}`); // sets the id of the plan to show on the display plan page
                                         }} className="flex justify-center items-center">
                                             <p className="text-md text-[var(--custom-brown)] float-left">{item.plan_title}</p>
                                         </Button>
