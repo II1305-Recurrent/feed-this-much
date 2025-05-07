@@ -11,7 +11,6 @@ from .models import UserPlan
 @api_view(['POST', 'OPTIONS'])
 @permission_classes([IsAuthenticated])
 def generate_plan(request):
-
     pet = Pet.objects.filter(user=request.user, id=request.data['pet_id']).first()
     food = UserFood.objects.filter(user=request.user, id=request.data['food_id']).first() # Filter by userID, foodname
     energy_needs = None
@@ -29,7 +28,7 @@ def generate_plan(request):
             status=status.HTTP_400_BAD_REQUEST
         )
     
-    if pet.species == "Cat":
+    if pet.species == "cat":
         energy_needs = calorie_calculator.calculate_cat_feeding(pet)
     elif pet.species == "dog":
         energy_needs = calorie_calculator.calculate_dog_feeding(pet)
@@ -51,8 +50,10 @@ def generate_plan(request):
     plan_data = {
         "user": request.user.id,
         "pet": pet.id,
-        "plan_title": request.data['plan_title'],
+        "food": food.id,
+        "pet_name": pet.name,
         "food_name": food.food_name,
+        "plan_title": request.data['plan_title'],
         "food_serving_type": food.packet_type,
         "daily_energy_needs": energy_needs,
         "daily_food_weight": daily_serving[0],
