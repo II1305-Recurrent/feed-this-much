@@ -52,6 +52,7 @@ def generate_plan(request):
         "user": request.user.id,
         "pet": pet.id,
         "plan_title": request.data['plan_title'],
+        "pet_name": pet.name,
         "food_name": food.food_name,
         "food_serving_type": food.packet_type,
         "daily_energy_needs": energy_needs,

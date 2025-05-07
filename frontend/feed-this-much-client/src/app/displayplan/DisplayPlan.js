@@ -2,27 +2,26 @@
 
 import React, { useState, useEffect } from 'react';
 import { getRequest, postRequest } from "@/utils/fetchApi";
+import { useSearchParams } from 'next/navigation'; // used for searching just one plan
 
 function DisplayPlan() {
 
     // State to store fetched data
-    const [foodData, setFoodData] = useState(null);
-    const [petData, setPetData] = useState(null);
+    const [plans, setPlans] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    // Set the plan id from the search params
+    const searchParams = useSearchParams();
+    const selectedId = searchParams.get('id');
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const foodRes = await getRequest({ path: "/api/get-foods/" });
-                const petRes = await getRequest({ path: "/api/get-pets/" });
+                const planRes = await getRequest({ path: "/api/get-plans/" });
 
-                if (foodRes.ok) {
-                    setFoodData(Array.isArray(foodRes.payload) ? foodRes.payload : []);
-                }
-
-                if (petRes.ok) {
-                    setPetData(Array.isArray(petRes.payload) ? petRes.payload : []);
+                if (planRes.ok) {
+                    setPlans(Array.isArray(planRes.payload) ? planRes.payload : []);
                 }
 
             } catch (err) {
@@ -37,17 +36,23 @@ function DisplayPlan() {
         fetchData();
     }, []);
 
-    // For testing purposes, using a fixed ID
-    const planID = 0;
-    const foodID = 1;
+    /* Plan Fields for Reference 
+    ['user', 'pet', 'plan_title', 
+    'pet_name',
+    'food_name', 'food_serving_type', 
+    'daily_energy_needs', 'daily_food_weight', 
+    'daily_food_weight_unit', 'daily_servings_amount'] */
+
+    // find only the selected plan
+    const plan = plans.find(p => String(p.id) === selectedId); // matched by id string
 
     // Silly function to change packet image because I got bored waiting for the plans api
     // Dynamically set image based on packet_type
     let imageToDisplay = "/foodbowl01.png"; // Default image
     const altTextToDisplay = "Food Packet Image"
 
-    if (foodData && foodData[foodID]) {
-        const packetType = foodData[foodID].packet_type;
+    if (plan) {
+        const packetType = plan.food_serving_type;
         if (packetType === "scoop") {
             imageToDisplay = "/packet_scoop01.png";
         } else if (packetType === "carton") {
@@ -59,6 +64,8 @@ function DisplayPlan() {
         }
     }
 
+    console.log('Rendering a plan:', plan);
+
     // Render component
     return (
         <div className="page">
@@ -67,14 +74,18 @@ function DisplayPlan() {
                     <p>Loading...</p>
                 ) : error ? (
                     <p>{error}</p>
-                ) : !foodData?.[foodID] || !petData?.[planID] ? (
-                    <p>No pet or food data to display!</p>
+                ) : !plan ? (
+                    <p>No plan data found!</p>
                 ) : (
                     <div>
-                        <p>{petData[planID].name} needs 600 KJ of energy every day</p>
-                        <p>This is 350 grams of {foodData[foodID].food_name}.</p>
                         <p>
-                            Give {petData[planID].name} 2 {foodData[foodID].packet_type}s of {foodData[foodID].food_name} a day.
+                            {plan.pet_name} needs {plan.daily_energy_needs} KJ of energy every day
+                        </p>
+                        <p>
+                            This is {plan.daily_food_weight} {plan.daily_food_weight_unit} of {plan.food_name}.
+                        </p>
+                        <p>
+                            Give {plan.pet_name} {plan.daily_servings_amount} {plan.food_serving_type}s of {plan.food_name} a day.
                         </p>
                     </div>
                 )}
