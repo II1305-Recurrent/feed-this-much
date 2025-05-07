@@ -34,11 +34,11 @@ import { useRouter } from "next/navigation";
 import { useModel } from "../Model";
 
 import {
-    Tooltip,
-    TooltipTrigger,
-    TooltipContent,
-    TooltipProvider,
-} from "@/components/ui/tooltip";
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+
 import { Info } from "lucide-react";
 
 
@@ -159,19 +159,17 @@ function DogForm() {
                         <FormItem className={undefined}>
                             <div className="flex items-center gap-2">
                                 <FormLabel className={undefined}>Enter your dog&apos;s current weight</FormLabel>
-                                <TooltipProvider>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <button type="button" className="text-blue-600"> <Info size={16} /> </button>
-                                        </TooltipTrigger>
-                                        <TooltipContent
-                                            side="right"
-                                            className="bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[300px] whitespace-normal "
-                                        >
-                                            <p>Weigh your dog on a pet scale (or a kitchen scale for smaller dogs). Alternatively, weigh yourself while holding your dog and subtract your weight.</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <button type="button" className="text-blue-600"> <Info size={16} /> </button>
+                                    </PopoverTrigger>
+                                    <PopoverContent
+                                        side="bottom"
+                                        className="w-[250px] max-w-[250px] bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-6 whitespace-normal "
+                                    >
+                                        <p>Weigh your dog on a pet scale (or a kitchen scale for smaller dogs). Alternatively, weigh yourself while holding your dog and subtract your weight.</p>
+                                    </PopoverContent>
+                                </Popover>
                             </div>
                             <FormControl>
                                 <Input placeholder="Enter your dog's weight here" {...field} onChange={(e) => {
@@ -195,30 +193,28 @@ function DogForm() {
                             <FormItem className={undefined}>
                                 <div className="flex items-center gap-2">
                                     <FormLabel className={undefined}>Enter your puppy&apos;s expected adult weight</FormLabel>
-                                    <TooltipProvider>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <button type="button" className="text-blue-600"> <Info size={16} /> </button>
-                                            </TooltipTrigger>
-                                            <TooltipContent
-                                                side="right"
-                                                className="bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-8  max-w-[400px] whitespace-normal "
-                                            >
-                                                <div className="text-xs">
-                                                    <p>Estimate your puppy adult weight</p>
-                                                    <a
-                                                        href="https://sydneyanimalhospitals.com.au/puppy-weight-calculator/"
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="inline-block font-medium text-blue-700 underline hover:text-blue-900 mt-2"
-                                                        style={{ textDecoration: 'underline', color: '#1d4ed8' }}
-                                                    >
-                                                        Adult Weight Calculator
-                                                    </a>
-                                                </div>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <button type="button" className="text-blue-600"> <Info size={16} /> </button>
+                                        </PopoverTrigger>
+                                        <PopoverContent
+                                            side="bottom"
+                                            className="w-[250px] max-w-[250px] bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-8 whitespace-normal "
+                                        >
+                                            <div className="text-xs">
+                                                <p>Estimate your puppy adult weight</p>
+                                                <a
+                                                    href="https://sydneyanimalhospitals.com.au/puppy-weight-calculator/"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-block font-medium text-blue-700 underline hover:text-blue-900 mt-2"
+                                                    style={{ textDecoration: 'underline', color: '#1d4ed8' }}
+                                                >
+                                                    Adult Weight Calculator
+                                                </a>
+                                            </div>
+                                        </PopoverContent>
+                                    </Popover>
                                 </div>
                                 <FormControl>
                                     <Input placeholder="Enter puppy's expected adult weight here" {...field} onChange={(e) => {
@@ -300,26 +296,24 @@ function DogForm() {
                         <FormItem className="space-y-3">
                             <div className="flex items-center gap-2">
                                 <FormLabel className={undefined}>Select a Body Condition Score</FormLabel>
-                                <TooltipProvider>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <button type="button" className="text-blue-600"> <Info size={16} /> </button>
-                                        </TooltipTrigger>
-                                        <TooltipContent
-                                            side="right"
-                                            className="bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[400px] whitespace-normal "
-                                        >
-                                            <p>
-                                                <span className="font-medium"> Severely Underweight:</span> Bones clearly visible, no fat and muscle loss. <br />
-                                                <span className="font-medium"> Underweight:</span> Ribs and spine easy to see and minimal fat. <br />
-                                                <span className="font-medium"> Ideal:</span> Ribs felt but not seen, clear waist and tummy tuck. <br />
-                                                <span className="font-medium"> Overweight:</span> Ribs hard to feel and waist barely visible. <br />
-                                                <span className="font-medium"> Severely Obese:</span> Ribs not felt, heavy fat deposits and low mobility.
-                                            </p>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <button type="button" className="text-blue-600"> <Info size={16} /> </button>
+                                    </PopoverTrigger>
+                                    <PopoverContent
+                                        side="bottom"
+                                        className="w-[250px] max-w-[250px] bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-6 whitespace-normal "
+                                    >
+                                        <p>
+                                            <span className="font-medium"> Severely Underweight:</span> Bones clearly visible, no fat and muscle loss. <br />
+                                            <span className="font-medium"> Underweight:</span> Ribs and spine easy to see and minimal fat. <br />
+                                            <span className="font-medium"> Ideal:</span> Ribs felt but not seen, clear waist and tummy tuck. <br />
+                                            <span className="font-medium"> Overweight:</span> Ribs hard to feel and waist barely visible. <br />
+                                            <span className="font-medium"> Severely Obese:</span> Ribs not felt, heavy fat deposits and low mobility.
+                                        </p>
 
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
+                                    </PopoverContent>
+                                </Popover>
                             </div>
                             <FormControl>
                                 <RadioGroup
