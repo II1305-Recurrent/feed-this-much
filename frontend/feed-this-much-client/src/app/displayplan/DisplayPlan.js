@@ -78,13 +78,13 @@ function DisplayPlan() {
                 ) : (
                     <div>
                         <p>
-                            {plan.pet_name} needs {plan.daily_energy_needs} KJ of energy every day.
+                            {plan.pet_name} needs {plan.daily_energy_needs.toFixed(2)} KJ / {(plan.daily_energy_needs / 4.184).toFixed(2)} kcal of energy every day.
                         </p>
                         <p>
-                            This is {plan.daily_food_weight} {plan.daily_food_weight_unit} of {plan.food_name}.
+                            This is {plan.daily_food_weight.toFixed(2)} {plan.daily_food_weight_unit} of {plan.food_name}.
                         </p>
                         <p>
-                            Give {plan.pet_name} {plan.daily_servings_amount} {plan.food_serving_type}s of {plan.food_name} a day.
+                            Give {plan.pet_name} {plan.daily_servings_amount.toFixed(1)} {plan.food_serving_type}s of {plan.food_name} a day.
                         </p>
                     </div>
                 )}
