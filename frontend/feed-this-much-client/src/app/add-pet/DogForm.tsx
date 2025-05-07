@@ -205,7 +205,7 @@ function DogForm() {
                                                 className="bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-8  max-w-[400px] whitespace-normal "
                                             >
                                                 <div className="text-xs">
-                                                    <p>Estimate your puppy's adult weight</p>
+                                                    <p>Estimate your puppy adult weight</p>
                                                     <a
                                                         href="https://sydneyanimalhospitals.com.au/puppy-weight-calculator/"
                                                         target="_blank"
