@@ -8,11 +8,11 @@ import Image from "next/image";
 
 import AddPlanForm from "./addPlanForm"
 
-export default function foodPage() {
+export default function addPlanPage() {
     return (<div className="page">
         <div className="flex justify-between">
             <h1 className="scroll-m-20 text-2xl text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
-                Add Food
+                Generate a Plan
             </h1>
             <Button variant="destructive" onClick={() => redirect("/home")}>
                 <Image src="/back-arrow.png"
