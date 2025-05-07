@@ -96,7 +96,16 @@ function AddPlanForm() {
 
         if (response.ok) {
             console.log("Plan submitted");
-            router.push('/home');
+            const newPlanId = response.payload?.id; // getting the new plan id
+            console.log("Plan submitted with ID:", newPlanId);
+
+            if (newPlanId) {
+                // Navigate to the display plan page using the new plan ID
+                router.push(`/displayplan?id=${newPlanId}`);
+            } else {
+                console.error("Failed to retrieve plan ID from the response.");
+                router.push('/home');
+            }
         }
     }
 
