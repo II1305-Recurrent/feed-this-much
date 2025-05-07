@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
+import Image from "next/image";
 import { getRequest, postRequest } from "@/utils/fetchApi";
 import { useSearchParams } from 'next/navigation'; // used for searching just one plan
 
@@ -90,7 +91,14 @@ function DisplayPlan() {
                     </div>
                 )}
             </div>
-            <img src={imageToDisplay} width={150} height={150} alt={altTextToDisplay} />
+            <div>
+                <Image
+                    src={imageToDisplay}
+                    alt={altTextToDisplay}
+                    width={150}
+                    height={150}>
+                </Image>
+            </div>
         </div>
     );
 }

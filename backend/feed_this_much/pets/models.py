@@ -7,13 +7,18 @@ class Pet(models.Model):
         ('lb', 'Pounds'),
     ]
 
+    SPECIES = [
+        ('cat', 'Cat'),
+        ('dog', 'Dog'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank=True)
     name = models.CharField(max_length=255)
-    species = models.CharField(max_length=100)
-    dob = models.DateField()  
-    current_weight = models.FloatField()  
+    species = models.CharField(max_length=100, choices=SPECIES, default='cat')
+    dob = models.DateField()
+    current_weight = models.FloatField()
     expected_weight = models.FloatField(null=True, blank=True)
-    weight_unit = models.CharField(max_length=2, choices=WEIGHT_UNITS, default='kg')  
+    weight_unit = models.CharField(max_length=2, choices=WEIGHT_UNITS, default='kg')
     neutered = models.BooleanField()
     activity_level = models.CharField(max_length=100)  # Validated in serializer based on species
     

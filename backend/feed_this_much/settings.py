@@ -83,6 +83,8 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     "https://feedthismuch.com",
 ]
+    
+CSRF_COOKIE_DOMAIN = 'feedthismuch.com'
 
 CORS_ALLOWED_ORIGINS = [
     "https://feedthismuch.com"
@@ -135,6 +137,7 @@ if DEBUG:
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:3000"
     ]
+    CSRF_COOKIE_DOMAIN = 'localhost'
 
 
 # Password validation

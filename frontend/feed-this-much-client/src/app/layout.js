@@ -3,6 +3,7 @@ import { useState } from "react";
 import logo from "@/../../../docs/assets/img/logo_feedthismuch.png";
 import styles from "./page.module.css";*/
 import Header from "./Header";
+import { Toaster } from "@/components/ui/sonner";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ModelProvider } from "./Model";
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
                 <ModelProvider>
                     <Header />
                     <main>{children}</main>
+                    <Toaster />
                 </ModelProvider>
             </body>
         </html>

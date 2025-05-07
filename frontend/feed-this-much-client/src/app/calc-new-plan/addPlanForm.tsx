@@ -82,8 +82,6 @@ function AddPlanForm() {
     })
 
     async function onSubmit(values: z.infer<typeof addPlanSchema>) {
-        console.log(values.foodname);
-        router.push('/home');
         const form_schema_mapping = {
             foodname: "food_id",
             title: "plan_title",
@@ -98,6 +96,7 @@ function AddPlanForm() {
 
         if (response.ok) {
             console.log("Plan submitted");
+            router.push('/home');
         }
     }
 
