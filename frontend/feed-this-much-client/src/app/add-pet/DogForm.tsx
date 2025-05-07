@@ -111,7 +111,7 @@ function DogForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
                     control={form.control}
                     name="name"
@@ -166,7 +166,7 @@ function DogForm() {
                                         </TooltipTrigger>
                                         <TooltipContent
                                             side="right"
-                                            className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[300px] whitespace-normal "
+                                            className="bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[300px] whitespace-normal "
                                         >
                                             <p>Weigh your dog on a pet scale (or a kitchen scale for smaller dogs). Alternatively, weigh yourself while holding your dog and subtract your weight.</p>
                                         </TooltipContent>
@@ -202,7 +202,7 @@ function DogForm() {
                                             </TooltipTrigger>
                                             <TooltipContent
                                                 side="right"
-                                                className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-8  max-w-[400px] whitespace-normal "
+                                                className="bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-8  max-w-[400px] whitespace-normal "
                                             >
                                                 <div className="text-xs">
                                                     <p>Estimate your puppy's adult weight</p>
@@ -307,7 +307,7 @@ function DogForm() {
                                         </TooltipTrigger>
                                         <TooltipContent
                                             side="right"
-                                            className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[400px] whitespace-normal "
+                                            className="bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[400px] whitespace-normal "
                                         >
                                             <p>
                                                 <span className="font-medium"> Severely Underweight:</span> Bones clearly visible, no fat and muscle loss. <br />

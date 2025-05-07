@@ -101,7 +101,7 @@ function CatForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
                     control={form.control}
                     name="name"
@@ -122,6 +122,8 @@ function CatForm() {
                         </FormItem>
                     )}
                 />
+
+
                 <FormField
                     control={form.control}
                     name="dob"
@@ -156,7 +158,7 @@ function CatForm() {
                                         </TooltipTrigger>
                                         <TooltipContent
                                             side="right"
-                                            className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[300px] whitespace-normal "
+                                            className="bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[300px] whitespace-normal "
                                         >
                                             <p>Place the carrier on a scale with the entrance facing upward. Gently place your cat inside and record the total weight. To get your cat&apos;s weight, subtract the weight of the empty carrier from the total weight.</p>
                                         </TooltipContent>
@@ -236,6 +238,7 @@ function CatForm() {
                         </FormItem>
                     )}
                 />
+
                 <FormField
                     control={form.control}
                     name="condition_score"
@@ -250,7 +253,7 @@ function CatForm() {
                                         </TooltipTrigger>
                                         <TooltipContent
                                             side="right"
-                                            className="bg-[#fef2dc] border-[#fef2dc] text-black text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[450px] whitespace-normal "
+                                            className="bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-6 max-w-[450px] whitespace-normal "
                                         >
                                             <p>
                                                 <span className="font-medium"> Severely Underweight:</span> Ribs, spine, and bones are highly visible with little to no fat. <br />
@@ -368,7 +371,7 @@ function CatForm() {
                 />
                 <Button type="submit" className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto !mt-2" variant={undefined} size={undefined}>Submit</Button>
             </form>
-        </Form>
+        </Form >
     )
 }
 
