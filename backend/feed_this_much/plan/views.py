@@ -36,7 +36,7 @@ def generate_plan(request):
     # from the food, we get kJ per weight
 
     energy_given = food.energy
-    if food.energy_unit[0] == "kcal":
+    if food.energy_unit == "kcal":
         energy_given *= 4.184
     
     # energy per portion weight, eg 840kcal (multiply to get kJ)
