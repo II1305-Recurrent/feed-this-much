@@ -44,8 +44,52 @@ def generate_plan(request):
     # say we need 1000kJ, 1000 = (840*4.184)*portion_multiplier
     # portion_multiplier = 1000/(840*4.184)
 
-    portion_multiplier = energy_needs/energy_given
-    daily_serving = (portion_multiplier*food.weight, food.weight_unit)
+    food_to_packet_ratio = 0
+    
+
+    portion_multiplier = energy_needs/energy_given # calculates how much of the food weight we need # THEN CALCULATE THIS WEIGHT DEPENDING ON OTHER WEIGHT, AND THAT WEIGHT'S FACTOR
+    needed_food_weight = portion_multiplier*food.weight
+    
+    #weight_per_packet_unit MUST BE weight_unit for calculations to work
+    if food.weight_unit == food.WEIGHT_UNITS[0][0]: #kg
+        if food.weight_per_packet_unit == food.WEIGHT_UNITS[0][0]: #same
+            food_to_packet_ratio = needed_food_weight/food.weight_per_packet
+        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[1][0]: #turn into lb
+            food_to_packet_ratio = (needed_food_weight*2.204623)/food.weight_per_packet
+        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[2][0]: #turn into g
+            food_to_packet_ratio = (needed_food_weight*1000)/food.weight_per_packet
+        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[3][0]: #turn into oz
+            food_to_packet_ratio = (needed_food_weight*35.27396)/food.weight_per_packet
+
+    elif food.weight_unit == food.WEIGHT_UNITS[1][0]: #lb
+        if food.weight_per_packet_unit == food.WEIGHT_UNITS[0][0]: #turn into kg
+            food_to_packet_ratio = (needed_food_weight*0.453592)/food.weight_per_packet
+        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[1][0]: #same
+            food_to_packet_ratio = needed_food_weight/food.weight_per_packet
+        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[2][0]: #turn into g
+            food_to_packet_ratio = (needed_food_weight*453.5924)/food.weight_per_packet
+        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[3][0]: #turn into oz
+            food_to_packet_ratio = (needed_food_weight*16)/food.weight_per_packet
+
+    elif food.weight_unit == food.WEIGHT_UNITS[2][0]: #g NOT DONE
+        if food.weight_per_packet_unit == food.WEIGHT_UNITS[0][0]: #turn into kg
+            food_to_packet_ratio = (needed_food_weight*0.001)/food.weight_per_packet
+        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[1][0]: #turn into lb
+            food_to_packet_ratio = (needed_food_weight*0.002205)/food.weight_per_packet
+        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[2][0]: #same
+            food_to_packet_ratio = needed_food_weight/food.weight_per_packet
+        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[3][0]: #turn into oz
+            food_to_packet_ratio = (needed_food_weight*0.035274)/food.weight_per_packet
+
+    elif food.weight_unit == food.WEIGHT_UNITS[3][0]: #oz
+        if food.weight_per_packet_unit == food.WEIGHT_UNITS[0][0]: #turn into kg
+            food_to_packet_ratio = (needed_food_weight*0.02835)/food.weight_per_packet
+        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[1][0]: #turn into lb
+            food_to_packet_ratio = (needed_food_weight*0.0625)/food.weight_per_packet
+        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[2][0]: #turn into g
+            food_to_packet_ratio = (needed_food_weight*28.34952)/food.weight_per_packet
+        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[3][0]: #same
+            food_to_packet_ratio = needed_food_weight/food.weight_per_packet
 
     plan_data = {
         "user": request.user.id,
@@ -56,9 +100,9 @@ def generate_plan(request):
         "plan_title": request.data['plan_title'],
         "food_serving_type": food.packet_type,
         "daily_energy_needs": energy_needs,
-        "daily_food_weight": daily_serving[0],
-        "daily_food_weight_unit": daily_serving[1],
-        "daily_servings_amount": daily_serving[0]/food.weight_per_packet
+        "daily_food_weight": needed_food_weight,
+        "daily_food_weight_unit": food.weight_unit,
+        "daily_servings_amount": food_to_packet_ratio
     }
 
     serializer = PlanSerializer(data=plan_data)
