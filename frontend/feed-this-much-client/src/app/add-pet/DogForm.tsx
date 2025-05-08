@@ -111,7 +111,7 @@ function DogForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex flex-col gap-4">
                 <FormField
                     control={form.control}
                     name="name"
@@ -152,7 +152,7 @@ function DogForm() {
                         </FormItem>
                     )}
                 />
-                <FormField
+                <div className="flex flex-col gap-0"><FormField
                     control={form.control}
                     name="current_weight"
                     render={({ field }) => (
@@ -185,76 +185,76 @@ function DogForm() {
                     )}
                 />
 
-                {showExpectedWeight && (
+                    {showExpectedWeight && (
+                        <FormField
+                            control={form.control}
+                            name="expected_weight"
+                            render={({ field }) => (
+                                <FormItem className="!mt-4 block">
+                                    <div className="flex items-center gap-2">
+                                        <FormLabel className={undefined}>Enter your puppy&apos;s expected adult weight</FormLabel>
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <button type="button" className="text-blue-600"> <Info size={16} /> </button>
+                                            </PopoverTrigger>
+                                            <PopoverContent
+                                                side="bottom"
+                                                className="w-[250px] max-w-[250px] bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-8 whitespace-normal "
+                                            >
+                                                <div className="text-xs">
+                                                    <p>Estimate your puppy adult weight</p>
+                                                    <a
+                                                        href="https://sydneyanimalhospitals.com.au/puppy-weight-calculator/"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="inline-block font-medium text-blue-700 underline hover:text-blue-900 mt-2"
+                                                        style={{ textDecoration: 'underline', color: '#1d4ed8' }}
+                                                    >
+                                                        Adult Weight Calculator
+                                                    </a>
+                                                </div>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </div>
+                                    <FormControl>
+                                        <Input placeholder="Enter puppy's expected adult weight here" {...field} onChange={(e) => {
+                                            // Custom onChange logic
+                                            field.onChange(e); // Call React Hook Form's onChange
+                                            handlePuppyChange(e); // Call your custom onChange logic
+                                        }} />
+                                    </FormControl>
+                                    <FormDescription className={undefined}>
+                                        Click here for tips on how to figure out this weight. You may need to adjust this value as your puppy grows and you have a better idea of how big or small they are. If they are over 1 year old, leave this as 1.
+                                    </FormDescription>
+                                    <FormMessage className={undefined} />
+                                </FormItem>
+                            )}
+                        />
+                    )}
                     <FormField
                         control={form.control}
-                        name="expected_weight"
+                        name="weight_unit"
                         render={({ field }) => (
                             <FormItem className={undefined}>
-                                <div className="flex items-center gap-2">
-                                    <FormLabel className={undefined}>Enter your puppy&apos;s expected adult weight</FormLabel>
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <button type="button" className="text-blue-600"> <Info size={16} /> </button>
-                                        </PopoverTrigger>
-                                        <PopoverContent
-                                            side="bottom"
-                                            className="w-[250px] max-w-[250px] bg-[#fef2dc] border-[#fef2dc] text-[#D77A61] text-xs text-center rounded-md px-3 py-2 shadow-md border-8 whitespace-normal "
-                                        >
-                                            <div className="text-xs">
-                                                <p>Estimate your puppy adult weight</p>
-                                                <a
-                                                    href="https://sydneyanimalhospitals.com.au/puppy-weight-calculator/"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="inline-block font-medium text-blue-700 underline hover:text-blue-900 mt-2"
-                                                    style={{ textDecoration: 'underline', color: '#1d4ed8' }}
-                                                >
-                                                    Adult Weight Calculator
-                                                </a>
-                                            </div>
-                                        </PopoverContent>
-                                    </Popover>
-                                </div>
-                                <FormControl>
-                                    <Input placeholder="Enter puppy's expected adult weight here" {...field} onChange={(e) => {
-                                        // Custom onChange logic
-                                        field.onChange(e); // Call React Hook Form's onChange
-                                        handlePuppyChange(e); // Call your custom onChange logic
-                                    }} />
-                                </FormControl>
+                                {/* <FormLabel className={undefined}>Select Unit</FormLabel> */}
+                                <Select onValueChange={(v) => { field.onChange(v); handleUnitChange(v) }} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger className={undefined} >
+                                            <SelectValue placeholder="Select Unit" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent className={undefined} >
+                                        <SelectItem className={undefined} value="kg">Kgs</SelectItem>
+                                        <SelectItem className={undefined} value="lb">lbs</SelectItem>
+                                    </SelectContent>
+                                </Select>
                                 <FormDescription className={undefined}>
-                                    Click here for tips on how to figure out this weight. You may need to adjust this value as your puppy grows and you have a better idea of how big or small they are. If they are over 1 year old, leave this as 1.
+                                    Select the unit you used for your dog&apos;s weight.
                                 </FormDescription>
                                 <FormMessage className={undefined} />
                             </FormItem>
                         )}
-                    />
-                )}
-                <FormField
-                    control={form.control}
-                    name="weight_unit"
-                    render={({ field }) => (
-                        <FormItem className={undefined}>
-                            {/* <FormLabel className={undefined}>Select Unit</FormLabel> */}
-                            <Select onValueChange={(v) => { field.onChange(v); handleUnitChange(v) }} defaultValue={field.value}>
-                                <FormControl>
-                                    <SelectTrigger className={undefined} >
-                                        <SelectValue placeholder="Select Unit" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent className={undefined} >
-                                    <SelectItem className={undefined} value="kg">Kgs</SelectItem>
-                                    <SelectItem className={undefined} value="lb">lbs</SelectItem>
-                                </SelectContent>
-                            </Select>
-                            <FormDescription className={undefined}>
-                                Select the unit you used for your dog&apos;s weight.
-                            </FormDescription>
-                            <FormMessage className={undefined} />
-                        </FormItem>
-                    )}
-                />
+                    /></div>
                 <FormField
                     control={form.control}
                     name="neutered"

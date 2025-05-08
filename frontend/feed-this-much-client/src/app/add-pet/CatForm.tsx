@@ -103,7 +103,7 @@ function CatForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex flex-col gap-4">
                 <FormField
                     control={form.control}
                     name="name"
@@ -146,7 +146,7 @@ function CatForm() {
                         </FormItem>
                     )}
                 />
-                <FormField
+                <div className="flex flex-col gap-0"><FormField
                     control={form.control}
                     name="current_weight"
                     render={({ field }) => (
@@ -180,30 +180,30 @@ function CatForm() {
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name="weight_unit"
-                    render={({ field }) => (
-                        <FormItem className={undefined}>
-                            {/* <FormLabel className={undefined}>Select Unit</FormLabel> */}
-                            <Select onValueChange={(v) => { field.onChange(v); handleUnitChange(v) }} defaultValue={field.value}>
-                                <FormControl>
-                                    <SelectTrigger className={undefined} >
-                                        <SelectValue placeholder="Select Unit" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent className={undefined} >
-                                    <SelectItem className={undefined} value="kg">Kgs</SelectItem>
-                                    <SelectItem className={undefined} value="lb">lbs</SelectItem>
-                                </SelectContent>
-                            </Select>
-                            <FormDescription className={undefined}>
-                                Select the unit you used for your cat&apos;s weight.
-                            </FormDescription>
-                            <FormMessage className={undefined} />
-                        </FormItem>
-                    )}
-                />
+                    <FormField
+                        control={form.control}
+                        name="weight_unit"
+                        render={({ field }) => (
+                            <FormItem className={undefined}>
+                                {/* <FormLabel className={undefined}>Select Unit</FormLabel> */}
+                                <Select onValueChange={(v) => { field.onChange(v); handleUnitChange(v) }} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger className={undefined} >
+                                            <SelectValue placeholder="Select Unit" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent className={undefined} >
+                                        <SelectItem className={undefined} value="kg">Kgs</SelectItem>
+                                        <SelectItem className={undefined} value="lb">lbs</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <FormDescription className={undefined}>
+                                    Select the unit you used for your cat&apos;s weight.
+                                </FormDescription>
+                                <FormMessage className={undefined} />
+                            </FormItem>
+                        )}
+                    /></div>
                 <FormField
                     control={form.control}
                     name="neutered"
