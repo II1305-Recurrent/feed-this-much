@@ -84,7 +84,7 @@ export default function Sign_in_page() {
             toast.error(JSON.stringify(response.payload.error));
         }
     }
-    
+
     useEffect(() => {
         getRequest({ path: '/api/is-logged/' }).then(response => {
             if (response.ok) {
@@ -147,7 +147,7 @@ export default function Sign_in_page() {
                         <Card className="bg-transparent shadow-none border-none">
                             <CardContent className="flex flex-col gap-4">
                                 <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
-                                    <Label htmlFor="name">Name</Label>
+                                    <Label htmlFor="name">Display Name</Label>
                                     <Input id="name" type="name" placeholder="Enter what you want us to call you" onChange={(e) => setFirstName(e.target.value)} />
                                 </div>
                                 <div className="flex flex-col gap-2 text-[var(--custom-brown)]">
