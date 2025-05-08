@@ -175,4 +175,4 @@ async function deleteRequest({
     }
 }
 
-export { getCookieByName, getRequest, postRequest, deleteRequest };
+export { getCookieByName, getRequest, postRequest, deleteRequest, putRequest };
