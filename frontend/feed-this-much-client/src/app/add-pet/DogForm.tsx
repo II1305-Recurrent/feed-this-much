@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-import { getRequest, postRequest } from "@/utils/fetchApi";
+import { putRequest, postRequest } from "@/utils/fetchApi";
 
 import {
     Form,
@@ -45,7 +45,7 @@ import { Info } from "lucide-react";
 
 function DogForm() {
     const router = useRouter();
-    const { dog, resetDogFields, setDogFields, dontEdit } = useModel();
+    const { dog, resetDogFields, setDogFields, dontEdit, edit } = useModel();
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPetSchema>>({
@@ -76,14 +76,22 @@ function DogForm() {
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof addPetSchema>) {
-        const response = await postRequest({ path: '/api/save-pet/', body: values });
+        //console.log("Edit mode?", edit);
+
+        const response = edit
+            ? await putRequest({ path: `/api/update-pet/${dog.id}/`, body: values })
+            : await postRequest({ path: "/api/save-pet/", body: values });
+
         if (response.ok) {
-            console.log("Pet saved successfully");
+            console.log("Dog saved successfully");
+            resetDogFields();
+            dontEdit();
+            router.push("/home");
+        } else {
+            console.error("Failed to save dog");
         }
-        resetDogFields();
-        dontEdit();
-        router.push('/home');
     }
+
     function handleNameChange(e) {
         setDogFields({ fieldName: "name", value: e.target.value });
     }
