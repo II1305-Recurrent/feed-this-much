@@ -265,6 +265,9 @@ export default function Home() {
                                     </Image>
                                     <p className="text-[var(--custom-brown)] !pr-2">Calculate new plan</p>
                                 </Button>
+                                <Button variant="plus" onClick={() => alert("export invoked")} disabled={!(plans.length)}>
+                                    <p className="inline-block text-[var(--custom-brown)] !pl-2 !pr-2">Export All</p>
+                                </Button>
                             </div>
                         </div >
                     </AccordionContent >
