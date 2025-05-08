@@ -77,6 +77,9 @@ function DisplayPlan() {
                     <p>No plan data found!</p>
                 ) : (
                     <div>
+                        <h2 className="scroll-m-20 text-1xl text-[var(--custom-blue)] font-bold tracking-tight lg:text-1xl !mb-3">
+                            {plan.plan_title}
+                        </h2>
                         <p>
                             {plan.pet_name} needs {plan.daily_energy_needs.toFixed(2)} KJ / {(plan.daily_energy_needs / 4.184).toFixed(2)} kcal of energy every day.
                         </p>
