@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from feed_this_much.pets.models import Pet
 from feed_this_much.food.models import UserFood
+
 from django.db import models
 
 class UserPlan(models.Model):

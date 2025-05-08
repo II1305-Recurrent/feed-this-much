@@ -4,7 +4,6 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from feed_this_much.pets.models import Pet
 from .serializers import PetSerializer 
-from django.shortcuts import get_object_or_404
 
 
 @api_view(['POST', 'OPTIONS'])
@@ -43,10 +42,3 @@ def update_pet(request, id):
         return Response(status=status.HTTP_200_OK)
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
-def delete_pet(request, pet_id):
-    pet = get_object_or_404(Pet, pk=pet_id, user=request.user)
-    pet.delete()
-    return Response({'msg': 'Pet deleted successfully'}, status=status.HTTP_200_OK)
