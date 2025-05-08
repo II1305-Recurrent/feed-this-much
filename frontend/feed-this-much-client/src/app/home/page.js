@@ -30,6 +30,25 @@ export default function Home() {
     //const foods = [{ id: 0, name: "Fancy chow" }, { id: 1, name: "Foooood" }]
     //const plans = [{ id: 1, title: "Test Plan" }];
     const { setIndex, setCatFields, setDogFields, cat, dog, setToCat, setToDog, doEdit } = useModel();
+    const [user, setUser] = useState([]);
+    async function getUser() {
+        const response = await getRequest({ path: '/api/get-user/' });
+        if (response.ok) {
+            console.log(response.payload)
+            setUser(response.payload)
+        }
+
+    }
+    useEffect(() => {
+        getUser()
+        console.log(user);
+    }, []);
+    useEffect(() => {
+        if (user) {
+            console.log(user);
+            router.replace(router.asPath);
+        }
+    }, [user]);
 
     function setPetForEditing(id) {
         //fetch pet by ID
@@ -87,7 +106,7 @@ export default function Home() {
     return (
         <div className="page">
             <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
-                Hi! You are now logged in.
+                Hi {user.first_name}!
             </h1>
             <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1">
