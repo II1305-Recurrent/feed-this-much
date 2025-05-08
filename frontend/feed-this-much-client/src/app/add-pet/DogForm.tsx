@@ -52,22 +52,22 @@ function DogForm() {
     const form = useForm<z.infer<typeof addPetSchema>>({
         resolver: zodResolver(addPetSchema),
         defaultValues: {
-            name: dog.name,
-            dob: dog.dob,
-            current_weight: dog.current_weight as unknown as number,
-            expected_weight: dog.expected_weight as unknown as number,
+            name: "",
+            dob: "",
+            current_weight: "" as unknown as number,
+            expected_weight: "" as unknown as number,
             species: "dog",
-            neutered: dog.neutered,
-            weight_unit: dog.weight_unit,
-            condition_score: dog.condition_score as unknown as number,
-            activity_level: dog.activity_level,
+            neutered: undefined,
+            weight_unit: undefined,
+            condition_score: "3" as unknown as number,
+            activity_level: undefined,
         },
     })
 
     useEffect(() => {
         async function fetchDogFromDB() {
             const response = await getRequest({ path: `/api/get-pet/${dog.id}/` });
-
+            console.log('Full response:', response);
             if (response.ok && response.payload) {
                 const thisDog = response.payload;
                 if (!thisDog) return;
@@ -80,7 +80,7 @@ function DogForm() {
                     species: thisDog.species,
                     neutered: thisDog.neutered,
                     weight_unit: thisDog.weight_unit,
-                    condition_score: thisDog.condition_score,
+                    condition_score: thisDog.condition_score.toString(),
                     activity_level: thisDog.activity_level,
                 });
             } else {
@@ -274,7 +274,7 @@ function DogForm() {
                         render={({ field }) => (
                             <FormItem className={undefined}>
                                 {/* <FormLabel className={undefined}>Select Unit</FormLabel> */}
-                                <Select onValueChange={(v) => { field.onChange(v); handleUnitChange(v) }} defaultValue={field.value}>
+                                <Select onValueChange={(v) => { field.onChange(v); handleUnitChange(v) }} value={field.value}>
                                     <FormControl>
                                         <SelectTrigger className={undefined} >
                                             <SelectValue placeholder="Select Unit" />
@@ -301,7 +301,7 @@ function DogForm() {
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={(v) => { field.onChange(v); handleNeuteredChange(v) }}
-                                    defaultValue={field.value}
+                                    value={field.value}
                                     className="flex flex-col space-y-1"
                                 >
                                     <FormItem className="flex items-center space-x-3 space-y-0">
@@ -355,7 +355,7 @@ function DogForm() {
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={(v) => { field.onChange(v); handleConditionChange(v) }}
-                                    defaultValue={field.value}
+                                    value={field.value}
                                     className="flex flex-col space-y-1"
                                 >
                                     <FormItem className="flex items-center space-x-3 space-y-0">
@@ -413,7 +413,7 @@ function DogForm() {
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={(v) => { field.onChange(v); handleActivityChange(v) }}
-                                    defaultValue={field.value}
+                                    value={field.value}
                                     className="flex flex-col space-y-1"
                                 >
                                     <FormItem className="flex items-center space-x-3 space-y-0">

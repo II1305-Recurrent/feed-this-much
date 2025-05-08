@@ -77,7 +77,7 @@ function CatForm() {
                     species: thisCat.species,
                     neutered: thisCat.neutered,
                     weight_unit: thisCat.weight_unit,
-                    condition_score: thisCat.condition_score,
+                    condition_score: thisCat.condition_score.toString(),
                     activity_level: thisCat.activity_level,
                 });
             } else {
@@ -216,7 +216,7 @@ function CatForm() {
                         render={({ field }) => (
                             <FormItem className={undefined}>
                                 {/* <FormLabel className={undefined}>Select Unit</FormLabel> */}
-                                <Select onValueChange={(v) => { field.onChange(v); handleUnitChange(v) }} defaultValue={field.value}>
+                                <Select onValueChange={(v) => { field.onChange(v); handleUnitChange(v) }} value={field.value}>
                                     <FormControl>
                                         <SelectTrigger className={undefined} >
                                             <SelectValue placeholder="Select Unit" />
@@ -243,7 +243,7 @@ function CatForm() {
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={(v) => { field.onChange(v); handleNeuteredChange(v) }}
-                                    defaultValue={field.value}
+                                    value={field.value}
                                     className="flex flex-col space-y-1"
                                 >
                                     <FormItem className="flex items-center space-x-3 space-y-0">
@@ -298,7 +298,7 @@ function CatForm() {
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={(v) => { field.onChange(v); handleConditionChange(v) }}
-                                    defaultValue={field.value}
+                                    value={field.value}
                                     className="flex flex-col space-y-1"
                                 >
                                     <FormItem className="flex items-center space-x-3 space-y-0">
@@ -356,7 +356,7 @@ function CatForm() {
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={(v) => { field.onChange(v); handleActivityChange(v) }}
-                                    defaultValue={field.value}
+                                    value={field.value}
                                     className="flex flex-col space-y-1"
                                 >
                                     <FormItem className="flex items-center space-x-3 space-y-0">
