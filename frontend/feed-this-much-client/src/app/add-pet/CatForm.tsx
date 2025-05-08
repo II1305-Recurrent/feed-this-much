@@ -95,7 +95,7 @@ function CatForm() {
     async function onSubmit(values: z.infer<typeof addCatSchema>) {
         //console.log("Form submitted with values:", cat.id);
         const response = edit
-            ? await putRequest({ path: "/api/update-pet/${cat.id}/", body: values })
+            ? await putRequest({ path: `/api/update-pet/${cat.id}/`, body: values })
             : await postRequest({ path: "/api/save-pet/", body: values });
 
         if (response.ok) {
