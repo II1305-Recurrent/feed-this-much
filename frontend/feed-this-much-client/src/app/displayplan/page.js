@@ -7,6 +7,7 @@ import Image from "next/image";
 import styles from "@/app/page.module.css";
 
 import DisplayPlan from "./DisplayPlan";
+import exportFeedingPlanPdf from "./pdfExport"
 
 export default function Plan() {
 
@@ -17,7 +18,7 @@ export default function Plan() {
                     Feeding Plan
                 </h1>
                 <div className="flex items-center gap-4">
-                    <Button variant="destructive" onClick={() => alert("export invoked")}>
+                    <Button variant="destructive" onClick={exportFeedingPlanPdf}>
                         <p className="inline-block text-[var(--custom-brown)] !pl-2 !pr-2">Export</p>
                     </Button>
                     <Button variant="destructive" onClick={() => redirect("/home")}>
