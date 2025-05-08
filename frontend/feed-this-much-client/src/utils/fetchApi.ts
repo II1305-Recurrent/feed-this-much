@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-const debug = false; // SET TO FALSE WHEN COMMIT TO MAIN
+const debug = true; // SET TO FALSE WHEN COMMIT TO MAIN
 
 function getBaseUrl(): string {
     if (debug) {
