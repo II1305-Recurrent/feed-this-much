@@ -71,8 +71,6 @@ function CatForm() {
             : await postRequest({ path: "/api/save-pet/", body: values });
 
         if (response.ok) {
-            resetCatFields();
-            dontEdit();
             console.log("Cat saved successfully");
             resetCatFields();
             dontEdit();
