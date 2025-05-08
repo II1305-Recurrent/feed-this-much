@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from feed_this_much.pets.models import Pet
 from feed_this_much.food.models import UserFood
-from feed_this_much.plan import calorie_calculator
+#from feed_this_much.plan import calorie_calculator
 from .serializers import PlanSerializer
 from .models import UserPlan
 
