@@ -191,7 +191,7 @@ export default function Home() {
                                 );
                             })}
                             <div className="inline-flex items-center gap-2 !p-[2px]">
-                                <Button variant="plus" onClick={() => router.push("/calc-new-plan")}>
+                                <Button variant="plus" onClick={() => router.push("/calc-new-plan")} disabled={!(pets[0] && foods[0])}>
                                     <Image src="/plus-sign-circle-icon.png"
                                         alt=""
                                         width={20}
