@@ -58,3 +58,6 @@ https://ui.shadcn.com/docs/components/tabs
 Select:
 https://ui.shadcn.com/docs/components/select#form
 
+Slider:
+https://ui.shadcn.com/docs/components/slider
+
