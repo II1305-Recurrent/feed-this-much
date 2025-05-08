@@ -29,3 +29,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             first_name = validated_data.get('first_name', validated_data['username']) ##WTF is this? 
         )
         return user
+
+class UserDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email', 'first_name']
