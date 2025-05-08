@@ -71,9 +71,9 @@ function CatForm() {
             : await postRequest({ path: "/api/save-pet/", body: values });
 
         if (response.ok) {
-            console.log("Cat saved successfully");
             resetCatFields();
             dontEdit();
+            console.log("Cat saved successfully");
             router.push("/home");
         } else {
             console.error("Failed to save cat");
