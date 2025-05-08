@@ -82,6 +82,8 @@ function AddPlanForm() {
             title: "Default title", //maybe generate random number based on ids of previous plans?
             foodname: null,
             petname: null,
+            isSecondFoodRequired: false,
+            secondfoodname: null,
         },
     })
 
@@ -112,6 +114,21 @@ function AddPlanForm() {
             }
         }
     }
+
+    // Second Food Schema Handlers
+    const handleAddSecondFood = () => {
+        // Set isSecondFoodRequired to true before submitting the form
+        form.setValue("isSecondFoodRequired", true);
+        setSecondFood(true);
+    };
+
+    const handleRemoveSecondFood = () => {
+        // Set isSecondFoodRequired to false before submitting the form
+        // removes any previously selected second food
+        form.setValue("isSecondFoodRequired", false);
+        form.setValue("secondfoodname", null);
+        setSecondFood(false);
+    };
 
 
     return (
@@ -183,7 +200,7 @@ function AddPlanForm() {
                 />
                 {
                     !secondFood && (
-                        <Button variant="outline" className={undefined} size={undefined} onClick={() => setSecondFood(true)}>
+                        <Button variant="outline" className={undefined} size={undefined} onClick={handleAddSecondFood} >
                             Add Another Food
                         </Button>
                     )
@@ -191,7 +208,7 @@ function AddPlanForm() {
                 {
                     secondFood && (
                         <div>
-                            <Button variant="outline" className={undefined} size={undefined} onClick={() => setSecondFood(false)}>
+                            <Button variant="outline" className={undefined} size={undefined} onClick={handleRemoveSecondFood} >
                                 Remove Other Food
                             </Button>
                             <FormField
