@@ -37,6 +37,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 function AddPlanForm() {
+
     const router = useRouter();
     const [pets, setPets] = useState([]);
     const [foods, setFoods] = useState([]);
@@ -70,6 +71,9 @@ function AddPlanForm() {
         getFoods();
         console.log(pets);
     }, []);
+
+    // To Toggle the Second Food
+    const [secondFood, setSecondFood] = useState(false);
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPlanSchema>>({
@@ -177,6 +181,46 @@ function AddPlanForm() {
                         </FormItem>
                     )}
                 />
+                {
+                    !secondFood && (
+                        <Button variant="outline" className={undefined} size={undefined} onClick={() => setSecondFood(true)}>
+                            Add Another Food
+                        </Button>
+                    )
+                }
+                {
+                    secondFood && (
+                        <div>
+                            <Button variant="outline" className={undefined} size={undefined} onClick={() => setSecondFood(false)}>
+                                Remove Other Food
+                            </Button>
+                            <FormField
+                                control={form.control}
+                                name="secondfoodname"
+                                render={({ field }) => (
+                                    <FormItem className={undefined}>
+                                        <FormLabel className={undefined}>Second Food Name</FormLabel>
+                                        <Select onValueChange={(value) => field.onChange(Number(value))} value={field.value?.toString()}>
+                                            <FormControl>
+                                                <SelectTrigger className={undefined} >
+                                                    <SelectValue placeholder="Select food" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent className={undefined} >
+                                                {foods.map((item) => <SelectItem key={item.id} className={undefined} value={item.id.toString()}>{item.food_name}</SelectItem>)}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormDescription className={undefined}>
+                                            Choose a second food the plan is using.
+                                        </FormDescription>
+                                        <FormMessage className={undefined} />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                    )
+                }
+
                 <Button type="submit" className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto !mt-2" variant={undefined} size={undefined}>Submit</Button>
             </form>
         </Form>
