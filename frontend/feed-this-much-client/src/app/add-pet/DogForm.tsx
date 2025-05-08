@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-import { putRequest, postRequest } from "@/utils/fetchApi";
+import { getRequest, putRequest, postRequest } from "@/utils/fetchApi";
 
 import {
     Form,
@@ -32,6 +32,7 @@ import { Input } from "@/components/ui/input"
 import { addPetSchema, type addPetSchemaType } from "@/zod-schemas/pet"
 import { useRouter } from "next/navigation";
 import { useModel } from "../Model";
+import { useEffect } from "react";
 
 import {
     Popover,
@@ -62,6 +63,34 @@ function DogForm() {
             activity_level: dog.activity_level,
         },
     })
+
+    useEffect(() => {
+        async function fetchDogFromDB() {
+            const response = await getRequest({ path: `/api/get-pet/${dog.id}/` });
+
+            if (response.ok && response.payload) {
+                const thisDog = response.payload;
+                if (!thisDog) return;
+
+                form.reset({
+                    name: thisDog.name,
+                    dob: thisDog.dob,
+                    current_weight: thisDog.current_weight,
+                    expected_weight: thisDog.expected_weight,
+                    species: thisDog.species,
+                    neutered: thisDog.neutered,
+                    weight_unit: thisDog.weight_unit,
+                    condition_score: thisDog.condition_score,
+                    activity_level: thisDog.activity_level,
+                });
+            } else {
+                console.error("Failed to fetch pet or malformed response:", response);
+            }
+        }
+        if (edit && dog.id) {
+            fetchDogFromDB();
+        }
+    }, [dog.id, edit])
 
 
     const dob = form.watch("dob")

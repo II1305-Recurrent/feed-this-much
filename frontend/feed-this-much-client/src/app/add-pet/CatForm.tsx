@@ -6,7 +6,7 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { putRequest, postRequest } from "@/utils/fetchApi";
+import { getRequest, putRequest, postRequest } from "@/utils/fetchApi";
 
 import {
     Form,
@@ -32,6 +32,7 @@ import { addCatSchema, type addCatSchemaType } from "@/zod-schemas/cat"
 
 import { useRouter } from "next/navigation";
 import { useModel } from "../Model";
+import { useEffect } from "react";
 
 import {
     Popover,
@@ -61,6 +62,33 @@ function CatForm() {
             activity_level: undefined,
         },
     })
+
+    useEffect(() => {
+        async function fetchCatFromDB() {
+            const response = await getRequest({ path: `/api/get-pet/${cat.id}/` });
+            console.log('Full response:', response);
+            if (response.ok && response.payload) {
+                const thisCat = response.payload;
+
+                form.reset({
+                    name: thisCat.name,
+                    dob: thisCat.dob,
+                    current_weight: thisCat.current_weight,
+                    species: thisCat.species,
+                    neutered: thisCat.neutered,
+                    weight_unit: thisCat.weight_unit,
+                    condition_score: thisCat.condition_score,
+                    activity_level: thisCat.activity_level,
+                });
+            } else {
+                console.error("Failed to fetch cat or response malformed");
+            }
+        }
+
+        if (edit && cat.id) {
+            fetchCatFromDB();
+        }
+    }, [cat.id, edit]);
 
 
     // 2. Define a submit handler.
