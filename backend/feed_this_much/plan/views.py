@@ -10,7 +10,7 @@ from .models import UserPlan
 
 @api_view(['POST', 'OPTIONS'])
 @permission_classes([IsAuthenticated])
-def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES
+def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/PORTIONS, SPLIT_TYPE, portion_food_id
     pet = Pet.objects.filter(user=request.user, id=request.data['pet_id']).first()
     food = UserFood.objects.filter(user=request.user, id=request.data['food_id']).first() # Filter by userID, foodname CHANGE THIS. GET ALL REQUESTED FOODS!!!
     energy_needs = None
