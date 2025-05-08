@@ -48,5 +48,6 @@ urlpatterns = [
     path('docs/', SpectacularRedocView.as_view(url_name='schema'), name='docs'),
     path('api/get-foods/', get_foods, name='get_foods'),
     path('api/save-food/', save_food, name='save_food'),
-    path('api/is-logged/', views.is_logged_in, name='is-logged')
+    path('api/is-logged/', views.is_logged_in, name='is-logged'),
+    path('api/get-user/', views.get_user_details, name='get-user')
 ]

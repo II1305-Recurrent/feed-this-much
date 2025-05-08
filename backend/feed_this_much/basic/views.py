@@ -6,7 +6,7 @@ from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
-from feed_this_much.basic.serializers import GroupSerializer, UserSerializer, UserRegistrationSerializer
+from feed_this_much.basic.serializers import GroupSerializer, UserSerializer, UserRegistrationSerializer, UserDetailsSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -64,3 +64,10 @@ def user_logout(request):
 @permission_classes([permissions.IsAuthenticated])
 def is_logged_in(request):
     return Response(status=status.HTTP_200_OK)
+
+@api_view(['GET', 'OPTIONS'])
+@permission_classes([permissions.IsAuthenticated])
+def get_user_details(request):
+    user = User.objects.filter(id=request.user.id).first()
+    serialized_data = UserDetailsSerializer(user)
+    return Response(serialized_data.data, status=status.HTTP_200_OK)
