@@ -7,7 +7,6 @@ from feed_this_much.food.models import UserFood
 from feed_this_much.plan import calorie_calculator
 from .serializers import PlanSerializer
 from .models import UserPlan
-from django.shortcuts import get_object_or_404
 
 
 @api_view(['POST', 'OPTIONS'])
@@ -131,6 +130,11 @@ def get_plans(request):
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_plan(request, plan_id):
-    plan = get_object_or_404(UserPlan, pk=plan_id, user=request.user)
-    plan.delete()
+    plans = UserPlan.objects.filter(user=request.user, id = plan_id) # Filter by userID
+    if not plans.exists():
+        return Response(
+            {"message": "No plans yet!"},
+            status=status.HTTP_200_OK # 200 OK even if no pets exist
+        )
+    plans.delete()
     return Response({'msg': 'Plan deleted successfully'}, status=status.HTTP_200_OK)
