@@ -27,3 +27,18 @@ def get_pets(request):
         )
     serializer = PetSerializer(pets, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['PUT','OPTIONS'])
+@permission_classes([IsAuthenticated])
+def update_pet(request, id): 
+    try:
+        pet = Pet.objects.get(id=id, user=request.user)
+    except Pet.DoesNotExist:
+        return Response({"error": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = PetSerializer(pet, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(status=status.HTTP_200_OK)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

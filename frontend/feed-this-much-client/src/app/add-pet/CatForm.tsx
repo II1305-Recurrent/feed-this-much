@@ -6,7 +6,7 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { getRequest, postRequest } from "@/utils/fetchApi";
+import { putRequest, postRequest } from "@/utils/fetchApi";
 
 import {
     Form,
@@ -45,7 +45,7 @@ import { Info } from "lucide-react";
 
 function CatForm() {
     const router = useRouter();
-    const { cat, resetCatFields, setCatFields, dontEdit } = useModel();
+    const { cat, resetCatFields, setCatFields, dontEdit, edit } = useModel();
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof addCatSchema>>({
@@ -65,17 +65,21 @@ function CatForm() {
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof addCatSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        const response = await postRequest({ path: '/api/save-pet/', body: values });
+        //console.log("Form submitted with values:", cat.id);
+        const response = edit
+            ? await putRequest({ path: `/api/update-pet/${cat.id}/`, body: values })
+            : await postRequest({ path: "/api/save-pet/", body: values });
 
         if (response.ok) {
             resetCatFields();
             dontEdit();
             console.log("Cat saved successfully");
-            router.push('/home');
+            resetCatFields();
+            dontEdit();
+            router.push("/home");
+        } else {
+            console.error("Failed to save cat");
         }
-        console.log(values)
     }
 
 

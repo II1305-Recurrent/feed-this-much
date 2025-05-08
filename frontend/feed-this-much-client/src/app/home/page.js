@@ -40,10 +40,13 @@ export default function Home() {
             doEdit();
             setToCat();
             setCatFields({ fieldName: "name", value: selectedPet.name });
+            setCatFields({ fieldName: "id", value: selectedPet.id });
+
         } else {
             doEdit();
             setToDog();
             setDogFields({ fieldName: "name", value: selectedPet.name });
+            setDogFields({ fieldName: "id", value: selectedPet.id });
         }
     }
     useEffect(() => {

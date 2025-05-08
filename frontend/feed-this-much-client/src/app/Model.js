@@ -31,6 +31,7 @@ export function ModelProvider({ children }) {
 
     const resetCatFields = () => {
         setCat({
+            id: undefined,
             name: "",
             dob: "",
             current_weight: "",
