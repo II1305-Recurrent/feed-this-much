@@ -4,7 +4,6 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .serializers import FoodSerializer 
-from django.shortcuts import get_object_or_404
 
 @api_view(['POST', 'OPTIONS'])
 @permission_classes([IsAuthenticated]) # User auth
@@ -31,6 +30,11 @@ def get_foods(request):
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_food(request, food_id):
-    food = get_object_or_404(UserFood, pk=food_id, user=request.user)
+    food = UserFood.objects.filter(user=request.user, id = food_id) # Filter by userID
+    if not food.exists():
+        return Response(
+            {"message": "No food yet!"},
+            status=status.HTTP_200_OK # 200 OK even if no pets exist
+        )
     food.delete()
     return Response({'msg': 'Food deleted successfully'}, status=status.HTTP_200_OK)
