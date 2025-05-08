@@ -13,7 +13,7 @@ from .models import UserPlan
 def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/PORTIONS, SPLIT_TYPE, portion_food_id
     pet = Pet.objects.filter(user=request.user, id=request.data['pet_id']).first()
     food = UserFood.objects.filter(user=request.user, id=request.data['food_id']).first() # Filter by userID, foodname CHANGE THIS. GET ALL REQUESTED FOODS!!!
-    energy_needs = None
+    #energy_needs = None
 
     if not pet:
         error_message = "No such pet exists"
@@ -22,10 +22,12 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
             status=status.HTTP_400_BAD_REQUEST
         )
     
+    """
     if pet.species == "cat":
         energy_needs = calorie_calculator.calculate_cat_feeding(pet)
     elif pet.species == "dog":
         energy_needs = calorie_calculator.calculate_dog_feeding(pet)
+        """
     
     # FOR LOOP FOR FOODS
     if not food:
@@ -35,67 +37,70 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    # from the food, we get kJ per weight
-
-    energy_given = food.energy
-    if food.energy_unit == "kcal":
-        energy_given *= 4.184
-    
-    # energy per portion weight, eg 840kcal (multiply to get kJ)
-    # weight per portion, eg 1kg
-    # say we need 1000kJ, 1000 = (840*4.184)*portion_multiplier
-    # portion_multiplier = 1000/(840*4.184)
-
     ### MAKE THIS A FUNCTION, FOR EACH FOOD ENTER PERCENTAGE OF ENERGY NEEDS TO BE COVERED 
-    food_to_packet_ratio = 0
-    
+    def calculate_for_food_ratios(food, percentage, energy_needs):
+        # from the food, we get kJ per weight
+        energy_needs *= percentage
+        energy_given = food.energy
+        if food.energy_unit == "kcal":
+            energy_given *= 4.184
+        
+        # energy per portion weight, eg 840kcal (multiply to get kJ)
+        # weight per portion, eg 1kg
+        # say we need 1000kJ, 1000 = (840*4.184)*portion_multiplier
+        # portion_multiplier = 1000/(840*4.184)
 
-    portion_multiplier = energy_needs/energy_given # calculates how much of the food weight we need, calculate by percentage
-    needed_food_weight = portion_multiplier*food.weight
-    
-    #weight_per_packet_unit MUST BE weight_unit for calculations to work
-    if food.weight_unit == food.WEIGHT_UNITS[0][0]: #kg
-        if food.weight_per_packet_unit == food.WEIGHT_UNITS[0][0]: #same
-            food_to_packet_ratio = needed_food_weight/food.weight_per_packet
-        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[1][0]: #turn into lb
-            food_to_packet_ratio = (needed_food_weight*2.204623)/food.weight_per_packet
-        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[2][0]: #turn into g
-            food_to_packet_ratio = (needed_food_weight*1000)/food.weight_per_packet
-        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[3][0]: #turn into oz
-            food_to_packet_ratio = (needed_food_weight*35.27396)/food.weight_per_packet
+        food_to_packet_ratio = 0
+        
 
-    elif food.weight_unit == food.WEIGHT_UNITS[1][0]: #lb
-        if food.weight_per_packet_unit == food.WEIGHT_UNITS[0][0]: #turn into kg
-            food_to_packet_ratio = (needed_food_weight*0.453592)/food.weight_per_packet
-        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[1][0]: #same
-            food_to_packet_ratio = needed_food_weight/food.weight_per_packet
-        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[2][0]: #turn into g
-            food_to_packet_ratio = (needed_food_weight*453.5924)/food.weight_per_packet
-        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[3][0]: #turn into oz
-            food_to_packet_ratio = (needed_food_weight*16)/food.weight_per_packet
+        portion_multiplier = energy_needs/energy_given # calculates how much of the food weight we need, calculate by percentage
+        needed_food_weight = portion_multiplier*food.weight
+        
+        #weight_per_packet_unit MUST BE weight_unit for calculations to work
+        if food.weight_unit == food.WEIGHT_UNITS[0][0]: #kg
+            if food.weight_per_packet_unit == food.WEIGHT_UNITS[0][0]: #same
+                food_to_packet_ratio = needed_food_weight/food.weight_per_packet
+            elif food.weight_per_packet_unit == food.WEIGHT_UNITS[1][0]: #turn into lb
+                food_to_packet_ratio = (needed_food_weight*2.204623)/food.weight_per_packet
+            elif food.weight_per_packet_unit == food.WEIGHT_UNITS[2][0]: #turn into g
+                food_to_packet_ratio = (needed_food_weight*1000)/food.weight_per_packet
+            elif food.weight_per_packet_unit == food.WEIGHT_UNITS[3][0]: #turn into oz
+                food_to_packet_ratio = (needed_food_weight*35.27396)/food.weight_per_packet
 
-    elif food.weight_unit == food.WEIGHT_UNITS[2][0]: #g NOT DONE
-        if food.weight_per_packet_unit == food.WEIGHT_UNITS[0][0]: #turn into kg
-            food_to_packet_ratio = (needed_food_weight*0.001)/food.weight_per_packet
-        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[1][0]: #turn into lb
-            food_to_packet_ratio = (needed_food_weight*0.002205)/food.weight_per_packet
-        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[2][0]: #same
-            food_to_packet_ratio = needed_food_weight/food.weight_per_packet
-        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[3][0]: #turn into oz
-            food_to_packet_ratio = (needed_food_weight*0.035274)/food.weight_per_packet
+        elif food.weight_unit == food.WEIGHT_UNITS[1][0]: #lb
+            if food.weight_per_packet_unit == food.WEIGHT_UNITS[0][0]: #turn into kg
+                food_to_packet_ratio = (needed_food_weight*0.453592)/food.weight_per_packet
+            elif food.weight_per_packet_unit == food.WEIGHT_UNITS[1][0]: #same
+                food_to_packet_ratio = needed_food_weight/food.weight_per_packet
+            elif food.weight_per_packet_unit == food.WEIGHT_UNITS[2][0]: #turn into g
+                food_to_packet_ratio = (needed_food_weight*453.5924)/food.weight_per_packet
+            elif food.weight_per_packet_unit == food.WEIGHT_UNITS[3][0]: #turn into oz
+                food_to_packet_ratio = (needed_food_weight*16)/food.weight_per_packet
 
-    elif food.weight_unit == food.WEIGHT_UNITS[3][0]: #oz
-        if food.weight_per_packet_unit == food.WEIGHT_UNITS[0][0]: #turn into kg
-            food_to_packet_ratio = (needed_food_weight*0.02835)/food.weight_per_packet
-        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[1][0]: #turn into lb
-            food_to_packet_ratio = (needed_food_weight*0.0625)/food.weight_per_packet
-        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[2][0]: #turn into g
-            food_to_packet_ratio = (needed_food_weight*28.34952)/food.weight_per_packet
-        elif food.weight_per_packet_unit == food.WEIGHT_UNITS[3][0]: #same
-            food_to_packet_ratio = needed_food_weight/food.weight_per_packet
+        elif food.weight_unit == food.WEIGHT_UNITS[2][0]: #g NOT DONE
+            if food.weight_per_packet_unit == food.WEIGHT_UNITS[0][0]: #turn into kg
+                food_to_packet_ratio = (needed_food_weight*0.001)/food.weight_per_packet
+            elif food.weight_per_packet_unit == food.WEIGHT_UNITS[1][0]: #turn into lb
+                food_to_packet_ratio = (needed_food_weight*0.002205)/food.weight_per_packet
+            elif food.weight_per_packet_unit == food.WEIGHT_UNITS[2][0]: #same
+                food_to_packet_ratio = needed_food_weight/food.weight_per_packet
+            elif food.weight_per_packet_unit == food.WEIGHT_UNITS[3][0]: #turn into oz
+                food_to_packet_ratio = (needed_food_weight*0.035274)/food.weight_per_packet
 
+        elif food.weight_unit == food.WEIGHT_UNITS[3][0]: #oz
+            if food.weight_per_packet_unit == food.WEIGHT_UNITS[0][0]: #turn into kg
+                food_to_packet_ratio = (needed_food_weight*0.02835)/food.weight_per_packet
+            elif food.weight_per_packet_unit == food.WEIGHT_UNITS[1][0]: #turn into lb
+                food_to_packet_ratio = (needed_food_weight*0.0625)/food.weight_per_packet
+            elif food.weight_per_packet_unit == food.WEIGHT_UNITS[2][0]: #turn into g
+                food_to_packet_ratio = (needed_food_weight*28.34952)/food.weight_per_packet
+            elif food.weight_per_packet_unit == food.WEIGHT_UNITS[3][0]: #same
+                food_to_packet_ratio = needed_food_weight/food.weight_per_packet
+
+        return needed_food_weight, food_to_packet_ratio
     ###
 
+    """
     plan_data = {
         "user": request.user.id,
         "pet": pet.id,
@@ -109,7 +114,22 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
         "daily_food_weight_unit": food.weight_unit, # UPDATE TO ARRAY OF FOODS
         "daily_servings_amount": food_to_packet_ratio # UPDATE TO ARRAY OF FOODS
     }
+    
+    """
 
+    plan_data = {
+        "user": 1,
+        "pet": 1,
+        "foods": 1, # UPDATE TO ARRAY OF FOODS
+        "pet_name": 1,
+        "food_names": 1, # UPDATE TO ARRAY OF FOODS
+        "plan_title": 1,
+        "food_serving_type": 1, # UPDATE TO ARRAY OF FOODS
+        "daily_energy_needs": 1,
+        "daily_food_weight": 1, # UPDATE TO ARRAY OF FOODS
+        "daily_food_weight_unit": 1, # UPDATE TO ARRAY OF FOODS
+        "daily_servings_amount": 1 # UPDATE TO ARRAY OF FOODS
+    }
     serializer = PlanSerializer(data=plan_data)
 
     if serializer.is_valid():
