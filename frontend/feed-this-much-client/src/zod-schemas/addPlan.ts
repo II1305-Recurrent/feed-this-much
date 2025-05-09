@@ -5,10 +5,10 @@ export const addPlanSchema = z.object({
     title: z.string().min(1, "Please give this plan a name, it will be used to display your plans"),
     petId: z.coerce.number({
         required_error: "Please choose a pet",
-    }),
+    }).min(1, "Please select a pet"),
     foodId: z.coerce.number({
         required_error: "Please choose a food",
-    }),
+    }).min(1, "Please select a food"),
     numberOfFoods: z.coerce.number({
         required_error: "Must be a number", // 1 for a single food, 2 for a second food and so on
     }),
@@ -20,11 +20,11 @@ export const addPlanSchema = z.object({
 }).superRefine((data, ctx) => {
 
     // Controls if second food is required or not
-    if (data.numberOfFoods == 2 && !data.secondFoodId) {
+    if (data.numberOfFoods == 2 && data.secondFoodId == 0) {
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: "You need to select the second food",
-            path: ["secondfoodname"]
+            path: ["secondFoodId"]
         });
     }
 
@@ -33,7 +33,7 @@ export const addPlanSchema = z.object({
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: "You need to select two different foods",
-            path: ["secondfoodname"]
+            path: ["secondFoodId"]
         });
     }
 
