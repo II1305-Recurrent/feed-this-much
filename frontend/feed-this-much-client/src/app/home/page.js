@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation";
 import { getRequest } from "@/utils/fetchApi";
 import { deleteRequest } from "@/utils/fetchApi";
 import { get } from "http";
-
+import { exportFeedingPlansPdf } from "../displayplan/pdfExport";
 
 export default function Home() {
     const router = useRouter();
@@ -265,7 +265,7 @@ export default function Home() {
                                     </Image>
                                     <p className="text-[var(--custom-brown)] !pr-2">Calculate new plan</p>
                                 </Button>
-                                <Button variant="plus" onClick={() => alert("export invoked")} disabled={!(plans.length)}>
+                                <Button variant="plus" onClick={() => exportFeedingPlansPdf(plans)} disabled={!(plans.length)}>
                                     <p className="inline-block text-[var(--custom-brown)] !pl-2 !pr-2">Export All</p>
                                 </Button>
                             </div>
