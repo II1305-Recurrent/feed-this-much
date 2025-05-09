@@ -104,7 +104,7 @@ export default function Header() {
             <div className="menu-wrapper" style={{ padding: "5%" }}>
                 <div className="hamburger-container">
                     <DropdownMenu open={open} onOpenChange={setOpen}>
-                        <DropdownMenuTrigger asChild disabled={usePathname() === "/"}>
+                        <DropdownMenuTrigger asChild disabled={(usePathname() === "/") || (usePathname() === "/sign-in")}>
                             <Button variant="outline" className="hamburger">☰</Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent alignOffset={8} align="start" className="w-30 bg-[var(--custom-beige)] ">
@@ -140,7 +140,7 @@ export default function Header() {
                     </DropdownMenu>
 
                     <DropdownMenu accountOpen={open} onOpenChange={setAccountOpen}>
-                        <DropdownMenuTrigger asChild disabled={usePathname() === "/"}>
+                        <DropdownMenuTrigger asChild disabled={(usePathname() === "/") || (usePathname() === "/sign-in")}>
                             <Button variant="outline" className="profile">
                                 <Avatar>
                                     <AvatarImage src="https://github.com/shadcn.png" />
