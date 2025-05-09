@@ -36,18 +36,18 @@ export default function Home() {
     async function getUser() {
         const response = await getRequest({ path: '/api/get-user/' });
         if (response.ok) {
-            console.log(response.payload)
+            //console.log(response.payload)
             setUser(response.payload)
         }
 
     }
     useEffect(() => {
         getUser()
-        console.log(user);
+        //console.log(user);
     }, []);
     useEffect(() => {
         if (user) {
-            console.log(user);
+            //console.log(user);
             router.refresh();
         }
     }, [user]);
@@ -158,7 +158,7 @@ export default function Home() {
                     <AccordionContent>
                         <div className="w-full">
                             {pets.map((item) => {
-                                console.log('Rendering petItem:', item);
+                                //console.log('Rendering petItem:', item);
                                 return (
                                     <div key={item.id} className="flex justify-between w-full h-6">
                                         <p className="text-md text-[var(--custom-brown)] flex justify-center items-center">{item.name}</p>
@@ -200,7 +200,7 @@ export default function Home() {
                     <AccordionContent>
                         <div>
                             {foods.map((foodItem) => {
-                                console.log('Rendering foodItem:', foodItem);
+                                //console.log('Rendering foodItem:', foodItem);
                                 return (
                                     <div key={foodItem.id} className="flex justify-between w-full h-6">
                                         <p className="text-md text-[var(--custom-brown)] flex justify-center items-center">{foodItem.food_name}</p>
@@ -234,7 +234,7 @@ export default function Home() {
                         <div>
                             {
                                 plans.map((item) => {
-                                    console.log('Rendering planItem:', item);
+                                    //console.log('Rendering planItem:', item);
                                     return (
                                         //TODO: CHANGE WHEN ID IS ADDED TO PLAN SERIALIZER - done!
                                         <div key={item.id} className="flex justify-between w-full h-8">
