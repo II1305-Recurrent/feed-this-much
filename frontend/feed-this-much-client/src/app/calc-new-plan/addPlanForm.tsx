@@ -84,7 +84,6 @@ function AddPlanForm() {
     const [splitPercentageToggle, setPercentageToggle] = useState(false);
     const [splitPortionToggle, setPortionToggle] = useState(false);
 
-
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPlanSchema>>({
         resolver: zodResolver(addPlanSchema),
@@ -95,6 +94,8 @@ function AddPlanForm() {
             isSecondFoodRequired: false,
             secondfoodname: null,
             splitType: null,
+            splitMainFood: null,
+            splitAmount: null,
         },
     })
 
@@ -126,7 +127,7 @@ function AddPlanForm() {
         }
     }
 
-    // Second Food Schema Handlers
+    // Second Food Handlers
     const handleAddSecondFood = () => {
         // Set isSecondFoodRequired to true before submitting the form
         form.setValue("isSecondFoodRequired", true);
@@ -305,25 +306,46 @@ function AddPlanForm() {
                                     </FormItem>
                                 )}
                             />
-                            <div className="relative w-full flex flex-col items-center max-w-sm">
-                                <SliderPrimitive.Root
-                                    defaultValue={sliderProgress}
-                                    max={100}
-                                    step={25}
-                                    onValueChange={setSliderProgress}
-                                    className="relative flex w-full touch-none select-none items-center"
-                                >
-                                    <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-[var(--custom-blue)]/20">
-                                        <SliderPrimitive.Range className="absolute h-full bg-[var(--custom-blue)]" />
-                                    </SliderPrimitive.Track>
-                                    <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border border-[var(--custom-blue)]/50 bg-[var(--custom-blue)] shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
-                                        {/* Sticky label */}
-                                        <Badge className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 -top-6 bg-[var(--custom-blue)]" variant={undefined}>
-                                            {sliderProgress[0]}%
-                                        </Badge>
-                                    </SliderPrimitive.Thumb>
-                                </SliderPrimitive.Root>
-                            </div>
+                            {
+                                // PERCENTAGE SPLIT FORM INPUTS
+                                splitPercentageToggle && (
+                                    <FormField
+                                        control={form.control}
+                                        name="splitType"
+                                        render={({ field }) => (
+                                            <FormItem className="space-y-3">
+                                                <FormLabel className={undefined}>How do you want to combine the food?</FormLabel>
+                                                <FormControl>
+                                                    <SliderPrimitive.Root
+                                                        defaultValue={sliderProgress}
+                                                        max={100}
+                                                        step={25}
+                                                        onValueChange={setSliderProgress}
+                                                        className="relative flex w-full touch-none select-none items-center"
+                                                    >
+                                                        <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-[var(--custom-blue)]/20">
+                                                            <SliderPrimitive.Range className="absolute h-full bg-[var(--custom-blue)]" />
+                                                        </SliderPrimitive.Track>
+                                                        <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border border-[var(--custom-blue)]/50 bg-[var(--custom-blue)] shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+                                                            {/* Sticky label */}
+                                                            <Badge className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 -top-6 bg-[var(--custom-blue)]" variant={undefined}>
+                                                                {sliderProgress[0]}%
+                                                            </Badge>
+                                                        </SliderPrimitive.Thumb>
+                                                    </SliderPrimitive.Root>
+                                                </FormControl>
+                                                <FormMessage className={undefined} />
+                                            </FormItem>
+                                        )}
+                                    />
+                                )
+                            }
+                            {
+                                // PORTION SPLIT FORM INPUTS
+                                splitPortionToggle && (
+                                    <div></div>
+                                )
+                            }
                         </div>
                     )
                 }

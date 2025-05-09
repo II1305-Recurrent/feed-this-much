@@ -12,8 +12,11 @@ export const addPlanSchema = z.object({
     isSecondFoodRequired: z.boolean({
         required_error: "Must be true or false",
     }),
+    // SECOND FOOD ENTRIES - ALL CONDITIONALLY OPTIONAL, SEE SUPERREFINE SECTION
     secondfoodname: z.number().optional(),
     splitType: z.string().optional(),
+    splitMainFood: z.number().optional(),
+    splitAmount: z.coerce.number().optional(),
 }).superRefine((data, ctx) => {
 
     // Controls if second food is required or not
@@ -33,6 +36,8 @@ export const addPlanSchema = z.object({
             path: ["secondfoodname"]
         });
     }
+
+    // sets 
 
 });
 
