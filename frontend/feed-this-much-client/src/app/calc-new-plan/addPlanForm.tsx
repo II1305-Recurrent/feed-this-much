@@ -90,21 +90,27 @@ function AddPlanForm() {
         resolver: zodResolver(addPlanSchema),
         defaultValues: {
             title: "Default title", //maybe generate random number based on ids of previous plans?
-            foodname: null,
-            petname: null,
+            foodId: null,
+            petId: null,
             numberOfFoods: 1,
-            secondfoodname: null,
+            secondFoodId: null,
             splitType: null, // either percentage or portion split
-            splitMainFood: null, // the id of the food that has a fixed portion
-            splitAmount: null, // the amount of either the percentage of food 1 OR the number of portions of splitMainFood
+            splitMainFoodId: null, // the id of the food that has a fixed portion
+            splitAmount: undefined, // the amount of either the percentage of food 1 OR the number of portions of splitMainFood
         },
     })
 
     async function onSubmit(values: z.infer<typeof addPlanSchema>) {
+        // maps the frontend to the api names
         const form_schema_mapping = {
-            foodname: "food_id",
+            foodId: "food_id",
             title: "plan_title",
-            petname: "pet_id"
+            petId: "pet_id",
+            numberOfFoods: "number_of_foods",
+            secondFoodId: "second_food_id",
+            splitType: "split_type",
+            splitMainFoodId: "split_main_food_id",
+            splitAmount: "split_amount"
         };
         const data: Record<string, any> = {};
         for (const [formKey, apiKey] of Object.entries(form_schema_mapping)) {
@@ -128,7 +134,8 @@ function AddPlanForm() {
         }
     }
 
-    // Second Food Handlers
+    // Second Food Handlers - Yes, I know this is horrible, and it can only handle one extra food
+    // I don't have time to worry about scalability at this point, sorry
     const handleAddSecondFood = () => {
         // Set isSecondFoodRequired to true before submitting the form
         form.setValue("numberOfFoods", 2);
@@ -139,15 +146,15 @@ function AddPlanForm() {
         // Set isSecondFoodRequired to false before submitting the form
         // removes any previously selected second food
         form.setValue("numberOfFoods", 1);
-        form.setValue("secondfoodname", null);
+        form.setValue("secondFoodId", null);
         form.setValue("splitType", null); // reset the previously selected split
+        form.setValue("splitAmount", undefined); // reset the previously selected split amount
         setSecondFood(false);
         setPortionToggle(false);
         setPercentageToggle(false);
     };
 
     // Food Split Handlers
-
     function handleSplitChange(v) {
         form.setValue("splitType", v);
         if (v == "percentage") {
@@ -159,16 +166,6 @@ function AddPlanForm() {
             setPortionToggle(true);
         }
     }
-
-    /*
-    const handlePortionSplit = () => {
-        // Set isSecondFoodRequired to false before submitting the form
-        // removes any previously selected second food
-        form.setValue("splitType", "portion");
-        setPercentageToggle(false);
-        setPortionToggle(true);
-    };
-    */
 
     return (
         <Form {...form}>
@@ -252,7 +249,7 @@ function AddPlanForm() {
                             </Button>
                             <FormField
                                 control={form.control}
-                                name="secondfoodname"
+                                name="secondFoodId"
                                 render={({ field }) => (
                                     <FormItem className={undefined}>
                                         <FormLabel className={undefined}>Second Food Name</FormLabel>
@@ -315,26 +312,30 @@ function AddPlanForm() {
                                         name="splitAmount"
                                         render={({ field }) => (
                                             <FormItem className="space-y-3">
-                                                <FormLabel className={undefined}>How do you want to combine the food?</FormLabel>
-                                                <FormControl>
-                                                    <SliderPrimitive.Root
-                                                        defaultValue={sliderProgress}
-                                                        max={100}
-                                                        step={25}
-                                                        onValueChange={setSliderProgress}
-                                                        className="relative flex w-full touch-none select-none items-center"
-                                                    >
-                                                        <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-[var(--custom-blue)]/20">
-                                                            <SliderPrimitive.Range className="absolute h-full bg-[var(--custom-blue)]" />
-                                                        </SliderPrimitive.Track>
-                                                        <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border border-[var(--custom-blue)]/50 bg-[var(--custom-blue)] shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
-                                                            {/* Sticky label */}
-                                                            <Badge className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 -top-6 bg-[var(--custom-blue)]" variant={undefined}>
-                                                                {sliderProgress[0]}%
-                                                            </Badge>
-                                                        </SliderPrimitive.Thumb>
-                                                    </SliderPrimitive.Root>
-                                                </FormControl>
+                                                <FormLabel className={undefined}>Adjust the slider to set the percentage</FormLabel>
+                                                <div className="w-full flex items-center justify-between gap-2">
+                                                    <span className="text-sm text-muted-foreground">Food One</span>
+                                                    <FormControl>
+                                                        <SliderPrimitive.Root
+                                                            defaultValue={sliderProgress}
+                                                            max={100}
+                                                            step={25}
+                                                            onValueChange={setSliderProgress}
+                                                            className="relative flex w-full touch-none select-none items-center"
+                                                        >
+                                                            <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-[var(--custom-blue)]/20">
+                                                                <SliderPrimitive.Range className="absolute h-full bg-[var(--custom-blue)]" />
+                                                            </SliderPrimitive.Track>
+                                                            <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border border-[var(--custom-blue)]/50 bg-[var(--custom-blue)] shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+                                                                {/* Sticky label */}
+                                                                <Badge className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 -top-6 bg-[var(--custom-blue)]" variant={undefined}>
+                                                                    {sliderProgress[0]}% / {100 - sliderProgress[0]}%
+                                                                </Badge>
+                                                            </SliderPrimitive.Thumb>
+                                                        </SliderPrimitive.Root>
+                                                    </FormControl>
+                                                    <span className="text-sm text-muted-foreground">Food Two</span>
+                                                </div>
                                                 <FormMessage className={undefined} />
                                             </FormItem>
                                         )}
@@ -344,7 +345,48 @@ function AddPlanForm() {
                             {
                                 // PORTION SPLIT FORM INPUTS
                                 splitPortionToggle && (
-                                    <div></div>
+                                    // Set the Main Food
+                                    <>
+                                        <FormField
+                                            control={form.control}
+                                            name="splitMainFoodId"
+                                            render={({ field }) => (
+                                                <FormItem className={undefined}>
+                                                    <FormLabel className={undefined}>Which food do you want to serve as a fixed portion?</FormLabel>
+                                                    <Select onValueChange={(value) => field.onChange(Number(value))} value={field.value?.toString()}>
+                                                        <FormControl>
+                                                            <SelectTrigger className={undefined} >
+                                                                <SelectValue placeholder="Select food" />
+                                                            </SelectTrigger>
+                                                        </FormControl>
+                                                        <SelectContent className={undefined} >
+                                                            {foods.map((item) => <SelectItem key={item.id} className={undefined} value={item.id.toString()}>{item.food_name}</SelectItem>)}
+                                                        </SelectContent>
+                                                    </Select>
+                                                    <FormDescription className={undefined}>
+                                                        Choose which food to serve as a fixed portion e.g. one sachet or tin of a wet food.
+                                                    </FormDescription>
+                                                    <FormMessage className={undefined} />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        {/* Set how many servings of main food */}
+                                        <FormField
+                                            control={form.control}
+                                            name="splitAmount"
+                                            render={({ field }) => (
+                                                <FormItem className={undefined}>
+                                                    <FormLabel className={undefined}>
+                                                        Enter how many servings of the chosen food you would like to give your pet.
+                                                    </FormLabel>
+                                                    <FormControl>
+                                                        <Input placeholder="Enter serving number here" {...field} />
+                                                    </FormControl>
+                                                    <FormMessage className={undefined} />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </>
                                 )
                             }
                         </div>

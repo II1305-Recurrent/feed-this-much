@@ -228,7 +228,7 @@ function DogForm() {
                                         <Input placeholder="Enter puppy's expected adult weight here" {...field} onChange={(e) => {
                                             // Custom onChange logic
                                             field.onChange(e); // Call React Hook Form's onChange
-                                            handlePuppyChange(e); // Call your custom onChange logic
+                                            handlePuppyChange(e); // Call custom onChange logic
                                         }} />
                                     </FormControl>
                                     <FormDescription className={undefined}>
