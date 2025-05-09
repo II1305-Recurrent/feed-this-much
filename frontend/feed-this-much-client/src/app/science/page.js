@@ -45,7 +45,7 @@ export default function Science() {
                 The energyBase to use is determined by the cat&apos;s age and whether or not they are spayed/neutered and the lifeStageFactor is determined by the cat’s age. See the tables below.
             </p>
             <br />
-            <table className="border-separate border-collapse margin-spacing-x-4 border">
+            <table className="border-separate border-collapse margin-spacing-x-4 border !mx-auto">
                 <thead>
                     <tr>
                         <th className="border-r text-[var(--custom-orange)] ">Cat details</th>
@@ -83,10 +83,10 @@ export default function Science() {
             </h2>
             <p className="text-l leading-5 text-[var(--custom-orange)] [&:not(:first-child)]:mt-4">The daily energy allowance for an adult dog is given by: energyBase ∗ BodyWeight^0.75<br />
                 The energyBase for dogs is given by: energyBase = activityBase ∗ lifeStageFactor<br />
-                The activityBase to use is determined by the dog’s activity level and the lifeStageFactor is by it's age, as shown in the table below.
+                The activityBase to use is determined by the dog&apos;s activity level and the lifeStageFactor is by it&apos;s age, as shown in the table below.
             </p>
             <br />
-            <table className="border-separate border-collapse margin-spacing-x-4 border">
+            <table className="border-separate border-collapse margin-spacing-x-4 border !mx-auto">
                 <thead>
                     <tr>
                         <th className="border-r text-[var(--custom-orange)] ">Dog Activity Level</th>
