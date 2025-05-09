@@ -71,3 +71,18 @@ def get_user_details(request):
     user = User.objects.filter(id=request.user.id).first()
     serialized_data = UserDetailsSerializer(user)
     return Response(serialized_data.data, status=status.HTTP_200_OK)
+
+@api_view(['PUT','OPTIONS'])
+@permission_classes([permissions.IsAuthenticated])
+def update_user_details(request): 
+    try:
+        user = User.objects.filter(id=request.user.id).first()
+    except User.DoesNotExist:
+        return Response({"error": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = UserDetailsSerializer(user, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(status=status.HTTP_200_OK)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
