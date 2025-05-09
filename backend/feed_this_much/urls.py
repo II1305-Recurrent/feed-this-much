@@ -53,4 +53,6 @@ urlpatterns = [
     path('api/delete-food/<int:food_id>/', delete_food, name='delete_food'),
     path('api/delete-pet/<int:pet_id>/', delete_pet, name='delete_pet'),
     path('api/delete-plan/<int:plan_id>/', delete_plan, name='delete_plan'),
+    path('api/update-user-details/', views.update_user_details, name='update_user_details'),
+
     ]
