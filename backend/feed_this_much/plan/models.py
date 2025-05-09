@@ -4,9 +4,6 @@ from feed_this_much.food.models import UserFood
 
 from django.db import models
 
-class FoodName(models.Model):
-    name = models.CharField(max_length=255)
-
 class UserPlan(models.Model):
 
     WEIGHT_UNITS = [

@@ -12,7 +12,7 @@ from .models import UserPlan
 @permission_classes([IsAuthenticated])
 def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/PORTIONS, SPLIT_TYPE, portion_food_id
     pet = Pet.objects.filter(user=request.user, id=request.data['pet_id']).first()
-    food = UserFood.objects.filter(user=request.user, id=request.data['food_id']).first() # Filter by userID, foodname CHANGE THIS. GET ALL REQUESTED FOODS!!!
+    food = UserFood.objects.filter(user=request.user, id=request.data['food_id']).first() # Filter by userID, foodname CHANGE THIS? GET ALL REQUESTED FOODS?
     # ignore split type, split amount, split food id for now
     energy_needs = None
 
