@@ -93,9 +93,9 @@ function AddPlanForm() {
             petname: null,
             isSecondFoodRequired: false,
             secondfoodname: null,
-            splitType: null,
-            splitMainFood: null,
-            splitAmount: null,
+            splitType: null, // either percentage or portion split
+            splitMainFood: null, // the id of the food that has a fixed portion
+            splitAmount: null, // the amount of either the percentage of food 1 OR the number of portions of splitMainFood
         },
     })
 
@@ -311,7 +311,7 @@ function AddPlanForm() {
                                 splitPercentageToggle && (
                                     <FormField
                                         control={form.control}
-                                        name="splitType"
+                                        name="splitAmount"
                                         render={({ field }) => (
                                             <FormItem className="space-y-3">
                                                 <FormLabel className={undefined}>How do you want to combine the food?</FormLabel>

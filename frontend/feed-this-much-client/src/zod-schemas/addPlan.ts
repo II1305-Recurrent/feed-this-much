@@ -14,9 +14,9 @@ export const addPlanSchema = z.object({
     }),
     // SECOND FOOD ENTRIES - ALL CONDITIONALLY OPTIONAL, SEE SUPERREFINE SECTION
     secondfoodname: z.number().optional(),
-    splitType: z.string().optional(),
-    splitMainFood: z.number().optional(),
-    splitAmount: z.coerce.number().optional(),
+    splitType: z.string().optional(), // either percentage or portion split
+    splitMainFood: z.number().optional(), // the id of the food that has a fixed portion
+    splitAmount: z.coerce.number().optional(), // the amount of either the percentage of food 1 OR the number of portions of splitMainFood
 }).superRefine((data, ctx) => {
 
     // Controls if second food is required or not
