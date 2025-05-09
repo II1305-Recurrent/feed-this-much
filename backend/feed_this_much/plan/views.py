@@ -13,7 +13,7 @@ from .models import UserPlan
 def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/PORTIONS, SPLIT_TYPE, portion_food_id
     pet = Pet.objects.filter(user=request.user, id=request.data['pet_id']).first()
     food = UserFood.objects.filter(user=request.user, id=request.data['food_id']).first() # Filter by userID, foodname CHANGE THIS? GET ALL REQUESTED FOODS?
-    # ignore split type, split amount, split food id for now
+    # ignore split_type, split_amount, split_food_id for now
     energy_needs = None
 
     if not pet:
@@ -34,7 +34,7 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
             {"error": error_message},
             status=status.HTTP_400_BAD_REQUEST
         )
-    if request.data['amount_of_foods'] > 1: # check if second food exists, should do something further if it exists
+    if request.data['number_of_foods'] > 1: # check if second food exists, should do something further if it exists
         food2 = UserFood.objects.filter(user=request.user, id=request.data['food_id2']).first()
         if not food2:
             error_message = "No such food exists"
@@ -104,7 +104,7 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
 
         return needed_food_weight, food_to_packet_ratio
 
-    food_ratios = calculate_for_food_ratios(food, request.data.percentage[0], energy_needs)
+    food_ratios = calculate_for_food_ratios(food, request.data.split_amount/100, energy_needs)
 
     plan_data = {
         "user": request.user.id,
