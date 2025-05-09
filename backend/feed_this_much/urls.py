@@ -24,7 +24,7 @@ from feed_this_much.basic import views
 from feed_this_much.pets.views import save_pet, get_pets, update_pet
 from feed_this_much.food.views import get_foods, save_food
 
-from feed_this_much.plan.views import generate_plan, get_plans
+from feed_this_much.plan.views import generate_plan, get_plans, combined_plans_list_create, combined_plans_detail
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -43,6 +43,8 @@ urlpatterns = [
     path('api/update-pet/<int:id>/', update_pet, name='update_pet'),
     path('api/generate-plan/', generate_plan, name='generate_plan'),
     path('api/get-plans/', get_plans, name='get_plans'),
+    path('api/combined-plans/', combined_plans_list_create, name='combined_plans_list'),
+    path('api/combined-plans/<int:id>/', combined_plans_detail, name='combined_plans_detail'),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('docs/', SpectacularRedocView.as_view(url_name='schema'), name='docs'),

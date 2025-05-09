@@ -5,8 +5,8 @@ from rest_framework.permissions import IsAuthenticated
 from feed_this_much.pets.models import Pet
 from feed_this_much.food.models import UserFood
 from feed_this_much.plan import calorie_calculator
-from .serializers import PlanSerializer
-from .models import UserPlan
+from .serializers import PlanSerializer, CombinedPlanSerializer
+from .models import UserPlan, CombinedPlan
 
 @api_view(['POST', 'OPTIONS'])
 @permission_classes([IsAuthenticated])
@@ -140,3 +140,41 @@ def get_plans(request):
         )
     serialized_data = PlanSerializer(plans, many=True)
     return Response(serialized_data.data, status=status.HTTP_200_OK)
+
+@api_view(['GET', 'POST', 'OPTIONS'])
+@permission_classes([IsAuthenticated])
+def combined_plans_list_create(request):
+    if request.method == 'GET':
+        qs = CombinedPlan.objects.filter(user=request.user)
+        serializer = CombinedPlanSerializer(qs, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    serializer = CombinedPlanSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save(user=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE', 'OPTIONS'])
+@permission_classes([IsAuthenticated])
+def combined_plans_detail(request, id):
+    try:
+        cp = CombinedPlan.objects.get(id=id, user=request.user)
+    except CombinedPlan.DoesNotExist:
+        return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CombinedPlanSerializer(cp)
+        return Response(serializer.data)
+
+    if request.method == 'PUT':
+        serializer = CombinedPlanSerializer(cp, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == 'DELETE':
+        cp.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
