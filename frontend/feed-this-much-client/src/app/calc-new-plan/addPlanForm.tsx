@@ -5,8 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+//import { Slider } from "@/components/ui/slider"
+import * as SliderPrimitive from "@radix-ui/react-slider";
+import { Badge } from "@/components/ui/badge"; // needed for slider label
 
 import { getRequest, postRequest } from "@/utils/fetchApi";
 
@@ -42,6 +45,8 @@ function AddPlanForm() {
     const [pets, setPets] = useState([]);
     const [foods, setFoods] = useState([]);
 
+    const [sliderProgress, setSliderProgress] = useState([50]);
+
     async function getFoods() {
         const response = await getRequest({ path: '/api/get-foods/' });
         if (response.ok) {
@@ -75,6 +80,11 @@ function AddPlanForm() {
     // To Toggle the Second Food
     const [secondFood, setSecondFood] = useState(false);
 
+    // To Toggle the Split Type
+    const [splitPercentageToggle, setPercentageToggle] = useState(false);
+    const [splitPortionToggle, setPortionToggle] = useState(false);
+
+
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPlanSchema>>({
         resolver: zodResolver(addPlanSchema),
@@ -84,6 +94,7 @@ function AddPlanForm() {
             petname: null,
             isSecondFoodRequired: false,
             secondfoodname: null,
+            splitType: null,
         },
     })
 
@@ -127,9 +138,35 @@ function AddPlanForm() {
         // removes any previously selected second food
         form.setValue("isSecondFoodRequired", false);
         form.setValue("secondfoodname", null);
+        form.setValue("splitType", null); // reset the previously selected split
         setSecondFood(false);
+        setPortionToggle(false);
+        setPercentageToggle(false);
     };
 
+    // Food Split Handlers
+
+    function handleSplitChange(v) {
+        form.setValue("splitType", v);
+        if (v == "percentage") {
+            setPercentageToggle(true);
+            setPortionToggle(false);
+        }
+        if (v == "portion") {
+            setPercentageToggle(false);
+            setPortionToggle(true);
+        }
+    }
+
+    /*
+    const handlePortionSplit = () => {
+        // Set isSecondFoodRequired to false before submitting the form
+        // removes any previously selected second food
+        form.setValue("splitType", "portion");
+        setPercentageToggle(false);
+        setPortionToggle(true);
+    };
+    */
 
     return (
         <Form {...form}>
@@ -234,6 +271,59 @@ function AddPlanForm() {
                                     </FormItem>
                                 )}
                             />
+                            <FormField
+                                control={form.control}
+                                name="splitType"
+                                render={({ field }) => (
+                                    <FormItem className="space-y-3">
+                                        <FormLabel className={undefined}>How do you want to combine the food?</FormLabel>
+                                        <FormControl>
+                                            <RadioGroup
+                                                onValueChange={(v) => { field.onChange(v); handleSplitChange(v) }}
+                                                defaultValue={field.value}
+                                                className="flex flex-col space-y-1"
+                                            >
+                                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                                    <FormControl>
+                                                        <RadioGroupItem value="percentage" className={undefined} />
+                                                    </FormControl>
+                                                    <FormLabel className="font-normal">
+                                                        Calorie percentage split e.g. 25% of one, 75% of the other
+                                                    </FormLabel>
+                                                </FormItem>
+                                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                                    <FormControl>
+                                                        <RadioGroupItem value="portion" className={undefined} />
+                                                    </FormControl>
+                                                    <FormLabel className="font-normal">
+                                                        Set a fixed portion for one food e.g. one tin of one, calculate the other
+                                                    </FormLabel>
+                                                </FormItem>
+                                            </RadioGroup>
+                                        </FormControl>
+                                        <FormMessage className={undefined} />
+                                    </FormItem>
+                                )}
+                            />
+                            <div className="relative w-full flex flex-col items-center max-w-sm">
+                                <SliderPrimitive.Root
+                                    defaultValue={sliderProgress}
+                                    max={100}
+                                    step={25}
+                                    onValueChange={setSliderProgress}
+                                    className="relative flex w-full touch-none select-none items-center"
+                                >
+                                    <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-[var(--custom-blue)]/20">
+                                        <SliderPrimitive.Range className="absolute h-full bg-[var(--custom-blue)]" />
+                                    </SliderPrimitive.Track>
+                                    <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border border-[var(--custom-blue)]/50 bg-[var(--custom-blue)] shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+                                        {/* Sticky label */}
+                                        <Badge className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 -top-6 bg-[var(--custom-blue)]" variant={undefined}>
+                                            {sliderProgress[0]}%
+                                        </Badge>
+                                    </SliderPrimitive.Thumb>
+                                </SliderPrimitive.Root>
+                            </div>
                         </div>
                     )
                 }

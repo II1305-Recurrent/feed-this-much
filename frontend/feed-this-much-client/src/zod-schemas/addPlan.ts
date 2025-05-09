@@ -13,6 +13,7 @@ export const addPlanSchema = z.object({
         required_error: "Must be true or false",
     }),
     secondfoodname: z.number().optional(),
+    splitType: z.string().optional(),
 }).superRefine((data, ctx) => {
 
     // Controls if second food is required or not
