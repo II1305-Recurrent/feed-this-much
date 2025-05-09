@@ -94,7 +94,7 @@ function AddPlanForm() {
             petId: null,
             numberOfFoods: 1,
             secondFoodId: null,
-            splitType: null, // either percentage or portion split
+            splitType: "", // either percentage or portion split
             splitMainFoodId: null, // the id of the food that has a fixed portion
             splitAmount: undefined, // the amount of either the percentage of food 1 OR the number of portions of splitMainFood
         },
@@ -147,7 +147,7 @@ function AddPlanForm() {
         // removes any previously selected second food
         form.setValue("numberOfFoods", 1);
         form.setValue("secondFoodId", null);
-        form.setValue("splitType", null); // reset the previously selected split
+        form.setValue("splitType", ""); // reset the previously selected split
         form.setValue("splitAmount", undefined); // reset the previously selected split amount
         setSecondFood(false);
         setPortionToggle(false);
@@ -319,7 +319,7 @@ function AddPlanForm() {
                                                         <SliderPrimitive.Root
                                                             defaultValue={sliderProgress}
                                                             max={100}
-                                                            step={25}
+                                                            step={5}
                                                             onValueChange={setSliderProgress}
                                                             className="relative flex w-full touch-none select-none items-center"
                                                         >

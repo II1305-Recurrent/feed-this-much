@@ -37,7 +37,41 @@ export const addPlanSchema = z.object({
         });
     }
 
-    // sets 
+    // sets splitType to required if second food required
+    if (data.numberOfFoods > 1 && !data.splitType) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "You need to choose a way to mix your foods - either by percentage or by choosing a fixed amount of one.",
+            path: ["splitType"]
+        });
+    }
+
+    // if splitType is by fixed portion, make setting a main food mandatory
+    if (data.numberOfFoods > 1 && data.splitType == "portion" && !data.splitMainFoodId) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "You need to choose a food to set a number of servings.",
+            path: ["splitMainFoodId"]
+        });
+    }
+
+    // if splitType is by fixed portion, makes sure the chosen food is food one or food two
+    if (data.numberOfFoods > 1 && data.splitType == "portion" && (data.splitMainFoodId != data.foodId || data.secondFoodId)) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "You need to choose one of your previously selected foods.",
+            path: ["splitMainFoodId"]
+        });
+    }
+
+    // sets splitAmount to required if second food required
+    if (data.numberOfFoods > 1 && !data.splitAmount) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "You need to set an amount.",
+            path: ["splitAmount"]
+        });
+    }
 
 });
 
