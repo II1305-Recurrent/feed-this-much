@@ -48,7 +48,7 @@ export default function Home() {
     useEffect(() => {
         if (user) {
             console.log(user);
-            router.replace(router.asPath);
+            router.refresh();
         }
     }, [user]);
 
