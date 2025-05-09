@@ -141,14 +141,9 @@ def get_plans(request):
     serialized_data = PlanSerializer(plans, many=True)
     return Response(serialized_data.data, status=status.HTTP_200_OK)
 
-@api_view(['GET', 'POST', 'OPTIONS'])
+@api_view(['POST', 'OPTIONS'])
 @permission_classes([IsAuthenticated])
 def combined_plans_list_create(request):
-    if request.method == 'GET':
-        qs = CombinedPlan.objects.filter(user=request.user)
-        serializer = CombinedPlanSerializer(qs, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
     serializer = CombinedPlanSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save(user=request.user)
