@@ -46,7 +46,7 @@ import { Info } from "lucide-react";
 
 function DogForm() {
     const router = useRouter();
-    const { dog, resetDogFields, setDogFields, dontEdit, edit } = useModel();
+    const { dog, resetDogFields, setDogFields, dontEdit, edit, setToCat } = useModel();
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPetSchema>>({
@@ -115,6 +115,7 @@ function DogForm() {
             console.log("Dog saved successfully");
             resetDogFields();
             dontEdit();
+            setToCat();
             router.push("/home");
         } else {
             console.error("Failed to save dog");

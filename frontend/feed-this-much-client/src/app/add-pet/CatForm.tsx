@@ -46,7 +46,7 @@ import { Info } from "lucide-react";
 
 function CatForm() {
     const router = useRouter();
-    const { cat, resetCatFields, setCatFields, dontEdit, edit } = useModel();
+    const { cat, resetCatFields, setCatFields, dontEdit, edit, setToCat } = useModel();
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof addCatSchema>>({
@@ -101,6 +101,7 @@ function CatForm() {
         if (response.ok) {
             resetCatFields();
             dontEdit();
+            setToCat();
             console.log("Cat saved successfully");
             router.push("/home");
         } else {
