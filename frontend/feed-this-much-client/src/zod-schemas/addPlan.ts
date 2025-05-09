@@ -9,8 +9,8 @@ export const addPlanSchema = z.object({
     foodname: z.number({
         required_error: "Please choose a food",
     }),
-    isSecondFoodRequired: z.boolean({
-        required_error: "Must be true or false",
+    numberOfFoods: z.number({
+        required_error: "Must be a number", // 1 for a single food, 2 for a second food and so on
     }),
     // SECOND FOOD ENTRIES - ALL CONDITIONALLY OPTIONAL, SEE SUPERREFINE SECTION
     secondfoodname: z.number().optional(),
@@ -20,7 +20,7 @@ export const addPlanSchema = z.object({
 }).superRefine((data, ctx) => {
 
     // Controls if second food is required or not
-    if (data.isSecondFoodRequired == true && !data.secondfoodname) {
+    if (data.numberOfFoods == 2 && !data.secondfoodname) {
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: "You need to select the second food",
@@ -29,7 +29,7 @@ export const addPlanSchema = z.object({
     }
 
     // checks if not the same as first food if it is required
-    if (data.isSecondFoodRequired == true && data.secondfoodname == data.foodname) {
+    if (data.numberOfFoods == 2 && data.secondfoodname == data.foodname) {
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: "You need to select two different foods",

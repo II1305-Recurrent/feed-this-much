@@ -45,8 +45,6 @@ function AddPlanForm() {
     const [pets, setPets] = useState([]);
     const [foods, setFoods] = useState([]);
 
-    const [sliderProgress, setSliderProgress] = useState([50]);
-
     async function getFoods() {
         const response = await getRequest({ path: '/api/get-foods/' });
         if (response.ok) {
@@ -84,6 +82,9 @@ function AddPlanForm() {
     const [splitPercentageToggle, setPercentageToggle] = useState(false);
     const [splitPortionToggle, setPortionToggle] = useState(false);
 
+    // Slider State
+    const [sliderProgress, setSliderProgress] = useState([50]);
+
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPlanSchema>>({
         resolver: zodResolver(addPlanSchema),
@@ -91,7 +92,7 @@ function AddPlanForm() {
             title: "Default title", //maybe generate random number based on ids of previous plans?
             foodname: null,
             petname: null,
-            isSecondFoodRequired: false,
+            numberOfFoods: 1,
             secondfoodname: null,
             splitType: null, // either percentage or portion split
             splitMainFood: null, // the id of the food that has a fixed portion
@@ -130,14 +131,14 @@ function AddPlanForm() {
     // Second Food Handlers
     const handleAddSecondFood = () => {
         // Set isSecondFoodRequired to true before submitting the form
-        form.setValue("isSecondFoodRequired", true);
+        form.setValue("numberOfFoods", 2);
         setSecondFood(true);
     };
 
     const handleRemoveSecondFood = () => {
         // Set isSecondFoodRequired to false before submitting the form
         // removes any previously selected second food
-        form.setValue("isSecondFoodRequired", false);
+        form.setValue("numberOfFoods", 1);
         form.setValue("secondfoodname", null);
         form.setValue("splitType", null); // reset the previously selected split
         setSecondFood(false);
