@@ -17,6 +17,7 @@ import {
     User,
     UserPlus,
     Users,
+    BookOpen
 } from "lucide-react"
 import Cookies from 'js-cookie';
 import { toast } from "sonner";
@@ -43,14 +44,35 @@ import {
 import { postRequest } from "@/utils/fetchApi";
 
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from 'next/link'
 
 import { usePathname } from "next/navigation";
 import { useModel } from "./Model";
+import { useRouter } from "next/navigation";
+import { getRequest } from "@/utils/fetchApi"
 
 export default function Header() {
+    const router = useRouter();
+    const [user, setUser] = useState([]);
+    async function getUser() {
+        const response = await getRequest({ path: '/api/get-user/' });
+        if (response.ok) {
+            console.log(response.payload)
+            setUser(response.payload)
+        }
+    }
+    useEffect(() => {
+        getUser()
+        console.log(user);
+    }, []);
+    useEffect(() => {
+        if (user) {
+            console.log(user);
+            router.refresh();
+        }
+    }, [user]);
     const [open, setOpen] = useState(false);
     const { dontEdit } = useModel();
     const handleClick = () => {
@@ -106,6 +128,12 @@ export default function Header() {
                                         Contact us
                                     </Link>
                                 </DropdownMenuItem>
+                                <DropdownMenuItem onClick={handleClick}>
+                                    <BookOpen />
+                                    <Link href="/science">
+                                        The science
+                                    </Link>
+                                </DropdownMenuItem>
                             </DropdownMenuGroup>
 
                         </DropdownMenuContent>
@@ -121,17 +149,10 @@ export default function Header() {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent alignOffset={8} align="end" className="w-30 bg-[var(--custom-beige)]">
-                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuLabel>My Account:</DropdownMenuLabel>
+                            <p>{user.email}</p>
                             <DropdownMenuSeparator />
                             <DropdownMenuGroup>
-                                <DropdownMenuItem asChild>
-                                    <Link
-                                        href="/account"
-                                        onClick={() => setAccountOpen(false)}>
-                                        <User />
-                                        <span>Account</span>
-                                    </Link>
-                                </DropdownMenuItem>
                                 <DropdownMenuItem asChild>
                                     <Link
                                         href="/settings"
@@ -140,7 +161,6 @@ export default function Header() {
                                         <span>Settings</span>
                                     </Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuSeparator />
                                 <DropdownMenuItem asChild>
                                     <Link
                                         href="/"
