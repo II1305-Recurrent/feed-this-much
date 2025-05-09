@@ -2,11 +2,7 @@ import { jsPDF } from "jspdf";
 import { getRequest, postRequest } from "@/utils/fetchApi";
 //import { html2pdf } from "html2pdf.js";
 
-
-
-/*
-Finds a plan id from path, 
-*/
+// TODO this can be refactored as a single function 
 export default async function exportFeedingPlanPdf() {
     const params = new URLSearchParams(window.location.search);
     const selectedId = params.get("id");
@@ -40,7 +36,7 @@ export default async function exportFeedingPlanPdf() {
 
         y += 8;
         doc.text(
-            `This is ${plan.daily_food_weight.toFixed(2)} ${plan.daily_food_weight_unit}` +
+            1      `This is ${plan.daily_food_weight.toFixed(2)} ${plan.daily_food_weight_unit}` +
             ` of ${plan.food_name}.`,
             10,
             y
@@ -61,3 +57,46 @@ export default async function exportFeedingPlanPdf() {
     }
 }
 
+//exports multiple 
+export async function exportFeedingPlansPdf(plans) {
+    if (!Array.isArray(plans) || plans.length === 0) {
+        alert("No plan data found to export.");
+        return;
+    }
+
+    const doc = new jsPDF();
+    plans.forEach((plan, idx) => {
+        if (idx > 0) doc.addPage();
+
+        let y = 10;
+        doc.setFontSize(16);
+        doc.text(plan.plan_title, 10, y);
+
+        y += 12;
+        doc.setFontSize(12);
+        doc.text(
+            `${plan.pet_name} needs ${plan.daily_energy_needs.toFixed(2)} KJ` +
+            ` / ${(plan.daily_energy_needs / 4.184).toFixed(2)} kcal every day.`,
+            10,
+            y
+        );
+
+        y += 8;
+        doc.text(
+            `This is ${plan.daily_food_weight.toFixed(2)} ${plan.daily_food_weight_unit}` +
+            ` of ${plan.food_name}.`,
+            10,
+            y
+        );
+
+        y += 8;
+        doc.text(
+            `Give ${plan.pet_name} ${plan.daily_servings_amount.toFixed(1)}` +
+            ` ${plan.food_serving_type}s of ${plan.food_name} a day.`,
+            10,
+            y
+        );
+    });
+
+    doc.save("feeding-plans.pdf");
+}
