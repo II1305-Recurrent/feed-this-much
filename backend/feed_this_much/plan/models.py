@@ -38,6 +38,6 @@ class CombinedPlan(models.Model):
     plan_b = models.ForeignKey(UserPlan, on_delete=models.CASCADE, related_name='combined_as_b')
 
     total_daily_energy = models.FloatField()
-    plan_title = models.CharField(max_length=255)
+    plan_title = models.CharField(max_length=255, default="My Combined Plan")
 
     created = models.DateTimeField(auto_now_add=True)
