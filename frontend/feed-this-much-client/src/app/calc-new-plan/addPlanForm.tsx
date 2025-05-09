@@ -107,9 +107,9 @@ function AddPlanForm() {
             title: "plan_title",
             petId: "pet_id",
             numberOfFoods: "number_of_foods",
-            secondFoodId: "second_food_id",
+            secondFoodId: "food_id2",
             splitType: "split_type",
-            splitMainFoodId: "split_main_food_id",
+            splitMainFoodId: "split_food_id",
             splitAmount: "split_amount"
         };
         const data: Record<string, any> = {};
