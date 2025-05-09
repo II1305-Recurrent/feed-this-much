@@ -119,7 +119,7 @@ function AddPlanForm() {
 
         console.log('Plan Item:', data);
 
-        const response = await postRequest({ path: '/api/generate-plan/', body: data });
+        const response = await postRequest({ path: '/api/generate-combined-plan/', body: data });
 
         if (response.ok) {
             console.log("Plan submitted");

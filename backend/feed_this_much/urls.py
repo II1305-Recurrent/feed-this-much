@@ -43,7 +43,7 @@ urlpatterns = [
     path('api/update-pet/<int:id>/', update_pet, name='update_pet'),
     path('api/generate-plan/', generate_plan, name='generate_plan'),
     path('api/get-plans/', get_plans, name='get_plans'),
-    path('api/combined-plans/', combined_plans_list_create, name='combined_plans_list'),
+    path('api/generate-combined-plan/', combined_plans_list_create, name='combined_plans_list'),
     path('api/combined-plans/<int:id>/', combined_plans_detail, name='combined_plans_detail'),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
