@@ -84,6 +84,7 @@ function AddPlanForm() {
 
     // Slider State
     const [sliderProgress, setSliderProgress] = useState([50]);
+    const sliderMarkers = ["0/100", "25/75", "50/50", "75/25", "100/0"];
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPlanSchema>>({
@@ -317,28 +318,35 @@ function AddPlanForm() {
                                                 <FormLabel className={undefined}>Adjust the slider to set the percentage</FormLabel>
                                                 <div className="w-full flex items-center justify-between gap-2">
                                                     <span className="text-sm text-muted-foreground">Food One</span>
-                                                    <FormControl>
-                                                        <SliderPrimitive.Root
-                                                            defaultValue={sliderProgress}
-                                                            max={100}
-                                                            step={5}
-                                                            onValueChange={(value) => {
-                                                                setSliderProgress(value);
-                                                                form.setValue("splitAmount", value[0]);
-                                                            }}
-                                                            className="relative flex w-full touch-none select-none items-center"
-                                                        >
-                                                            <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-[var(--custom-blue)]/20">
-                                                                <SliderPrimitive.Range className="absolute h-full bg-[var(--custom-blue)]" />
-                                                            </SliderPrimitive.Track>
-                                                            <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border border-[var(--custom-blue)]/50 bg-[var(--custom-blue)] shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
-                                                                {/* Sticky label */}
-                                                                <Badge className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 -top-6 bg-[var(--custom-blue)]" variant={undefined}>
-                                                                    {sliderProgress[0]}% / {100 - sliderProgress[0]}%
-                                                                </Badge>
-                                                            </SliderPrimitive.Thumb>
-                                                        </SliderPrimitive.Root>
-                                                    </FormControl>
+                                                    <span className="relative w-full">
+                                                        <FormControl>
+                                                            <SliderPrimitive.Root
+                                                                defaultValue={sliderProgress}
+                                                                max={100}
+                                                                step={5}
+                                                                onValueChange={(value) => {
+                                                                    setSliderProgress(value);
+                                                                    form.setValue("splitAmount", value[0]);
+                                                                }}
+                                                                className="relative flex w-full touch-none select-none items-center"
+                                                            >
+                                                                <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-[var(--custom-blue)]/20">
+                                                                    <SliderPrimitive.Range className="absolute h-full bg-[var(--custom-blue)]" />
+                                                                </SliderPrimitive.Track>
+                                                                <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border border-[var(--custom-blue)]/50 bg-[var(--custom-blue)] shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+                                                                    {/* Sticky label */}
+                                                                    <Badge className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 -top-6 bg-[var(--custom-blue)]" variant={undefined}>
+                                                                        {sliderProgress[0]}% / {100 - sliderProgress[0]}%
+                                                                    </Badge>
+                                                                </SliderPrimitive.Thumb>
+                                                            </SliderPrimitive.Root>
+                                                        </FormControl>
+                                                        <div className="mt-2 -mx-1.5 flex items-center justify-between text-muted-foreground text-xs">
+                                                            {sliderMarkers.map((sliderMark) => (
+                                                                <span key={sliderMark}>{sliderMark}</span>
+                                                            ))}
+                                                        </div>
+                                                    </span>
                                                     <span className="text-sm text-muted-foreground">Food Two</span>
                                                 </div>
                                                 <FormMessage className={undefined} />
