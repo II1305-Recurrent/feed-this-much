@@ -31,7 +31,7 @@ export default function Home() {
     //const pets = [{ id: 0, name: "Little bitch", species: "cat" }, { id: 1, name: "Poppy", species: "dog" }, { id: 2, name: "Mac", species: "cat" }]
     //const foods = [{ id: 0, name: "Fancy chow" }, { id: 1, name: "Foooood" }]
     //const plans = [{ id: 1, title: "Test Plan" }];
-    const { setIndex, setCatFields, setDogFields, cat, dog, setToCat, setToDog, doEdit } = useModel();
+    const { setIndex, setCatFields, setDogFields, edit, setToCat, setToDog, doEdit } = useModel();
     const [user, setUser] = useState([]);
     async function getUser() {
         const response = await getRequest({ path: '/api/get-user/' });
@@ -143,10 +143,10 @@ export default function Home() {
         fetchData();
     }, []);
     useEffect(() => {
-        if (cat.name || dog.name) {
+        if (edit) {
             router.push('/add-pet');
         }
-    }, [cat.name, dog.name, router]);
+    }, [edit, router]);
     return (
         <div className="page">
             <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
@@ -237,7 +237,7 @@ export default function Home() {
                                     console.log('Rendering planItem:', item);
                                     return (
                                         //TODO: CHANGE WHEN ID IS ADDED TO PLAN SERIALIZER - done!
-                                        <div key={item.id} className="flex justify-between w-full h-6">
+                                        <div key={item.id} className="flex justify-between w-full h-8">
                                             <Button key={item.id} variant="ghost" onClick={() => {
                                                 setIndex(item.id);
                                                 router.push(`/displayplan?id=${item.id}`); // sets the id of the plan to show on the display plan page

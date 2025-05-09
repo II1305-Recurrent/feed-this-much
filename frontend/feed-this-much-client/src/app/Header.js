@@ -47,9 +47,15 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from 'next/link'
 
+import { usePathname } from "next/navigation";
+import { useModel } from "./Model";
+
 export default function Header() {
     const [open, setOpen] = useState(false);
+    const { dontEdit } = useModel();
     const handleClick = () => {
+        dontEdit()
+        console.log("done")
         setOpen(false)
     }
 
@@ -76,7 +82,7 @@ export default function Header() {
             <div className="menu-wrapper" style={{ padding: "5%" }}>
                 <div className="hamburger-container">
                     <DropdownMenu open={open} onOpenChange={setOpen}>
-                        <DropdownMenuTrigger asChild>
+                        <DropdownMenuTrigger asChild disabled={usePathname() === "/"}>
                             <Button variant="outline" className="hamburger">☰</Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent alignOffset={8} align="start" className="w-30 bg-[var(--custom-beige)] ">
@@ -84,7 +90,7 @@ export default function Header() {
                             <DropdownMenuGroup>
                                 <DropdownMenuItem onClick={handleClick}>
                                     <Home />
-                                    <Link href="/">
+                                    <Link href="/home">
                                         Home
                                     </Link>
                                 </DropdownMenuItem>
@@ -106,7 +112,7 @@ export default function Header() {
                     </DropdownMenu>
 
                     <DropdownMenu accountOpen={open} onOpenChange={setAccountOpen}>
-                        <DropdownMenuTrigger asChild>
+                        <DropdownMenuTrigger asChild disabled={usePathname() === "/"}>
                             <Button variant="outline" className="profile">
                                 <Avatar>
                                     <AvatarImage src="https://github.com/shadcn.png" />
@@ -150,13 +156,13 @@ export default function Header() {
                     </DropdownMenu>
                 </div>
 
-                <div style={{ maxWidth: '180px', width:"100%", height: 'auto' }}>
+                <div style={{ maxWidth: '180px', width: "100%", height: 'auto' }}>
                     <Image
-                    src="/logo_feedthismuch.png"
-                    alt="Feed This Much logo"
-                    width={360}
-                    height={201}
-                    priority={true} />
+                        src="/logo_feedthismuch.png"
+                        alt="Feed This Much logo"
+                        width={360}
+                        height={201}
+                        priority={true} />
                 </div>
             </div>
         </header>
