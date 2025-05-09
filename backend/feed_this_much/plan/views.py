@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from feed_this_much.pets.models import Pet
 from feed_this_much.food.models import UserFood
-#from feed_this_much.plan import calorie_calculator
+from feed_this_much.plan import calorie_calculator
 from .serializers import PlanSerializer
 from .models import UserPlan
 
@@ -13,7 +13,8 @@ from .models import UserPlan
 def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/PORTIONS, SPLIT_TYPE, portion_food_id
     pet = Pet.objects.filter(user=request.user, id=request.data['pet_id']).first()
     food = UserFood.objects.filter(user=request.user, id=request.data['food_id']).first() # Filter by userID, foodname CHANGE THIS. GET ALL REQUESTED FOODS!!!
-    #energy_needs = None
+    # ignore split type, split amount, split food id for now
+    energy_needs = None
 
     if not pet:
         error_message = "No such pet exists"
@@ -22,22 +23,26 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
             status=status.HTTP_400_BAD_REQUEST
         )
     
-    """
     if pet.species == "cat":
         energy_needs = calorie_calculator.calculate_cat_feeding(pet)
     elif pet.species == "dog":
         energy_needs = calorie_calculator.calculate_dog_feeding(pet)
-        """
     
-    # FOR LOOP FOR FOODS
     if not food:
         error_message = "No such food exists"
         return Response(
             {"error": error_message},
             status=status.HTTP_400_BAD_REQUEST
         )
+    if request.data['amount_of_foods'] > 1: # check if second food exists, should do something further if it exists
+        food2 = UserFood.objects.filter(user=request.user, id=request.data['food_id2']).first()
+        if not food2:
+            error_message = "No such food exists"
+            return Response(
+                {"error": error_message},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-    ### MAKE THIS A FUNCTION, FOR EACH FOOD ENTER PERCENTAGE OF ENERGY NEEDS TO BE COVERED 
     def calculate_for_food_ratios(food, percentage, energy_needs):
         # from the food, we get kJ per weight
         energy_needs *= percentage
@@ -98,38 +103,23 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
                 food_to_packet_ratio = needed_food_weight/food.weight_per_packet
 
         return needed_food_weight, food_to_packet_ratio
-    ###
 
-    """
+    food_ratios = calculate_for_food_ratios(food, request.data.percentage[0], energy_needs)
+
     plan_data = {
         "user": request.user.id,
         "pet": pet.id,
-        "food": food.id, # UPDATE TO ARRAY OF FOODS
+        "food": food.id,
         "pet_name": pet.name,
-        "food_name": food.food_name, # UPDATE TO ARRAY OF FOODS
+        "food_name": food.food_name,
         "plan_title": request.data['plan_title'],
-        "food_serving_type": food.packet_type, # UPDATE TO ARRAY OF FOODS
+        "food_serving_type": food.packet_type,
         "daily_energy_needs": energy_needs,
-        "daily_food_weight": needed_food_weight, # UPDATE TO ARRAY OF FOODS
-        "daily_food_weight_unit": food.weight_unit, # UPDATE TO ARRAY OF FOODS
-        "daily_servings_amount": food_to_packet_ratio # UPDATE TO ARRAY OF FOODS
+        "daily_food_weight": food_ratios[0],
+        "daily_food_weight_unit": food.weight_unit,
+        "daily_servings_amount": food_ratios[1]
     }
     
-    """
-
-    plan_data = {
-        "user": 1,
-        "pet": 1,
-        "foods": 1, # UPDATE TO ARRAY OF FOODS
-        "pet_name": 1,
-        "food_names": 1, # UPDATE TO ARRAY OF FOODS
-        "plan_title": 1,
-        "food_serving_type": 1, # UPDATE TO ARRAY OF FOODS
-        "daily_energy_needs": 1,
-        "daily_food_weight": 1, # UPDATE TO ARRAY OF FOODS
-        "daily_food_weight_unit": 1, # UPDATE TO ARRAY OF FOODS
-        "daily_servings_amount": 1 # UPDATE TO ARRAY OF FOODS
-    }
     serializer = PlanSerializer(data=plan_data)
 
     if serializer.is_valid():
