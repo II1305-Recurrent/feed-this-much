@@ -13,6 +13,7 @@ from .models import UserPlan, CombinedPlan
 def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/PORTIONS, SPLIT_TYPE, portion_food_id
     pet = Pet.objects.filter(user=request.user, id=request.data['pet_id']).first()
     food = UserFood.objects.filter(user=request.user, id=request.data['food_id']).first() # Filter by userID, foodname CHANGE THIS? GET ALL REQUESTED FOODS?
+    food2 = UserFood.objects.filter(user=request.user, id=request.data['food_id2']).first()
     # ignore split_type, split_amount, split_food_id for now
     energy_needs = None
 
@@ -35,7 +36,6 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
             status=status.HTTP_400_BAD_REQUEST
         )
     if request.data['number_of_foods'] > 1: # check if second food exists, should do something further if it exists
-        food2 = UserFood.objects.filter(user=request.user, id=request.data['food_id2']).first()
         if not food2:
             error_message = "No such food exists"
             return Response(
@@ -121,12 +121,59 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
     }
     
     serializer = PlanSerializer(data=plan_data)
+    plan1 = None
 
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        plan1 = serializer.save()
+        print("First plan created!")
     else: 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    if request.data['number_of_foods'] > 1:
+        food_ratios = calculate_for_food_ratios(food2, (100-request.data.split_amount)/100, energy_needs)
+
+        plan_data = {
+        "user": request.user.id,
+        "pet": pet.id,
+        "food": food2.id,
+        "pet_name": pet.name,
+        "food_name": food2.food_name,
+        "plan_title": request.data['plan_title'],
+        "food_serving_type": food2.packet_type,
+        "daily_energy_needs": energy_needs,
+        "daily_food_weight": food_ratios[0],
+        "daily_food_weight_unit": food2.weight_unit,
+        "daily_servings_amount": food_ratios[1]
+        }
+
+        serializer = PlanSerializer(data=plan_data)
+
+        if serializer.is_valid():
+            plan2 = serializer.save()
+            print("Second plan created!")
+            print("two plans were generated")
+            combined_data = {
+                "user": request.user.id,
+                "pet": pet.id,
+                "plan_a": plan1.id,
+                "plan_b": plan2.id,
+                "total_daily_energy": energy_needs,
+                "plan_title": request.data['plan_title']
+            }
+            #return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return combined_plans_list_create(combined_data)
+        else: 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        print("one plan was generated")
+        combined_data = {
+            "user": request.user.id,
+            "pet": pet.id,
+            "plan_a": plan1.id,
+            "total_daily_energy": energy_needs,
+            "plan_title": request.data['plan_title']
+        }
+        return combined_plans_list_create(combined_data)
 
 
 @api_view(['GET', 'OPTIONS'])

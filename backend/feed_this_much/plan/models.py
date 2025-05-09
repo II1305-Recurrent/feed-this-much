@@ -31,14 +31,13 @@ class UserPlan(models.Model):
     daily_servings_amount = models.FloatField()
     
 class CombinedPlan(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    pet = models.ForeignKey('pets.Pet', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    pet = models.ForeignKey(Pet, on_delete=models.CASCADE, null=False)
 
     plan_a = models.ForeignKey(UserPlan, on_delete=models.CASCADE, related_name='combined_as_a')
     plan_b = models.ForeignKey(UserPlan, on_delete=models.CASCADE, related_name='combined_as_b')
 
     total_daily_energy = models.FloatField()
-    total_daily_food_weight = models.FloatField()
-    total_servings = models.FloatField()
+    plan_title = models.CharField(max_length=255, default="My Combined Plan")
 
     created = models.DateTimeField(auto_now_add=True)
