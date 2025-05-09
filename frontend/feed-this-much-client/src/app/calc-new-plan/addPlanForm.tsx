@@ -89,23 +89,23 @@ function AddPlanForm() {
     const form = useForm<z.infer<typeof addPlanSchema>>({
         resolver: zodResolver(addPlanSchema),
         defaultValues: {
-            title: "Default title", //maybe generate random number based on ids of previous plans?
-            foodId: null,
-            petId: null,
+            title: "Default Title", //maybe generate random number based on ids of previous plans?
+            foodId: "" as unknown as number,
+            petId: "" as unknown as number,
             numberOfFoods: 1,
-            secondFoodId: null,
+            secondFoodId: "" as unknown as number,
             splitType: "", // either percentage or portion split
-            splitMainFoodId: null, // the id of the food that has a fixed portion
-            splitAmount: undefined, // the amount of either the percentage of food 1 OR the number of portions of splitMainFood
+            splitMainFoodId: "" as unknown as number, // the id of the food that has a fixed portion
+            splitAmount: "" as unknown as number, // the amount of either the percentage of food 1 OR the number of portions of splitMainFood
         },
     })
 
     async function onSubmit(values: z.infer<typeof addPlanSchema>) {
         // maps the frontend to the api names
         const form_schema_mapping = {
-            foodId: "food_id",
             title: "plan_title",
             petId: "pet_id",
+            foodId: "food_id",
             numberOfFoods: "number_of_foods",
             secondFoodId: "food_id2",
             splitType: "split_type",
@@ -116,6 +116,8 @@ function AddPlanForm() {
         for (const [formKey, apiKey] of Object.entries(form_schema_mapping)) {
             data[apiKey] = values[formKey as keyof typeof values];
         }
+
+        console.log('Plan Item:', data);
 
         const response = await postRequest({ path: '/api/generate-plan/', body: data });
 
@@ -190,7 +192,7 @@ function AddPlanForm() {
                 />
                 <FormField
                     control={form.control}
-                    name="petname"
+                    name="petId"
                     render={({ field }) => (
                         <FormItem className={undefined}>
                             <FormLabel className={undefined}>Pet Name</FormLabel>
@@ -213,7 +215,7 @@ function AddPlanForm() {
                 />
                 <FormField
                     control={form.control}
-                    name="foodname"
+                    name="foodId"
                     render={({ field }) => (
                         <FormItem className={undefined}>
                             <FormLabel className={undefined}>Food Name</FormLabel>
@@ -320,7 +322,10 @@ function AddPlanForm() {
                                                             defaultValue={sliderProgress}
                                                             max={100}
                                                             step={5}
-                                                            onValueChange={setSliderProgress}
+                                                            onValueChange={(value) => {
+                                                                setSliderProgress(value);
+                                                                form.setValue("splitAmount", value[0]);
+                                                            }}
                                                             className="relative flex w-full touch-none select-none items-center"
                                                         >
                                                             <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-[var(--custom-blue)]/20">

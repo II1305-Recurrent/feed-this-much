@@ -3,19 +3,19 @@ import { z } from "zod";
 
 export const addPlanSchema = z.object({
     title: z.string().min(1, "Please give this plan a name, it will be used to display your plans"),
-    petId: z.number({
+    petId: z.coerce.number({
         required_error: "Please choose a pet",
     }),
-    foodId: z.number({
+    foodId: z.coerce.number({
         required_error: "Please choose a food",
     }),
-    numberOfFoods: z.number({
+    numberOfFoods: z.coerce.number({
         required_error: "Must be a number", // 1 for a single food, 2 for a second food and so on
     }),
     // SECOND FOOD ENTRIES - ALL CONDITIONALLY OPTIONAL, SEE SUPERREFINE SECTION
-    secondFoodId: z.number().optional(),
+    secondFoodId: z.coerce.number().optional(),
     splitType: z.string().optional(), // either "percentage" or "portion" split
-    splitMainFoodId: z.number().optional(), // the id of the food that has a fixed portion
+    splitMainFoodId: z.coerce.number().optional(), // the id of the food that has a fixed portion
     splitAmount: z.coerce.number().optional(), // the amount of either the percentage of food 1 OR the number of portions of splitMainFood
 }).superRefine((data, ctx) => {
 
@@ -38,7 +38,7 @@ export const addPlanSchema = z.object({
     }
 
     // sets splitType to required if second food required
-    if (data.numberOfFoods > 1 && !data.splitType) {
+    if (data.numberOfFoods > 1 && data.splitType == "") {
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: "You need to choose a way to mix your foods - either by percentage or by choosing a fixed amount of one.",
@@ -56,7 +56,12 @@ export const addPlanSchema = z.object({
     }
 
     // if splitType is by fixed portion, makes sure the chosen food is food one or food two
-    if (data.numberOfFoods > 1 && data.splitType == "portion" && (data.splitMainFoodId != data.foodId || data.secondFoodId)) {
+    if (
+        data.numberOfFoods > 1 &&
+        data.splitType === "portion" &&
+        data.splitMainFoodId !== data.foodId &&
+        data.splitMainFoodId !== data.secondFoodId
+    ) {
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: "You need to choose one of your previously selected foods.",
