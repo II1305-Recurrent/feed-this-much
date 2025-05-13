@@ -8,21 +8,22 @@ import { useSearchParams } from 'next/navigation'; // used for searching just on
 function DisplayPlan() {
 
     // State to store fetched data
-    const [plans, setPlans] = useState([]);
+    const [plan, setPlan] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
     // Set the plan id from the search params
     const searchParams = useSearchParams();
     const selectedId = searchParams.get('id');
+    let apiPath = "/api/get-combined-plans-byid/" + selectedId + "/";
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const planRes = await getRequest({ path: "/api/get-plans/" });
+                const planRes = await getRequest({ path: apiPath });
 
                 if (planRes.ok) {
-                    setPlans(Array.isArray(planRes.payload) ? planRes.payload : []);
+                    setPlan(planRes.payload); // Now uses the returned object directly - used to be an array!
                 }
 
             } catch (err) {
@@ -40,12 +41,10 @@ function DisplayPlan() {
     /* Plan Fields for Reference 
     ['user', 'pet', 'plan_title', 
     'pet_name',
-    'food_name', 'food_serving_type', 
-    'daily_energy_needs', 'daily_food_weight', 
+    'food_name', 'food_serving_type', 'daily_energy_allowance', 'daily_food_weight', 
     'daily_food_weight_unit', 'daily_servings_amount'] */
 
-    // find only the selected plan
-    const plan = plans.find(p => String(p.id) === selectedId); // matched by id string
+    console.log("DEBUG PLAN OBJECT", plan); // debug
 
     // Silly function to change packet image because I got bored waiting for the plans api
     // Dynamically set image based on packet_type
@@ -81,14 +80,15 @@ function DisplayPlan() {
                             {plan.plan_title}
                         </h2>
                         <p>
-                            {plan.pet_name} needs {plan.daily_energy_needs.toFixed(2)} KJ / {(plan.daily_energy_needs / 4.184).toFixed(2)} kcal of energy every day.
+                            {plan.pet_name} needs {plan.daily_energy_allowance.toFixed(2)} KJ / {(plan.daily_energy_allowance / 4.184).toFixed(2)} kcal of energy every day.
                         </p>
-                        <p>
-                            This is {plan.daily_food_weight.toFixed(2)} {plan.daily_food_weight_unit} of {plan.food_name}.
-                        </p>
-                        <p>
-                            Give {plan.pet_name} {plan.daily_servings_amount.toFixed(1)} {plan.food_serving_type}s of {plan.food_name} a day.
-                        </p>
+                        {plan.plans.map((food, idx) => (
+                            <div key={food.userplan_id}>
+                                <h3 className="text-md font-semibold">Food {idx + 1}: {food.food_name}</h3>
+                                <p>Give {food.daily_servings_amount.toFixed(1)} {food.food_serving_type}(s) per day.</p>
+                                <p>This is {food.daily_food_weight.toFixed(2)} {food.daily_food_weight_unit} per day.</p>
+                            </div>
+                        ))}
                     </div>
                 )}
             </div>

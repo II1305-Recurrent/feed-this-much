@@ -24,7 +24,7 @@ from feed_this_much.basic import views
 from feed_this_much.pets.views import save_pet, get_pets, update_pet
 from feed_this_much.food.views import get_foods, save_food
 
-from feed_this_much.plan.views import generate_plan, get_plans, combined_plans_list_create, combined_plans_detail
+from feed_this_much.plan.views import generate_plan, get_plans, get_combined_plans_byid, get_combined_plans_all
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -41,10 +41,11 @@ urlpatterns = [
     path('api/save-pet/', save_pet, name='save_pet'),
     path('api/get-pets/', get_pets, name='get_pets'),
     path('api/update-pet/<int:id>/', update_pet, name='update_pet'),
-    path('api/generate-plan/', generate_plan, name='generate_plan'),
+    path('api/generate-plan/', generate_plan, name='generate_plan'), # now creates combined plan type
     path('api/get-plans/', get_plans, name='get_plans'),
-    path('api/generate-combined-plans/', combined_plans_list_create, name='combined_plans_list'),
-    path('api/get-combined-plans/<int:id>/', combined_plans_detail, name='combined_plans_detail'),
+    #path('api/generate-combined-plans/', combined_plans_list_create, name='combined_plans_list'), # no longer valid
+    path('api/get-combined-plans-byid/<int:id>/', get_combined_plans_byid, name='get_combined_plans_byid'),
+    path('api/get-combined-plans-all/', get_combined_plans_all, name='get_combined_plans_all'),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('docs/', SpectacularRedocView.as_view(url_name='schema'), name='docs'),

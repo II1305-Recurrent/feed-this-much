@@ -3,28 +3,29 @@ import { z } from "zod";
 
 export const addPlanSchema = z.object({
     title: z.string().min(1, "Please give this plan a name, it will be used to display your plans"),
-    petId: z.number({
+    petId: z.coerce.number({
         required_error: "Please choose a pet",
-    }),
-    foodId: z.number({
+    }).min(1, "Please select a pet"),
+    foodId: z.coerce.number({
         required_error: "Please choose a food",
-    }),
-    numberOfFoods: z.number({
+    }).min(1, "Please select a food"),
+    numberOfFoods: z.coerce.number({
         required_error: "Must be a number", // 1 for a single food, 2 for a second food and so on
     }),
     // SECOND FOOD ENTRIES - ALL CONDITIONALLY OPTIONAL, SEE SUPERREFINE SECTION
-    secondFoodId: z.number().optional(),
+    secondFoodId: z.coerce.number().optional(),
     splitType: z.string().optional(), // either "percentage" or "portion" split
-    splitMainFoodId: z.number().optional(), // the id of the food that has a fixed portion
-    splitAmount: z.coerce.number().optional(), // the amount of either the percentage of food 1 OR the number of portions of splitMainFood
+    splitMainFoodId: z.coerce.number().optional(), // the id of the food that has a fixed portion
+    splitAmount: z.coerce.number().optional(), // the amount of the percentage of food 1 
+    fixedServingsAmount: z.coerce.number().optional(), // the number of servings of food set by splitMainFoodID
 }).superRefine((data, ctx) => {
 
     // Controls if second food is required or not
-    if (data.numberOfFoods == 2 && !data.secondFoodId) {
+    if (data.numberOfFoods == 2 && data.secondFoodId == 0) {
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: "You need to select the second food",
-            path: ["secondfoodname"]
+            path: ["secondFoodId"]
         });
     }
 
@@ -33,12 +34,12 @@ export const addPlanSchema = z.object({
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: "You need to select two different foods",
-            path: ["secondfoodname"]
+            path: ["secondFoodId"]
         });
     }
 
     // sets splitType to required if second food required
-    if (data.numberOfFoods > 1 && !data.splitType) {
+    if (data.numberOfFoods > 1 && data.splitType == "") {
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: "You need to choose a way to mix your foods - either by percentage or by choosing a fixed amount of one.",
@@ -56,7 +57,12 @@ export const addPlanSchema = z.object({
     }
 
     // if splitType is by fixed portion, makes sure the chosen food is food one or food two
-    if (data.numberOfFoods > 1 && data.splitType == "portion" && (data.splitMainFoodId != data.foodId || data.secondFoodId)) {
+    if (
+        data.numberOfFoods > 1 &&
+        data.splitType === "portion" &&
+        data.splitMainFoodId !== data.foodId &&
+        data.splitMainFoodId !== data.secondFoodId
+    ) {
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: "You need to choose one of your previously selected foods.",
@@ -70,6 +76,18 @@ export const addPlanSchema = z.object({
             code: z.ZodIssueCode.custom,
             message: "You need to set an amount.",
             path: ["splitAmount"]
+        });
+    }
+
+    // sets fixedServingsAmount to required if split type is  required
+    if (
+        data.numberOfFoods > 1 &&
+        data.splitType === "portion" &&
+        !data.fixedServingsAmount) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "You need to set a number of servings.",
+            path: ["fixedServingsAmount"]
         });
     }
 

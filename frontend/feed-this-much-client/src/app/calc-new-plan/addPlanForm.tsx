@@ -84,38 +84,45 @@ function AddPlanForm() {
 
     // Slider State
     const [sliderProgress, setSliderProgress] = useState([50]);
+    const sliderMarkers = ["0/100", "25/75", "50/50", "75/25", "100/0"];
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPlanSchema>>({
         resolver: zodResolver(addPlanSchema),
         defaultValues: {
-            title: "Default title", //maybe generate random number based on ids of previous plans?
-            foodId: null,
-            petId: null,
+            title: "Default Title", //maybe generate random number based on ids of previous plans?
+            foodId: "" as unknown as number,
+            petId: "" as unknown as number,
             numberOfFoods: 1,
-            secondFoodId: null,
+            secondFoodId: "" as unknown as number,
             splitType: "", // either percentage or portion split
-            splitMainFoodId: null, // the id of the food that has a fixed portion
-            splitAmount: undefined, // the amount of either the percentage of food 1 OR the number of portions of splitMainFood
+            splitMainFoodId: "" as unknown as number, // the id of the food that has a fixed portion
+            splitAmount: "" as unknown as number, // the amount the percentage of food 1
+            fixedServingsAmount: "" as unknown as number, // the number of portions of splitMainFood
+
         },
     })
 
     async function onSubmit(values: z.infer<typeof addPlanSchema>) {
+
         // maps the frontend to the api names
         const form_schema_mapping = {
-            foodId: "food_id",
             title: "plan_title",
             petId: "pet_id",
+            foodId: "food_id",
             numberOfFoods: "number_of_foods",
             secondFoodId: "food_id2",
             splitType: "split_type",
             splitMainFoodId: "split_food_id",
-            splitAmount: "split_amount"
+            splitAmount: "split_amount",
+            fixedServingsAmount: "fixed_servings"
         };
         const data: Record<string, any> = {};
         for (const [formKey, apiKey] of Object.entries(form_schema_mapping)) {
             data[apiKey] = values[formKey as keyof typeof values];
         }
+
+        console.log('Plan Item:', data);
 
         const response = await postRequest({ path: '/api/generate-plan/', body: data });
 
@@ -149,6 +156,7 @@ function AddPlanForm() {
         form.setValue("secondFoodId", null);
         form.setValue("splitType", ""); // reset the previously selected split
         form.setValue("splitAmount", undefined); // reset the previously selected split amount
+        form.setValue("fixedServingsAmount", undefined); // reset the previously selected serving amount
         setSecondFood(false);
         setPortionToggle(false);
         setPercentageToggle(false);
@@ -190,7 +198,7 @@ function AddPlanForm() {
                 />
                 <FormField
                     control={form.control}
-                    name="petname"
+                    name="petId"
                     render={({ field }) => (
                         <FormItem className={undefined}>
                             <FormLabel className={undefined}>Pet Name</FormLabel>
@@ -213,7 +221,7 @@ function AddPlanForm() {
                 />
                 <FormField
                     control={form.control}
-                    name="foodname"
+                    name="foodId"
                     render={({ field }) => (
                         <FormItem className={undefined}>
                             <FormLabel className={undefined}>Food Name</FormLabel>
@@ -315,25 +323,35 @@ function AddPlanForm() {
                                                 <FormLabel className={undefined}>Adjust the slider to set the percentage</FormLabel>
                                                 <div className="w-full flex items-center justify-between gap-2">
                                                     <span className="text-sm text-muted-foreground">Food One</span>
-                                                    <FormControl>
-                                                        <SliderPrimitive.Root
-                                                            defaultValue={sliderProgress}
-                                                            max={100}
-                                                            step={5}
-                                                            onValueChange={setSliderProgress}
-                                                            className="relative flex w-full touch-none select-none items-center"
-                                                        >
-                                                            <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-[var(--custom-blue)]/20">
-                                                                <SliderPrimitive.Range className="absolute h-full bg-[var(--custom-blue)]" />
-                                                            </SliderPrimitive.Track>
-                                                            <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border border-[var(--custom-blue)]/50 bg-[var(--custom-blue)] shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
-                                                                {/* Sticky label */}
-                                                                <Badge className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 -top-6 bg-[var(--custom-blue)]" variant={undefined}>
-                                                                    {sliderProgress[0]}% / {100 - sliderProgress[0]}%
-                                                                </Badge>
-                                                            </SliderPrimitive.Thumb>
-                                                        </SliderPrimitive.Root>
-                                                    </FormControl>
+                                                    <span className="relative w-full">
+                                                        <FormControl>
+                                                            <SliderPrimitive.Root
+                                                                defaultValue={sliderProgress}
+                                                                max={100}
+                                                                step={5}
+                                                                onValueChange={(value) => {
+                                                                    setSliderProgress(value);
+                                                                    form.setValue("splitAmount", value[0]);
+                                                                }}
+                                                                className="relative flex w-full touch-none select-none items-center"
+                                                            >
+                                                                <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-[var(--custom-blue)]/20">
+                                                                    <SliderPrimitive.Range className="absolute h-full bg-[var(--custom-blue)]" />
+                                                                </SliderPrimitive.Track>
+                                                                <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border border-[var(--custom-blue)]/50 bg-[var(--custom-blue)] shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+                                                                    {/* Sticky label */}
+                                                                    <Badge className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 -top-6 bg-[var(--custom-blue)]" variant={undefined}>
+                                                                        {sliderProgress[0]}% / {100 - sliderProgress[0]}%
+                                                                    </Badge>
+                                                                </SliderPrimitive.Thumb>
+                                                            </SliderPrimitive.Root>
+                                                        </FormControl>
+                                                        <div className="mt-2 -mx-1.5 flex items-center justify-between text-muted-foreground text-xs">
+                                                            {sliderMarkers.map((sliderMark) => (
+                                                                <span key={sliderMark}>{sliderMark}</span>
+                                                            ))}
+                                                        </div>
+                                                    </span>
                                                     <span className="text-sm text-muted-foreground">Food Two</span>
                                                 </div>
                                                 <FormMessage className={undefined} />
@@ -373,7 +391,7 @@ function AddPlanForm() {
                                         {/* Set how many servings of main food */}
                                         <FormField
                                             control={form.control}
-                                            name="splitAmount"
+                                            name="fixedServingsAmount"
                                             render={({ field }) => (
                                                 <FormItem className={undefined}>
                                                     <FormLabel className={undefined}>
@@ -392,8 +410,9 @@ function AddPlanForm() {
                         </div>
                     )
                 }
-
-                <Button type="submit" className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto !mt-2" variant={undefined} size={undefined}>Submit</Button>
+                <div>
+                    <Button type="submit" className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg w-full max-w-xs mx-auto !mt-2" variant={undefined} size={undefined}>Submit</Button>
+                </div>
             </form>
         </Form>
     )

@@ -54,7 +54,7 @@ export default function Home() {
             try {
                 const foodRes = await getRequest({ path: "/api/get-foods/" });
                 const petRes = await getRequest({ path: "/api/get-pets/" });
-                const planRes = await getRequest({ path: "/api/get-plans/" });
+                const planRes = await getRequest({ path: "/api/get-combined-plans-all/" }); // updated to call combined plans
 
                 if (foodRes.ok) {
                     setFoods(Array.isArray(foodRes.payload) ? foodRes.payload : []);
