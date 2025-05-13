@@ -20,77 +20,89 @@ export const addPlanSchema = z.object({
     fixedServingsAmount: z.coerce.number().optional(), // the number of servings of food set by splitMainFoodID
 }).superRefine((data, ctx) => {
 
-    // Controls if second food is required or not
-    if (data.numberOfFoods == 2 && data.secondFoodId == 0) {
-        ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "You need to select the second food",
-            path: ["secondFoodId"]
-        });
-    }
+    const hasSecondFood = data.numberOfFoods === 2;
 
-    // checks if not the same as first food if it is required
-    if (data.numberOfFoods == 2 && data.secondFoodId == data.foodId) {
-        ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "You need to select two different foods",
-            path: ["secondFoodId"]
-        });
-    }
+    // if second food, validate:
+    if (hasSecondFood) {
 
-    // sets splitType to required if second food required
-    if (data.numberOfFoods > 1 && data.splitType == "") {
-        ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "You need to choose a way to mix your foods - either by percentage or by choosing a fixed amount of one.",
-            path: ["splitType"]
-        });
-    }
+        // if no second food id or it is 0
+        if (!data.secondFoodId || data.secondFoodId === 0) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "You need to select the second food",
+                path: ["secondFoodId"]
+            });
+        }
 
-    // if splitType is by fixed portion, make setting a main food mandatory
-    if (data.numberOfFoods > 1 && data.splitType == "portion" && !data.splitMainFoodId) {
-        ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "You need to choose a food to set a number of servings.",
-            path: ["splitMainFoodId"]
-        });
-    }
+        // check not the same as first food chosen
+        if (data.secondFoodId === data.foodId) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "You need to select two different foods",
+                path: ["secondFoodId"]
+            });
+        }
 
-    // if splitType is by fixed portion, makes sure the chosen food is food one or food two
-    if (
-        data.numberOfFoods > 1 &&
-        data.splitType === "portion" &&
-        data.splitMainFoodId !== data.foodId &&
-        data.splitMainFoodId !== data.secondFoodId
-    ) {
-        ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "You need to choose one of your previously selected foods.",
-            path: ["splitMainFoodId"]
-        });
-    }
+        // sets splitType to required if second food required
+        if (!data.splitType || data.splitType.trim() === "") {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "You need to choose a way to mix your foods - either by percentage or by choosing a fixed amount of one.",
+                path: ["splitType"]
+            });
+        }
 
-    // sets splitAmount to required if second food required
-    if (data.numberOfFoods > 1 && !data.splitAmount) {
-        ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "You need to set an amount.",
-            path: ["splitAmount"]
-        });
-    }
+        // if portion type split
+        if (data.splitType === "portion") {
 
-    // sets fixedServingsAmount to required if split type is  required
-    if (
-        data.numberOfFoods > 1 &&
-        data.splitType === "portion" &&
-        !data.fixedServingsAmount) {
-        ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "You need to set a number of servings.",
-            path: ["fixedServingsAmount"]
-        });
-    }
+            // set splitMainFoodId required
+            if (!data.splitMainFoodId) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "You need to choose a food to set a number of servings.",
+                    path: ["splitMainFoodId"],
+                });
+            } else if (  // if splitType is by fixed portion, makes sure the chosen food is food one or food two
+                data.splitMainFoodId !== data.foodId &&
+                data.splitMainFoodId !== data.secondFoodId
+            ) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "You need to choose one of your previously selected foods.",
+                    path: ["splitMainFoodId"]
+                });
+            }
 
+            // sets fixedServingsAmount to required if split type is  required
+            if (
+                data.fixedServingsAmount === undefined ||
+                isNaN(data.fixedServingsAmount)
+            ) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "You need to set a number of servings.",
+                    path: ["fixedServingsAmount"],
+                });
+            }
+
+        }
+
+        // if percentage type split
+        if (data.splitType === "percentage") {
+            if (
+                data.splitAmount === undefined ||
+                isNaN(data.splitAmount)
+            ) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "You need to set a percentage amount.",
+                    path: ["splitAmount"],
+                });
+            }
+        }
+
+
+    }
 });
 
 export type addPlanSchemaType = typeof addPlanSchema._type
