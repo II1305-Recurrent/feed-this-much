@@ -66,7 +66,7 @@ export default function Sign_in_page() {
         if (response.ok) {
             toast.success('User created');
         } else {
-            const username_error = response.payload?.usernme;
+            const username_error = response.payload?.username;
             if (username_error) {
                 toast.error(username_error);
             } else {
