@@ -111,6 +111,44 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
         return needed_food_weight, food_to_packet_ratio
     # END OF CALCULATE FOOD RATIO FUNCTION
 
+    # Function to convert weight to kg
+    def convert_weight_to_kg(weight, unit):
+        if unit == "kg":
+            return weight
+        elif unit == "g":
+            return weight / 1000
+        elif unit == "lb":
+            return weight * 0.453592
+        elif unit == "oz":
+            return weight * 0.0283495
+        else:
+            raise ValueError(f"Unsupported weight unit: {unit}")
+
+    # Calculate Energy Provided by Set Portions Function
+    def calculate_energy_for_fixed_servings(food, number_of_servings):
+
+        energy_given_by_fixed_food = food.energy
+        if food.energy_unit == "kcal":
+            energy_given_by_fixed_food *= 4.184 # convert kcal to kj for calcs
+
+        # now calc how much energy per portion of this food
+        # food.weight gives the weight amount this energy applies to, food.weight_unit gives the unit
+        # food.weight_per_packet gives the weight per serving, food.weight_per_packet_unit gives the unit for this
+        # the units need to match to calculate
+        # Convert food's weight and serving weight to the same unit for proper comparison
+        food_weight_in_kg = convert_weight_to_kg(food.weight, food.weight_unit)  # Convert food's weight to kg
+        serving_weight_in_kg = convert_weight_to_kg(food.weight_per_packet, food.weight_per_packet_unit)  # Convert serving weight to kg
+
+        # Energy per portion (kJ or kcal)
+        energy_per_portion = energy_given_by_fixed_food * (serving_weight_in_kg / food_weight_in_kg)
+
+        # Total energy for the requested number of servings
+        total_energy_for_servings = energy_per_portion * number_of_servings
+
+        return total_energy_for_servings
+
+    # END OF CALCULATE ENERGY PER PORTION FUNCTION
+
     # CASE WHERE ONLY ONE FOOD
     if request.data['number_of_foods'] == 1:
         food_ratios = calculate_for_food_ratios(food1, 1, energy_needs)
@@ -182,15 +220,14 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
                 return Response({"error": "Fixed servings must be provided when using fixed portion split."},
                     status=status.HTTP_400_BAD_REQUEST)
 
-            energy_for_fixed_food = fixed_servings * fixed_food.energy  # KJ by default
-            if fixed_food.energy_unit == "kcal":
-                energy_for_fixed_food *= 4.184  # Convert kcal to kJ
+            # get how much energy the fixed servings provide in KJ
+            energy_for_fixed_food = calculate_energy_for_fixed_servings(fixed_food, fixed_servings) # KJ by default
 
             # Step 2: Subtract energy for fixed food from total daily energy
             remaining_energy = energy_needs - energy_for_fixed_food
 
             # Step 3: Calculate the other food's weight and servings based on remaining energy
-            food_ratios = calculate_for_food_ratios(other_food, remaining_energy / energy_needs, remaining_energy) # check calculation
+            other_food_ratios = calculate_for_food_ratios(other_food, 1, remaining_energy) # check calculation
 
             # Create the first plan (fixed food plan)
             plan_data1 = {
@@ -202,8 +239,8 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
                 "plan_title": request.data['plan_title'],
                 "food_serving_type": fixed_food.packet_type,
                 "daily_energy_needs": energy_for_fixed_food,
-                "daily_food_weight": fixed_servings * fixed_food.weight,
-                "daily_food_weight_unit": fixed_food.weight_unit,
+                "daily_food_weight": fixed_servings * fixed_food.weight_per_packet,
+                "daily_food_weight_unit": fixed_food.weight_per_packet_unit,
                 "daily_servings_amount": fixed_servings
             }
 
@@ -224,9 +261,9 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
                 "plan_title": request.data['plan_title'],
                 "food_serving_type": other_food.packet_type,
                 "daily_energy_needs": remaining_energy,
-                "daily_food_weight": food_ratios[0],
+                "daily_food_weight": other_food_ratios[0],
                 "daily_food_weight_unit": other_food.weight_unit,
-                "daily_servings_amount": food_ratios[1]
+                "daily_servings_amount": other_food_ratios[1]
             }
 
             serializer2 = PlanSerializer(data=plan_data2)
