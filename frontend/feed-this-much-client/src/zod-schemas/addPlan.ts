@@ -73,7 +73,7 @@ export const addPlanSchema = z.object({
                 });
             }
 
-            // sets fixedServingsAmount to required if split type is  required
+            // sets fixedServingsAmount to required if split type is portion
             if (
                 data.fixedServingsAmount === undefined ||
                 isNaN(data.fixedServingsAmount)

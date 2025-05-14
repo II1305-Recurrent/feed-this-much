@@ -97,7 +97,7 @@ function AddPlanForm() {
             secondFoodId: "" as unknown as number,
             splitType: "", // either percentage or portion split
             splitMainFoodId: "" as unknown as number, // the id of the food that has a fixed portion
-            splitAmount: "" as unknown as number, // the amount the percentage of food 1
+            splitAmount: 50, // the amount the percentage of food 1
             fixedServingsAmount: "" as unknown as number, // the number of portions of splitMainFood
 
         },
@@ -155,7 +155,7 @@ function AddPlanForm() {
         form.setValue("numberOfFoods", 1);
         form.setValue("secondFoodId", null);
         form.setValue("splitType", ""); // reset the previously selected split
-        form.setValue("splitAmount", undefined); // reset the previously selected split amount
+        form.setValue("splitAmount", 50); // reset the previously selected split amount
         form.setValue("fixedServingsAmount", undefined); // reset the previously selected serving amount
         setSecondFood(false);
         setPortionToggle(false);
