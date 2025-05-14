@@ -66,7 +66,12 @@ export default function Sign_in_page() {
         if (response.ok) {
             toast.success('User created');
         } else {
-            toast.error(JSON.stringify(response.payload.error));
+            const username_error = response.payload?.usernme;
+            if (username_error) {
+                toast.error(username_error);
+            } else {
+                toast.error("Error creating a user");
+            }
         }
     }
 
@@ -81,7 +86,7 @@ export default function Sign_in_page() {
             toast.success('Welcome!');
             router.push('/home');
         } else {
-            toast.error(JSON.stringify(response.payload.error));
+            toast.error(response.payload.error);
         }
     }
 
