@@ -13,14 +13,15 @@ from .models import UserPlan, CombinedPlan
 @permission_classes([IsAuthenticated])
 def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/PORTIONS, SPLIT_TYPE, portion_food_id
     
+    # Get pet and foods
     pet = Pet.objects.filter(user=request.user, id=request.data['pet_id']).first()
-    food1 = UserFood.objects.filter(user=request.user, id=request.data['food_id']).first() # Filter by userID, foodname CHANGE THIS? GET ALL REQUESTED FOODS?
+    food1 = UserFood.objects.filter(user=request.user, id=request.data['food_id']).first()
     food2 = None
-    # sets food_id2 only if it is required i.e. not 0
+    # if  second food is in the request i.e. not 0, we get it
     if request.data['food_id2'] != 0:
         food2 = UserFood.objects.filter(user=request.user, id=request.data['food_id2']).first()
 
-    # CHECKS PET ID VALID
+    # Check if pet we fetched is valid
     if not pet:
         error_message = "No such pet exists"
         return Response(
@@ -28,13 +29,13 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
             status=status.HTTP_400_BAD_REQUEST
         )
     
-    # CALCULATES ENERGY NEEDS FROM PET DATA
+    # Calculate daily energy needs for pet depending on species
     if pet.species == "cat":
         energy_needs = calorie_calculator.calculate_cat_feeding(pet)
     elif pet.species == "dog":
         energy_needs = calorie_calculator.calculate_dog_feeding(pet)
     
-    # CHECKS FOOD ID VALID
+    # Check if first food is valid
     if not food1:
         error_message = "No such food exists"
         return Response(
@@ -43,16 +44,16 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
         )
     
     if request.data['number_of_foods'] > 1: # check if second food is needed, should do something further if it exists
-        if not food2: # checks that second food id given is valid
+        if not food2: # checks if second food given is valid
             error_message = "No such food exists"
             return Response(
                 {"error": error_message},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-    # A FUNCTION TO CALCULATE FOOD RATIOS 
+    # function to calculate amount of food needed for pet, total weight and servings amount
     def calculate_for_food_ratios(food, percentage, energy_needs_calc):
-        # from the food, we get kJ per weight
+        # from the food, we get kJ per serving weight
         energy_needs_calc *= percentage
         energy_given = food.energy
         if food.energy_unit == "kcal":
@@ -61,9 +62,9 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
         # energy per portion weight, eg 840kcal (multiply to get kJ)
         # weight per portion, eg 1kg
         # say we need 1000kJ, 1000 = (840*4.184)*portion_multiplier
-        # portion_multiplier = 1000/(840*4.184)
+        # portion_multiplier = 1000/(840*4.184) = approximately 0.28 portions
 
-        food_to_packet_ratio = 0
+        food_to_packet_ratio = 0 # total packets needed
         
         portion_multiplier = energy_needs_calc/energy_given # calculates how much of the food weight we need, calculate by percentage
         needed_food_weight = portion_multiplier*food.weight
@@ -110,7 +111,6 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
                 food_to_packet_ratio = needed_food_weight/food.weight_per_packet
 
         return needed_food_weight, food_to_packet_ratio
-    # END OF CALCULATE FOOD RATIO FUNCTION
 
     # Function to convert weight to kg
     def convert_weight_to_kg(weight, unit):
@@ -182,7 +182,7 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
                 "total_daily_energy": energy_needs,
                 "plan_title": request.data['plan_title']
             }
-            print("Combined Data Being Submitted:", combined_data) # debug
+            #print("Combined Data Being Submitted:", combined_data) # debug
             
             # Call the helper function to save the combined plan
             response_data = save_combined_plan(combined_data)
@@ -283,11 +283,11 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
                 "total_daily_energy": energy_needs,
                 "plan_title": request.data['plan_title']
             }
-            print("Combined Data Being Submitted:", combined_data) # debug
+            #print("Combined Data Being Submitted:", combined_data) # debug
 
             # Call the helper function to save the combined plan
             response_data = save_combined_plan(combined_data)
-            #Response Check
+            # Response Check
             if isinstance(response_data, dict):
                 return Response(response_data, status=status.HTTP_201_CREATED)
             else: 
