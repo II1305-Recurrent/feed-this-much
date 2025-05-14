@@ -10,7 +10,7 @@ class PlanSerializer(serializers.ModelSerializer):
         return UserPlan.objects.create(**validated_data)
 
 class CombinedPlanSerializer(serializers.ModelSerializer):
-    # uses primary key
+    # uses primary key - DO NOT CHANGE TO NESTED TYPE OR IT WILL ALL BREAK!
     plan_a = serializers.PrimaryKeyRelatedField(queryset=UserPlan.objects.all())
     plan_b = serializers.PrimaryKeyRelatedField(queryset=UserPlan.objects.all(), required=False, allow_null=True) # plan b is optional
 
