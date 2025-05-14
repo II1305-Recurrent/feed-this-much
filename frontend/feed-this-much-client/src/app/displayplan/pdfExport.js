@@ -3,54 +3,70 @@ import { getRequest, postRequest } from "@/utils/fetchApi";
 //import { html2pdf } from "html2pdf.js";
 
 // TODO this can be refactored as a single function 
-export default async function exportFeedingPlanPdf() {
+export async function exportFeedingPlanPdf() {
     const params = new URLSearchParams(window.location.search);
     const selectedId = params.get("id");
 
     try {
-        //this is bad way of doing it, but its getting late
-        const planRes = await getRequest({ path: "/api/get-plans/" });
-        const plans = Array.isArray(planRes.payload) ? planRes.payload : [];
-        const plan = plans.find(p => String(p.id) === selectedId);
+        // Set the plan id from the search params
+        let apiPath = "/api/get-combined-plans-byid/" + selectedId + "/";
+        const planRes = await getRequest({ path: apiPath });
+        const plan = planRes.payload;
 
         if (!plan) {
             alert("No plan data found to export.");
             return;
         }
 
+        console.log("DEBUG EXPORT SINGLE PLAN OBJECT", plan); // debug
+
         //This is manualy genearating this text around. Not great, but its a start
         const doc = new jsPDF();
         let y = 10;
 
+        // Main Plan Information
         doc.setFontSize(16);
         doc.text(plan.plan_title, 10, y);
+        y += 16; // space for next section
 
-        y += 12;
+        // First block of text
         doc.setFontSize(12);
         doc.text(
-            `${plan.pet_name} needs ${plan.daily_energy_needs.toFixed(2)} KJ` +
-            ` / ${(plan.daily_energy_needs / 4.184).toFixed(2)} kcal every day.`,
+            `${plan.pet_name} needs ${plan.daily_energy_allowance.toFixed(2)} KJ` +
+            ` / ${(plan.daily_energy_allowance / 4.184).toFixed(2)} kcal every day.`,
             10,
             y
         );
+        y += 8; // space for next section
 
-        y += 8;
-        doc.text(
-            1      `This is ${plan.daily_food_weight.toFixed(2)} ${plan.daily_food_weight_unit}` +
-            ` of ${plan.food_name}.`,
-            10,
-            y
-        );
+        // Iterate over sub-plans (foods aka userplan) and add each to the PDF
+        plan.plans.forEach((food, idx) => {
 
-        y += 8;
-        doc.text(
-            `Give ${plan.pet_name} ${plan.daily_servings_amount.toFixed(1)}` +
-            ` ${plan.food_serving_type}s of ${plan.food_name} a day.`,
-            10,
-            y
-        );
+            // food name
+            doc.setFontSize(14);
+            doc.text(`Food ${idx + 1}: ${food.food_name}`, 10, y);
+            y += 8;
+
+            // food servings
+            doc.setFontSize(12);
+            doc.text(
+                `Give ${food.daily_servings_amount.toFixed(1)} ${food.food_serving_type}s per day.`,
+                10,
+                y
+            );
+            y += 8;
+
+            // food weight
+            doc.text(
+                `This is ${food.daily_food_weight.toFixed(2)} ${food.daily_food_weight_unit} per day.`,
+                10,
+                y
+            );
+            y += 12;
+        });
 
         doc.save("feeding-plan.pdf");
+
     } catch (err) {
         console.error("Export error:", err);
         alert("Failed to export PDF.");
@@ -58,44 +74,71 @@ export default async function exportFeedingPlanPdf() {
 }
 
 //exports multiple 
-export async function exportFeedingPlansPdf(plans) {
-    if (!Array.isArray(plans) || plans.length === 0) {
+export async function exportFeedingPlansPdf() {
+
+    // get all the user's plans
+    // api:     path('api/get-combined-plans-all/', get_combined_plans_all, name='get_combined_plans_all'),
+    const allPlansRes = await getRequest({ path: "/api/get-combined-plans-all/" }); // get all plans
+    const allPlans = Array.isArray(allPlansRes.payload) ? allPlansRes.payload : [];
+
+    if (!Array.isArray(allPlans) || allPlans.length === 0) {
         alert("No plan data found to export.");
         return;
     }
 
+    console.log("DEBUG EXPORT ALL PLAN OBJECT", allPlans); // debug
+
     const doc = new jsPDF();
-    plans.forEach((plan, idx) => {
-        if (idx > 0) doc.addPage();
+
+    allPlans.forEach((plan, idx) => {
+
+        if (idx > 0) doc.addPage(); // adds new page for each plan
 
         let y = 10;
+
+        // Main Plan Information
         doc.setFontSize(16);
         doc.text(plan.plan_title, 10, y);
+        y += 16; // Space for next section
 
-        y += 12;
         doc.setFontSize(12);
         doc.text(
-            `${plan.pet_name} needs ${plan.daily_energy_needs.toFixed(2)} KJ` +
-            ` / ${(plan.daily_energy_needs / 4.184).toFixed(2)} kcal every day.`,
+            `${plan.pet_name} needs ${plan.daily_energy_allowance.toFixed(2)} KJ` +
+            ` / ${(plan.daily_energy_allowance / 4.184).toFixed(2)} kcal every day.`,
             10,
             y
         );
+        y += 8; // Space for next section
 
-        y += 8;
-        doc.text(
-            `This is ${plan.daily_food_weight.toFixed(2)} ${plan.daily_food_weight_unit}` +
-            ` of ${plan.food_name}.`,
-            10,
-            y
-        );
+        // Iterate over sub-plans (foods aka userplans) and add each to the PDF
+        const foods = [];
+        if (plan.plan_a_details) foods.push(plan.plan_a_details);
+        if (plan.plan_b_details) foods.push(plan.plan_b_details);
 
-        y += 8;
-        doc.text(
-            `Give ${plan.pet_name} ${plan.daily_servings_amount.toFixed(1)}` +
-            ` ${plan.food_serving_type}s of ${plan.food_name} a day.`,
-            10,
-            y
-        );
+
+        // Add each food to the PDF
+        foods.forEach((food, foodIdx) => {
+            doc.setFontSize(14);
+            doc.text(`Food ${foodIdx + 1}: ${food.food_name}`, 10, y);
+            y += 8;
+
+            doc.setFontSize(12);
+            doc.text(
+                `Give ${food.daily_servings_amount.toFixed(1)} ${food.food_serving_type}s per day.`,
+                10,
+                y
+            );
+            y += 8;
+
+            doc.text(
+                `This is ${food.daily_food_weight.toFixed(2)} ${food.daily_food_weight_unit} per day.`,
+                10,
+                y
+            );
+            y += 12;
+        });
+
+
     });
 
     doc.save("feeding-plans.pdf");

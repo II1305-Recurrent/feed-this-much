@@ -7,7 +7,8 @@ import Image from "next/image";
 import styles from "@/app/page.module.css";
 
 import DisplayPlan from "./DisplayPlan";
-import exportFeedingPlanPdf from "./pdfExport"
+import { exportFeedingPlansPdf, exportFeedingPlanPdf } from "../displayplan/pdfExport";
+
 
 export default function Plan() {
 
