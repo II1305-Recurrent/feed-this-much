@@ -17,6 +17,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 import { getRequest } from "@/utils/fetchApi";
+import { deleteRequest } from "@/utils/fetchApi";
 
 
 export default function Home() {
@@ -26,10 +27,66 @@ export default function Home() {
     const [plans, setPlans] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    //const pets = [{ id: 0, name: "Little bitch", species: "cat" }, { id: 1, name: "Poppy", species: "dog" }, { id: 2, name: "Mac", species: "cat" }]
-    //const foods = [{ id: 0, name: "Fancy chow" }, { id: 1, name: "Foooood" }]
-    //const plans = [{ id: 1, title: "Test Plan" }];
-    const { setIndex, setCatFields, setDogFields, cat, dog, setToCat, setToDog, doEdit } = useModel();
+
+    const { setIndex, setCatFields, setDogFields, edit, setToCat, setToDog, doEdit } = useModel();
+    const [user, setUser] = useState([]);
+    async function getUser() {
+        const response = await getRequest({ path: '/api/get-user/' });
+        if (response.ok) {
+            //console.log(response.payload)
+            setUser(response.payload)
+        }
+
+    }
+    useEffect(() => {
+        getUser()
+        //console.log(user);
+    }, []);
+    useEffect(() => {
+        if (user) {
+            //console.log(user);
+            router.refresh();
+        }
+    }, [user]);
+
+    // generic helper to call DELETE endpoints
+    async function deleteResource(resource, id) {
+        const res = await deleteRequest({ path: `/api/delete-${resource}/${id}/` });
+        if (!res.ok) {
+            throw new Error(res.payload?.message || `${resource} delete failed`);
+        }
+    }
+
+    // Handlers for each type
+    async function handleDeletePet(id) {
+        try {
+            await deleteResource('pet', id);
+            setPets(prev => prev.filter(p => p.id !== id));
+        } catch (e) {
+            console.error(e);
+            setError(e.message);
+        }
+    }
+
+    async function handleDeleteFood(id) {
+        try {
+            await deleteResource('food', id);
+            setFoods(prev => prev.filter(f => f.id !== id));
+        } catch (e) {
+            console.error(e);
+            setError(e.message);
+        }
+    }
+
+    async function handleDeletePlan(id) {
+        try {
+            await deleteResource('combined-plan', id);
+            setPlans(prev => prev.filter(pl => pl.id !== id));
+        } catch (e) {
+            console.error(e);
+            setError(e.message);
+        }
+    }
 
     function setPetForEditing(id) {
         //fetch pet by ID
@@ -49,12 +106,14 @@ export default function Home() {
             setDogFields({ fieldName: "id", value: selectedPet.id });
         }
     }
+
+    // Fetch the Data
     useEffect(() => {
         async function fetchData() {
             try {
                 const foodRes = await getRequest({ path: "/api/get-foods/" });
                 const petRes = await getRequest({ path: "/api/get-pets/" });
-                const planRes = await getRequest({ path: "/api/get-combined-plans-all/" }); // updated to call combined plans
+                const planRes = await getRequest({ path: "/api/get-combined-plans-all/" }); // updated to call combined
 
                 if (foodRes.ok) {
                     setFoods(Array.isArray(foodRes.payload) ? foodRes.payload : []);
@@ -79,11 +138,13 @@ export default function Home() {
 
         fetchData();
     }, []);
+
     useEffect(() => {
-        if (cat.name || dog.name) {
+        if (edit) {
             router.push('/add-pet');
         }
-    }, [cat.name, dog.name, router]);
+    }, [edit, router]);
+
     return (
         <div className="page">
             <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
@@ -107,7 +168,7 @@ export default function Home() {
                                                     width={15}
                                                     height={15}></Image>
                                             </Button>
-                                            <Button variant="ghost" onClick={() => console.log("delete")}>
+                                            <Button variant="ghost" onClick={() => handleDeletePet(item.id)}>
                                                 <Image
                                                     src="/delete-icon.png"
                                                     alt=""
@@ -141,7 +202,7 @@ export default function Home() {
                                 return (
                                     <div key={foodItem.id} className="flex justify-between w-full h-6">
                                         <p className="text-md text-[var(--custom-brown)] flex justify-center items-center">{foodItem.food_name}</p>
-                                        <Button variant="ghost" onClick={() => console.log("delete")}>
+                                        <Button variant="ghost" onClick={() => handleDeleteFood(foodItem.id)}>
                                             <Image
                                                 src="/delete-icon.png"
                                                 alt=""
@@ -180,7 +241,7 @@ export default function Home() {
                                         }} className="flex justify-center items-center">
                                             <p className="text-md text-[var(--custom-brown)] float-left">{item.plan_title}</p>
                                         </Button>
-                                        <Button variant="ghost" onClick={() => console.log("delete")}>
+                                        <Button variant="ghost" onClick={() => handleDeletePlan(item.id)}>
                                             <Image
                                                 src="/delete-icon.png"
                                                 alt=""

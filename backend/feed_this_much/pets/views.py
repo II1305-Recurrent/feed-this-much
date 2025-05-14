@@ -42,3 +42,15 @@ def update_pet(request, id):
         return Response(status=status.HTTP_200_OK)
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_pet(request, pet_id):
+    pets = Pet.objects.filter(user=request.user, id = pet_id) # Filter by userID
+    if not pets.exists():
+        return Response(
+            {"message": "No pets yet!"},
+            status=status.HTTP_200_OK # 200 OK even if no pets exist
+        )
+    pets.delete()
+    return Response({'msg': 'Pet deleted successfully'}, status=status.HTTP_200_OK)

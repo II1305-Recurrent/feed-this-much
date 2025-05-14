@@ -50,9 +50,9 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
             )
 
     # A FUNCTION TO CALCULATE FOOD RATIOS 
-    def calculate_for_food_ratios(food, percentage, energy_needs):
+    def calculate_for_food_ratios(food, percentage, energy_needs_calc):
         # from the food, we get kJ per weight
-        energy_needs *= percentage
+        energy_needs_calc *= percentage
         energy_given = food.energy
         if food.energy_unit == "kcal":
             energy_given *= 4.184
@@ -64,7 +64,7 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
 
         food_to_packet_ratio = 0
         
-        portion_multiplier = energy_needs/energy_given # calculates how much of the food weight we need, calculate by percentage
+        portion_multiplier = energy_needs_calc/energy_given # calculates how much of the food weight we need, calculate by percentage
         needed_food_weight = portion_multiplier*food.weight
         
         #weight_per_packet_unit MUST BE weight_unit for calculations to work
@@ -437,4 +437,33 @@ def get_combined_plans_all(request):
 
     # Return the list of combined plans
     return Response(response_data, status=status.HTTP_200_OK)
+
+# Delete a combined plan
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_combined_plan(request, id):
+
+    try:
+        plan = CombinedPlan.objects.get(id=id, user=request.user)
+    except CombinedPlan.DoesNotExist:
+        return Response(
+            {"message": "Plan not found"},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    # Store references to plan_a and plan_b before deleting the combined plan
+    plan_a = plan.plan_a
+    plan_b = plan.plan_b
+
+    # Delete the combined plan
+    plan.delete() 
+    # note - should delete the plan a and plan b automatically because on_delete cascade set in model but not working
+
+    # Explicitly delete plan_a and plan_b if they exist
+    if plan_a:
+        plan_a.delete()
+    if plan_b:
+        plan_b.delete()
+
+    return Response({'msg': 'Plan deleted successfully'}, status=status.HTTP_200_OK)
 

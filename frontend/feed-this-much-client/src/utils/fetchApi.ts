@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-const debug = false; // SET TO FALSE WHEN COMMIT TO MAIN
+const debug = true; // SET TO FALSE WHEN COMMIT TO MAIN
 
 function getBaseUrl(): string {
     if (debug) {
@@ -142,4 +142,37 @@ async function constructReturnObj(response: any | null): Promise<any> {
 
     return {};
 }
-export { getCookieByName, getRequest, postRequest, putRequest };
+
+async function deleteRequest({
+    path
+}: {
+    path: string;
+}): Promise<any> {
+
+    let headers = {
+        'Content-Type': 'application/json',
+    };
+
+    const csrftoken = getCookieByName('csrftoken');
+    if (csrftoken) {
+        headers['X-CSRFToken'] = csrftoken;
+    }
+
+    const baseUrl = getBaseUrl();
+
+    try {
+        const response = await fetch(baseUrl.concat(path), {
+            method: 'DELETE',
+            mode: 'cors',
+            headers: headers,
+            credentials: 'include',
+        });
+
+        return await constructReturnObj(response);
+    } catch (err) {
+        console.error('DELETE request failed', err);
+        return await constructReturnObj(null);
+    }
+}
+
+export { getCookieByName, getRequest, postRequest, deleteRequest, putRequest };
