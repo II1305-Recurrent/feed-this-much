@@ -243,6 +243,8 @@ def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/
                 "plan_a": plan1.id,
                 "plan_b": plan2.id,
                 "total_daily_energy": energy_needs,
+                "percentage_plan_a": float(request.data['percentage_plan_a']),
+                "percentage_plan_b": float(request.data['percentage_plan_b']),
                 "plan_title": request.data['plan_title']
             }
             print("Combined Data Being Submitted:", combined_data) # debug

@@ -41,6 +41,8 @@ class CombinedPlan(models.Model):
     
     plan_a = models.ForeignKey(UserPlan, on_delete=models.CASCADE, related_name='combined_as_a')
     plan_b = models.ForeignKey(UserPlan, on_delete=models.CASCADE, related_name='combined_as_b', null=True, blank=True)  # Nullable for single food plan
+    percentage_plan_a = models.FloatField(null=True, blank=True)
+    percentage_plan_b = models.FloatField(null=True, blank=True)
 
     total_daily_energy = models.FloatField()
     plan_title = models.CharField(max_length=255, default="My Combined Plan")
