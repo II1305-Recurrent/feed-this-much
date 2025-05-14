@@ -90,7 +90,7 @@ function AddPlanForm() {
     const form = useForm<z.infer<typeof addPlanSchema>>({
         resolver: zodResolver(addPlanSchema),
         defaultValues: {
-            title: "Default Title", //maybe generate random number based on ids of previous plans?
+            title: "", //maybe generate random number based on ids of previous plans?
             foodId: "" as unknown as number,
             petId: "" as unknown as number,
             numberOfFoods: 1,
