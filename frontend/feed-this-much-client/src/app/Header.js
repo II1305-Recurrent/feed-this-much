@@ -25,6 +25,7 @@ import { toast } from "sonner";
 import { redirect } from "next/navigation"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { getGravatarUrl } from "../utils/gravatar";
 
 import { Button } from "@/components/ui/button"
 import {
@@ -144,8 +145,28 @@ export default function Header() {
                         <DropdownMenuTrigger asChild disabled={(pathname === "/") || (pathname === "/sign-in")}>
                             <Button variant="outline" className="profile">
                                 <Avatar>
-                                    <AvatarImage src="https://github.com/shadcn.png" />
-                                    <AvatarFallback>CN</AvatarFallback>
+                                    <AvatarImage
+                                        src={
+                                            user?.email
+                                                ? getGravatarUrl(user.email)  // Use Gravatar if logged in
+                                                : "https://www.gravatar.com/avatar/?d=mp"  // Use mystery person for logged-out
+                                        }
+                                        alt={user?.name || user?.email || "Guest"}
+                                        onError={(e) => {
+                                            e.currentTarget.onerror = null;
+                                            e.currentTarget.src = user?.email
+                                                ? "" // Fallback to initials if Gravatar fails for logged-in users
+                                                : "https://www.gravatar.com/avatar/?d=mp"; // Mystery person for non-logged-in
+                                        }}
+                                    />
+                                    <AvatarFallback>
+                                        {
+                                            // Show initials for logged-in users without Gravatar
+                                            user?.email
+                                                ? (user?.name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase())
+                                                : ""
+                                        }
+                                    </AvatarFallback>
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
