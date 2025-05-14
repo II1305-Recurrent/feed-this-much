@@ -6,7 +6,7 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { putRequest, postRequest } from "@/utils/fetchApi";
+import { getRequest, putRequest, postRequest } from "@/utils/fetchApi";
 
 import {
     Form,
@@ -32,6 +32,7 @@ import { addCatSchema, type addCatSchemaType } from "@/zod-schemas/cat"
 
 import { useRouter } from "next/navigation";
 import { useModel } from "../Model";
+import { useEffect } from "react";
 
 import {
     Popover,
@@ -45,7 +46,7 @@ import { Info } from "lucide-react";
 
 function CatForm() {
     const router = useRouter();
-    const { cat, resetCatFields, setCatFields, dontEdit, edit } = useModel();
+    const { cat, resetCatFields, setCatFields, dontEdit, edit, setToCat } = useModel();
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof addCatSchema>>({
@@ -62,6 +63,33 @@ function CatForm() {
         },
     })
 
+    useEffect(() => {
+        async function fetchCatFromDB() {
+            const response = await getRequest({ path: `/api/get-pet/${cat.id}/` });
+            console.log('Full response:', response);
+            if (response.ok && response.payload) {
+                const thisCat = response.payload;
+
+                form.reset({
+                    name: thisCat.name,
+                    dob: thisCat.dob,
+                    current_weight: thisCat.current_weight,
+                    species: thisCat.species,
+                    neutered: thisCat.neutered,
+                    weight_unit: thisCat.weight_unit,
+                    condition_score: thisCat.condition_score.toString(),
+                    activity_level: thisCat.activity_level,
+                });
+            } else {
+                console.error("Failed to fetch cat or response malformed");
+            }
+        }
+
+        if (edit && cat.id) {
+            fetchCatFromDB();
+        }
+    }, [cat.id, edit]);
+
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof addCatSchema>) {
@@ -73,6 +101,7 @@ function CatForm() {
         if (response.ok) {
             resetCatFields();
             dontEdit();
+            setToCat();
             console.log("Cat saved successfully");
             router.push("/home");
         } else {
@@ -188,7 +217,7 @@ function CatForm() {
                         render={({ field }) => (
                             <FormItem className={undefined}>
                                 {/* <FormLabel className={undefined}>Select Unit</FormLabel> */}
-                                <Select onValueChange={(v) => { field.onChange(v); handleUnitChange(v) }} defaultValue={field.value}>
+                                <Select onValueChange={(v) => { field.onChange(v); handleUnitChange(v) }} value={field.value}>
                                     <FormControl>
                                         <SelectTrigger className={undefined} >
                                             <SelectValue placeholder="Select Unit" />
@@ -215,7 +244,7 @@ function CatForm() {
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={(v) => { field.onChange(v); handleNeuteredChange(v) }}
-                                    defaultValue={field.value}
+                                    value={field.value}
                                     className="flex flex-col space-y-1"
                                 >
                                     <FormItem className="flex items-center space-x-3 space-y-0">
@@ -270,7 +299,7 @@ function CatForm() {
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={(v) => { field.onChange(v); handleConditionChange(v) }}
-                                    defaultValue={field.value}
+                                    value={field.value}
                                     className="flex flex-col space-y-1"
                                 >
                                     <FormItem className="flex items-center space-x-3 space-y-0">
@@ -328,7 +357,7 @@ function CatForm() {
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={(v) => { field.onChange(v); handleActivityChange(v) }}
-                                    defaultValue={field.value}
+                                    value={field.value}
                                     className="flex flex-col space-y-1"
                                 >
                                     <FormItem className="flex items-center space-x-3 space-y-0">

@@ -12,14 +12,14 @@ import { useModel } from "../Model"
 
 
 export default function PetPage() {
-    const { pet, resetCatFields, resetDogFields, cat, dog, edit } = useModel();
+    const { pet, resetCatFields, resetDogFields, cat, dog, edit, dontEdit } = useModel();
     if (edit && cat.name) {
         return (<div className="page">
             <div className="flex justify-between">
                 <h1 className="scroll-m-20 text-2xl text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
                     Edit your cat&apos;s details
                 </h1>
-                <Button variant="destructive" onClick={() => { resetCatFields(); redirect("/home") }}>
+                <Button variant="destructive" onClick={() => { resetCatFields(); dontEdit(); redirect("/home") }}>
                     <Image src="/back-arrow.png"
                         alt=""
                         width={20}
@@ -39,7 +39,7 @@ export default function PetPage() {
                 <h1 className="scroll-m-20 text-2xl text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
                     Edit your dog&apos;s details
                 </h1>
-                <Button variant="destructive" onClick={() => { resetDogFields(); redirect("/home") }}>
+                <Button variant="destructive" onClick={() => { resetDogFields(); dontEdit(); redirect("/home") }}>
                     <Image src="/back-arrow.png"
                         alt=""
                         width={20}
@@ -71,7 +71,7 @@ export default function PetPage() {
                         <DogForm />
                     </TabsContent>
                 </Tabs>
-                <Button variant="destructive" onClick={() => { resetCatFields(); resetDogFields(); redirect("/home") }}>
+                <Button variant="destructive" onClick={() => { resetCatFields(); resetDogFields(); dontEdit(); redirect("/home") }}>
                     <Image src="/back-arrow.png"
                         alt=""
                         width={20}

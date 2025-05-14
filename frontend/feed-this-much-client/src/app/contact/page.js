@@ -1,4 +1,4 @@
-"use client"
+import { Mail, Instagram } from "lucide-react"
 
 export default function Contact() {
     return (
@@ -6,9 +6,30 @@ export default function Contact() {
             <h1 className="scroll-m-20 text-2xl text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
                 Contact Us
             </h1>
-            <p className="text-l leading-5 text-[var(--custom-orange)] [&:not(:first-child)]:mt-4">
-                Under construction.
-            </p>
+            <div className="text-l leading-6 text-[var(--custom-orange)] !mb-4 !space-y-2">
+                <p className="flex gap-1 items-center">
+                    <Mail />
+                    <strong>Email:</strong> {" "}
+                    <a
+                        href="mailto:feedthismuch@gmail.com"
+                        className="!underline hover:text-[#4f759b]"
+                    >
+                        feedthismuch@gmail.com
+                    </a>
+                </p>
+                <p className="flex gap-1 items-center">
+                    <Instagram />
+                    <strong>Instagram:</strong>{" "}
+                    <a
+                        href="https://instagram.com/feedthismuch"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="!underline hover:text-[#4f759b]"
+                    >
+                        @feedthismuch
+                    </a>
+                </p>
+            </div>
         </div>
     )
 }

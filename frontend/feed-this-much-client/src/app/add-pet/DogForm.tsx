@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-import { putRequest, postRequest } from "@/utils/fetchApi";
+import { getRequest, putRequest, postRequest } from "@/utils/fetchApi";
 
 import {
     Form,
@@ -32,6 +32,7 @@ import { Input } from "@/components/ui/input"
 import { addPetSchema, type addPetSchemaType } from "@/zod-schemas/pet"
 import { useRouter } from "next/navigation";
 import { useModel } from "../Model";
+import { useEffect } from "react";
 
 import {
     Popover,
@@ -45,23 +46,51 @@ import { Info } from "lucide-react";
 
 function DogForm() {
     const router = useRouter();
-    const { dog, resetDogFields, setDogFields, dontEdit, edit } = useModel();
+    const { dog, resetDogFields, setDogFields, dontEdit, edit, setToCat } = useModel();
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof addPetSchema>>({
         resolver: zodResolver(addPetSchema),
         defaultValues: {
-            name: dog.name,
-            dob: dog.dob,
-            current_weight: dog.current_weight as unknown as number,
-            expected_weight: dog.expected_weight as unknown as number,
+            name: "",
+            dob: "",
+            current_weight: "" as unknown as number,
+            expected_weight: "" as unknown as number,
             species: "dog",
-            neutered: dog.neutered,
-            weight_unit: dog.weight_unit,
-            condition_score: dog.condition_score as unknown as number,
-            activity_level: dog.activity_level,
+            neutered: undefined,
+            weight_unit: undefined,
+            condition_score: "3" as unknown as number,
+            activity_level: undefined,
         },
     })
+
+    useEffect(() => {
+        async function fetchDogFromDB() {
+            const response = await getRequest({ path: `/api/get-pet/${dog.id}/` });
+            console.log('Full response:', response);
+            if (response.ok && response.payload) {
+                const thisDog = response.payload;
+                if (!thisDog) return;
+
+                form.reset({
+                    name: thisDog.name,
+                    dob: thisDog.dob,
+                    current_weight: thisDog.current_weight,
+                    expected_weight: thisDog.expected_weight,
+                    species: thisDog.species,
+                    neutered: thisDog.neutered,
+                    weight_unit: thisDog.weight_unit,
+                    condition_score: thisDog.condition_score.toString(),
+                    activity_level: thisDog.activity_level,
+                });
+            } else {
+                console.error("Failed to fetch pet or malformed response:", response);
+            }
+        }
+        if (edit && dog.id) {
+            fetchDogFromDB();
+        }
+    }, [dog.id, edit])
 
 
     const dob = form.watch("dob")
@@ -86,6 +115,7 @@ function DogForm() {
             console.log("Dog saved successfully");
             resetDogFields();
             dontEdit();
+            setToCat();
             router.push("/home");
         } else {
             console.error("Failed to save dog");
@@ -245,7 +275,7 @@ function DogForm() {
                         render={({ field }) => (
                             <FormItem className={undefined}>
                                 {/* <FormLabel className={undefined}>Select Unit</FormLabel> */}
-                                <Select onValueChange={(v) => { field.onChange(v); handleUnitChange(v) }} defaultValue={field.value}>
+                                <Select onValueChange={(v) => { field.onChange(v); handleUnitChange(v) }} value={field.value}>
                                     <FormControl>
                                         <SelectTrigger className={undefined} >
                                             <SelectValue placeholder="Select Unit" />
@@ -272,7 +302,7 @@ function DogForm() {
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={(v) => { field.onChange(v); handleNeuteredChange(v) }}
-                                    defaultValue={field.value}
+                                    value={field.value}
                                     className="flex flex-col space-y-1"
                                 >
                                     <FormItem className="flex items-center space-x-3 space-y-0">
@@ -326,7 +356,7 @@ function DogForm() {
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={(v) => { field.onChange(v); handleConditionChange(v) }}
-                                    defaultValue={field.value}
+                                    value={field.value}
                                     className="flex flex-col space-y-1"
                                 >
                                     <FormItem className="flex items-center space-x-3 space-y-0">
@@ -384,7 +414,7 @@ function DogForm() {
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={(v) => { field.onChange(v); handleActivityChange(v) }}
-                                    defaultValue={field.value}
+                                    value={field.value}
                                     className="flex flex-col space-y-1"
                                 >
                                     <FormItem className="flex items-center space-x-3 space-y-0">

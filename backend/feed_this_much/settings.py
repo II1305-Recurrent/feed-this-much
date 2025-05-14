@@ -133,9 +133,11 @@ if DEBUG:
     }
     CSRF_TRUSTED_ORIGINS = [
         "http://localhost:3000",
+        "http://localhost:8000"
     ]
     CORS_ALLOWED_ORIGINS = [
-        "http://localhost:3000"
+        "http://localhost:3000",
+        "http://localhost:8000"
     ]
     CSRF_COOKIE_DOMAIN = 'localhost'
 

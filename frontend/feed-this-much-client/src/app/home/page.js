@@ -19,6 +19,8 @@ import { useRouter } from "next/navigation";
 import { getRequest } from "@/utils/fetchApi";
 import { deleteRequest } from "@/utils/fetchApi";
 
+import { get } from "http";
+import { exportFeedingPlansPdf } from "../displayplan/pdfExport";
 
 export default function Home() {
     const router = useRouter();
@@ -80,7 +82,9 @@ export default function Home() {
 
     async function handleDeletePlan(id) {
         try {
+
             await deleteResource('combined-plan', id);
+
             setPlans(prev => prev.filter(pl => pl.id !== id));
         } catch (e) {
             console.error(e);
@@ -122,6 +126,9 @@ export default function Home() {
                 if (petRes.ok) {
                     setPets(Array.isArray(petRes.payload) ? petRes.payload : []);
                 }
+                if (planRes.ok) {
+                    setPlans(Array.isArray(planRes.payload) ? planRes.payload : []);
+                }
 
                 if (planRes.ok) {
                     setPlans(Array.isArray(planRes.payload) ? planRes.payload : []);
@@ -148,7 +155,7 @@ export default function Home() {
     return (
         <div className="page">
             <h1 className="scroll-m-20 text-2xl  text-[var(--custom-orange)] font-bold tracking-tight lg:text-5xl !mb-3">
-                Hi! You are now logged in.
+                Hi {user.first_name}!
             </h1>
             <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1">
@@ -156,7 +163,7 @@ export default function Home() {
                     <AccordionContent>
                         <div className="w-full">
                             {pets.map((item) => {
-                                console.log('Rendering petItem:', item);
+                                //console.log('Rendering petItem:', item);
                                 return (
                                     <div key={item.id} className="flex justify-between w-full h-6">
                                         <p className="text-md text-[var(--custom-brown)] flex justify-center items-center">{item.name}</p>
@@ -198,7 +205,7 @@ export default function Home() {
                     <AccordionContent>
                         <div>
                             {foods.map((foodItem) => {
-                                console.log('Rendering foodItem:', foodItem);
+                                //console.log('Rendering foodItem:', foodItem);
                                 return (
                                     <div key={foodItem.id} className="flex justify-between w-full h-6">
                                         <p className="text-md text-[var(--custom-brown)] flex justify-center items-center">{foodItem.food_name}</p>
@@ -230,29 +237,31 @@ export default function Home() {
                     <AccordionTrigger className="text-lg text-[var(--custom-brown)]">Feeding plans</AccordionTrigger>
                     <AccordionContent>
                         <div>
-                            {plans.map((item) => {
-                                console.log('Rendering planItem:', item);
-                                return (
-                                    //TODO: CHANGE WHEN ID IS ADDED TO PLAN SERIALIZER - done!
-                                    <div key={item.id} className="flex justify-between w-full h-6">
-                                        <Button key={item.id} variant="ghost" onClick={() => {
-                                            setIndex(item.id);
-                                            router.push(`/displayplan?id=${item.id}`); // sets the id of the plan to show on the display plan page
-                                        }} className="flex justify-center items-center">
-                                            <p className="text-md text-[var(--custom-brown)] float-left">{item.plan_title}</p>
-                                        </Button>
-                                        <Button variant="ghost" onClick={() => handleDeletePlan(item.id)}>
-                                            <Image
-                                                src="/delete-icon.png"
-                                                alt=""
-                                                width={15}
-                                                height={15}></Image>
-                                        </Button>
-                                    </div>
-                                );
-                            })}
+                            {
+                                plans.map((item) => {
+                                    //console.log('Rendering planItem:', item);
+                                    return (
+                                        //TODO: CHANGE WHEN ID IS ADDED TO PLAN SERIALIZER - done!
+                                        <div key={item.id} className="flex justify-between w-full h-8">
+                                            <Button key={item.id} variant="ghost" onClick={() => {
+                                                setIndex(item.id);
+                                                router.push(`/displayplan?id=${item.id}`); // sets the id of the plan to show on the display plan page
+                                            }} className="flex justify-center items-center">
+                                                <p className="text-md text-[var(--custom-brown)] float-left">{item.plan_title}</p>
+                                            </Button>
+                                            <Button variant="ghost" onClick={() => handleDeletePlan(item.id)}>
+                                                <Image
+                                                    src="/delete-icon.png"
+                                                    alt=""
+                                                    width={15}
+                                                    height={15}></Image>
+                                            </Button>
+                                        </div>
+                                    );
+                                })
+                            }
                             <div className="inline-flex items-center gap-2 !p-[2px]">
-                                <Button variant="plus" onClick={() => router.push("/calc-new-plan")}>
+                                <Button variant="plus" onClick={() => router.push("/calc-new-plan")} disabled={!(pets.length && foods.length)}>
                                     <Image src="/plus-sign-circle-icon.png"
                                         alt=""
                                         width={20}
@@ -261,11 +270,14 @@ export default function Home() {
                                     </Image>
                                     <p className="text-[var(--custom-brown)] !pr-2">Calculate new plan</p>
                                 </Button>
+                                <Button variant="plus" onClick={() => exportFeedingPlansPdf(plans)} disabled={!(plans.length)}>
+                                    <p className="inline-block text-[var(--custom-brown)] !pl-2 !pr-2">Export All</p>
+                                </Button>
                             </div>
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
-            </Accordion>
-        </div>
+                        </div >
+                    </AccordionContent >
+                </AccordionItem >
+            </Accordion >
+        </div >
     )
 }

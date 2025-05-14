@@ -8,6 +8,7 @@ from feed_this_much.plan import calorie_calculator
 from .serializers import PlanSerializer, CombinedPlanSerializer
 from .models import UserPlan, CombinedPlan
 
+
 @api_view(['POST', 'OPTIONS'])
 @permission_classes([IsAuthenticated])
 def generate_plan(request): # GET AMOUNT OF FOODS (from food_id's), PERCENTAGES/PORTIONS, SPLIT_TYPE, portion_food_id

@@ -37,4 +37,5 @@ def delete_food(request, food_id):
             status=status.HTTP_200_OK # 200 OK even if no pets exist
         )
     food.delete()
+
     return Response({'msg': 'Food deleted successfully'}, status=status.HTTP_200_OK)

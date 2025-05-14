@@ -21,7 +21,8 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 from rest_framework import routers
 
 from feed_this_much.basic import views
-from feed_this_much.pets.views import save_pet, get_pets, update_pet, delete_pet
+
+from feed_this_much.pets.views import save_pet, get_pets, update_pet, delete_pet, get_pet_by_id
 from feed_this_much.food.views import get_foods, save_food, delete_food
 
 from feed_this_much.plan.views import generate_plan, get_plans, get_combined_plans_byid, get_combined_plans_all, delete_combined_plan
@@ -40,6 +41,7 @@ urlpatterns = [
     path('api/logout/', views.user_logout, name='user-logout'),
     path('api/save-pet/', save_pet, name='save_pet'),
     path('api/get-pets/', get_pets, name='get_pets'),
+    path('api/get-pet/<int:id>/', get_pet_by_id, name='get_pet_by_id'),
     path('api/update-pet/<int:id>/', update_pet, name='update_pet'),
     path('api/generate-plan/', generate_plan, name='generate_plan'), # now creates combined plan type
     path('api/get-plans/', get_plans, name='get_plans'),
@@ -52,9 +54,10 @@ urlpatterns = [
     path('api/get-foods/', get_foods, name='get_foods'),
     path('api/save-food/', save_food, name='save_food'),
     path('api/is-logged/', views.is_logged_in, name='is-logged'),
+    path('api/get-user/', views.get_user_details, name='get-user'),
     path('api/delete-food/<int:food_id>/', delete_food, name='delete_food'),
     path('api/delete-pet/<int:pet_id>/', delete_pet, name='delete_pet'),
-    # path('api/delete-plan/<int:plan_id>/', delete_plan, name='delete_plan'),
     path('api/delete-combined-plan/<int:id>/', delete_combined_plan, name='delete_combined_plan'),
-    path('api/get-user/', views.get_user_details, name='get-user')
+    path('api/update-user-details/', views.update_user_details, name='update_user_details'),
 ]
+
