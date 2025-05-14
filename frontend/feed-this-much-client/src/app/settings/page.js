@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getRequest, putRequest } from "@/utils/fetchApi";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input"
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 export default function Settings() {
     const router = useRouter();
@@ -36,11 +37,22 @@ export default function Settings() {
         if (response.ok) {
             getUser()
         }
+
     }
     async function changeMail() {
         const response = await putRequest({ path: '/api/update-user-details/', body: { "email": newMail } });
         if (response.ok) {
             getUser()
+        }
+        else if (response.status === 400) {
+            const data = response.payload;
+            if (
+                data.username &&
+                data.username.includes("A user with that username already exists.")
+            ) {
+                toast.error("An account with this email already exists")
+                console.log("already exxists")
+            }
         }
     }
     return (
@@ -50,13 +62,13 @@ export default function Settings() {
             </h1>
             <div className="flex flex-row items-center justify-between max-w-sm !pb-2">
                 <p className="text-l leading-5 text-[var(--custom-orange)] [&:not(:first-child)]:mt-4">
-                    username: {user.first_name}
+                    display name: {user.first_name}
                 </p>
                 <Button variant="plus" onClick={() => { setEditName(true) }}><p className="text-[var(--custom-brown)] !pl-2 !pr-2">Change my username</p></Button>
             </div>
             {editName ?
                 <div className="flex flex-row items-center justify-between max-w-sm !pb-6">
-                    <Input placeholder="Enter your new username" value={newName} onChange={(e) => setNewName(e.target.value)} />
+                    <Input placeholder="Enter your new display name" value={newName} onChange={(e) => setNewName(e.target.value)} />
                     <Button className="bg-[var(--custom-blue)] hover:bg-blue-700 text-white px-8 py-3 rounded-lg" onClick={() => { changeName(); setEditName(false); setNewName("") }}>Submit</Button>
                 </div>
                 : null}

@@ -79,8 +79,10 @@ def update_user_details(request):
         user = User.objects.filter(id=request.user.id).first()
     except User.DoesNotExist:
         return Response({"error": "Not found"}, status=status.HTTP_404_NOT_FOUND)
-    
+    if "email" in request.data.keys():
+        request.data["username"] = request.data["email"]
     serializer = UserDetailsSerializer(user, data=request.data, partial=True)
+
     if serializer.is_valid():
         serializer.save()
         return Response(status=status.HTTP_200_OK)
