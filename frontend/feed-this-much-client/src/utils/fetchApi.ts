@@ -41,7 +41,6 @@ async function getRequest({
 
         return await constructReturnObj(response);
     } catch (err) {
-        console.error('Request failed', err);
         return await constructReturnObj(null);
     }
 }
@@ -75,7 +74,6 @@ async function postRequest({
 
         return await constructReturnObj(response);
     } catch (err) {
-        console.error('Request failed', err);
         return await constructReturnObj(null);
     }
 }
@@ -109,7 +107,6 @@ async function putRequest({
 
         return await constructReturnObj(response);
     } catch (err) {
-        console.error('Request failed', err);
         return await constructReturnObj(null);
     }
 }
@@ -170,7 +167,6 @@ async function deleteRequest({
 
         return await constructReturnObj(response);
     } catch (err) {
-        console.error('DELETE request failed', err);
         return await constructReturnObj(null);
     }
 }

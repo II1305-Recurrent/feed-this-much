@@ -61,17 +61,14 @@ export default function Header() {
     async function getUser() {
         const response = await getRequest({ path: '/api/get-user/' });
         if (response.ok) {
-            console.log(response.payload)
             setUser(response.payload)
         }
     }
     useEffect(() => {
         getUser()
-        console.log(user);
     }, []);
     useEffect(() => {
         if (user) {
-            console.log(user);
             router.refresh();
         }
     }, [user]);
@@ -79,7 +76,6 @@ export default function Header() {
     const { dontEdit } = useModel();
     const handleClick = () => {
         dontEdit()
-        console.log("done")
         setOpen(false)
     }
 

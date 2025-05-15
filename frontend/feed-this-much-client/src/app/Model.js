@@ -7,7 +7,7 @@ const ModelContext = createContext();
 export function ModelProvider({ children }) {
     const [planIndex, setPlanIndex] = useState(0);
     const getIndex = () => {
-        console.log(planIndex); // For logging purposes
+        //console.log(planIndex); // For logging purposes
         return planIndex;
     };
     const setIndex = (value) => setPlanIndex(value)

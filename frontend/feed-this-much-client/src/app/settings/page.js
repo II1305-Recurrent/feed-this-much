@@ -17,18 +17,15 @@ export default function Settings() {
     async function getUser() {
         const response = await getRequest({ path: '/api/get-user/' });
         if (response.ok) {
-            //console.log(response.payload)
             setUser(response.payload)
         }
 
     }
     useEffect(() => {
         getUser()
-        //console.log(user);
     }, []);
     useEffect(() => {
         if (user) {
-            //console.log(user);
             router.refresh();
         }
     }, [user]);
@@ -51,7 +48,6 @@ export default function Settings() {
                 data.username.includes("A user with that username already exists.")
             ) {
                 toast.error("An account with this email already exists")
-                console.log("already exxists")
             }
         }
     }

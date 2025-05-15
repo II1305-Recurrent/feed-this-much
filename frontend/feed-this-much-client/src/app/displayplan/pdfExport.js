@@ -1,5 +1,6 @@
 import { jsPDF } from "jspdf";
 import { getRequest, postRequest } from "@/utils/fetchApi";
+import { toast } from "sonner";
 //import { html2pdf } from "html2pdf.js";
 
 // TODO this can be refactored as a single function 
@@ -14,11 +15,11 @@ export async function exportFeedingPlanPdf() {
         const plan = planRes.payload;
 
         if (!plan) {
-            alert("No plan data found to export.");
+            toast.error("No plan data found to export.");
             return;
         }
 
-        console.log("DEBUG EXPORT SINGLE PLAN OBJECT", plan); // debug
+        //console.log("DEBUG EXPORT SINGLE PLAN OBJECT", plan); // debug
 
         //This is manualy genearating this text around. Not great, but its a start
         const doc = new jsPDF();
@@ -68,8 +69,7 @@ export async function exportFeedingPlanPdf() {
         doc.save("feeding-plan.pdf");
 
     } catch (err) {
-        console.error("Export error:", err);
-        alert("Failed to export PDF.");
+        toast.error("Failed to export PDF");
     }
 }
 
@@ -82,11 +82,11 @@ export async function exportFeedingPlansPdf() {
     const allPlans = Array.isArray(allPlansRes.payload) ? allPlansRes.payload : [];
 
     if (!Array.isArray(allPlans) || allPlans.length === 0) {
-        alert("No plan data found to export.");
+        toast.error("No plan data found to export.");
         return;
     }
 
-    console.log("DEBUG EXPORT ALL PLAN OBJECT", allPlans); // debug
+    //console.log("DEBUG EXPORT ALL PLAN OBJECT", allPlans); // debug
 
     const doc = new jsPDF();
 
