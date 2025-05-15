@@ -64,7 +64,7 @@ export default function Settings() {
                 <p className="text-l leading-5 text-[var(--custom-orange)] [&:not(:first-child)]:mt-4">
                     display name: {user.first_name}
                 </p>
-                <Button variant="plus" onClick={() => { setEditName(true) }}><p className="text-[var(--custom-brown)] !pl-2 !pr-2">Change my username</p></Button>
+                <Button variant="plus" onClick={() => { setEditName(true) }}><p className="text-[var(--custom-brown)] !pl-2 !pr-2">Change my display name</p></Button>
             </div>
             {editName ?
                 <div className="flex flex-row items-center justify-between max-w-sm !pb-6">
