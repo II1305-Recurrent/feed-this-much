@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { toast } from "sonner";
 
 import { getRequest, putRequest, postRequest } from "@/utils/fetchApi";
 
@@ -67,7 +68,7 @@ function DogForm() {
     useEffect(() => {
         async function fetchDogFromDB() {
             const response = await getRequest({ path: `/api/get-pet/${dog.id}/` });
-            console.log('Full response:', response);
+            //console.log('Full response:', response);
             if (response.ok && response.payload) {
                 const thisDog = response.payload;
                 if (!thisDog) return;
@@ -84,7 +85,7 @@ function DogForm() {
                     activity_level: thisDog.activity_level,
                 });
             } else {
-                console.error("Failed to fetch pet or malformed response:", response);
+                toast.error("Failed to fetch pet or malformed response");
             }
         }
         if (edit && dog.id) {
@@ -112,13 +113,13 @@ function DogForm() {
             : await postRequest({ path: "/api/save-pet/", body: values });
 
         if (response.ok) {
-            console.log("Dog saved successfully");
             resetDogFields();
             dontEdit();
             setToCat();
+            toast.success("Dog saved successfully");
             router.push("/home");
         } else {
-            console.error("Failed to save dog");
+            toast.error("Failed to save dog");
         }
     }
 

@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 //import { Slider } from "@/components/ui/slider"
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import { Badge } from "@/components/ui/badge"; // needed for slider label
+import { toast } from "sonner";
 
 import { getRequest, postRequest } from "@/utils/fetchApi";
 
@@ -50,7 +51,6 @@ function AddPlanForm() {
         if (response.ok) {
             if (response.payload !== "No food yet") {
                 setFoods(response.payload);
-                console.log("Foods fetched", response.payload);
             }
         }
 
@@ -63,7 +63,6 @@ function AddPlanForm() {
         if (response.ok) {
             if (response.payload !== "No pets yet!") {
                 setPets(response.payload);
-                console.log("Pets fetched", response.payload);
             }
         }
 
@@ -72,7 +71,6 @@ function AddPlanForm() {
     useEffect(() => {
         getPets();
         getFoods();
-        console.log(pets);
     }, []);
 
     // To Toggle the Second Food
@@ -122,20 +120,16 @@ function AddPlanForm() {
             data[apiKey] = values[formKey as keyof typeof values];
         }
 
-        console.log('Plan Item:', data);
-
         const response = await postRequest({ path: '/api/generate-plan/', body: data });
 
         if (response.ok) {
-            console.log("Plan submitted");
             const newPlanId = response.payload?.id; // getting the new plan id
-            console.log("Plan submitted with ID:", newPlanId);
 
             if (newPlanId) {
                 // Navigate to the display plan page using the new plan ID
                 router.push(`/displayplan?id=${newPlanId}`);
             } else {
-                console.error("Failed to retrieve plan ID from the response.");
+                toast.error("Failed to retrieve plan ID from the response.");
                 router.push('/home');
             }
         }

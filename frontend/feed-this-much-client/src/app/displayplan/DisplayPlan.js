@@ -27,7 +27,6 @@ function DisplayPlan() {
                 }
 
             } catch (err) {
-                console.error("Fetch error:", err);
                 setError("Failed to fetch data.");
             } finally {
                 setLoading(false);
@@ -44,7 +43,7 @@ function DisplayPlan() {
     'food_name', 'food_serving_type', 'daily_energy_allowance', 'daily_food_weight', 
     'daily_food_weight_unit', 'daily_servings_amount'] */
 
-    console.log("DEBUG PLAN OBJECT", plan); // debug
+    //console.log("DEBUG PLAN OBJECT", plan); // debug
 
     // Silly function to change packet image because I got bored waiting for the plans api
     // Dynamically set image based on packet_type

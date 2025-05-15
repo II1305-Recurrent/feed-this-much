@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { getRequest, postRequest } from "@/utils/fetchApi";
 
@@ -77,7 +78,7 @@ function FoodForm() {
         const response = await postRequest({ path: '/api/save-food/', body: data });
 
         if (response.ok) {
-            console.log("Food saved successfully");
+            toast.success("Food saved successfully");
             router.push('/home');
         }
     }

@@ -66,7 +66,7 @@ function CatForm() {
     useEffect(() => {
         async function fetchCatFromDB() {
             const response = await getRequest({ path: `/api/get-pet/${cat.id}/` });
-            console.log('Full response:', response);
+            //console.log('Full response:', response);
             if (response.ok && response.payload) {
                 const thisCat = response.payload;
 
@@ -81,7 +81,7 @@ function CatForm() {
                     activity_level: thisCat.activity_level,
                 });
             } else {
-                console.error("Failed to fetch cat or response malformed");
+                toast.error("Failed to fetch cat or response malformed");
             }
         }
 
@@ -102,10 +102,10 @@ function CatForm() {
             resetCatFields();
             dontEdit();
             setToCat();
-            console.log("Cat saved successfully");
+            toast.success("Cat saved successfully");
             router.push("/home");
         } else {
-            console.error("Failed to save cat");
+            toast.error("Failed to save cat");
         }
     }
 
